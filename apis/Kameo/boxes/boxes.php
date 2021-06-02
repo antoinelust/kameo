@@ -172,7 +172,25 @@ switch($_SERVER["REQUEST_METHOD"])
 			}else{
 					errorMessage("ES0012");
 			}
-		}
+		}else if($action=="getPrice"){
+			if(get_user_permissions("admin", $token)){
+				if($_GET['model']=='5keys'){
+					$response['installationPrice']='500';
+					$response['monthlyPrice']='200';
+				}else if($_GET['model']=='10keys'){
+					$response['installationPrice']='750';
+					$response['monthlyPrice']='250';
+				}else if($_GET['model']=='20keys'){
+					$response['installationPrice']='1000';
+					$response['monthlyPrice']='300';
+				}
+				echo json_encode($response);
+				die;
+			}else {
+				error_message('403');
+			}
+		}else
+			error_message('405');
 		break;
 	case 'POST':
 		$action=isset($_POST['action']) ? $_POST['action'] : NULL;
@@ -182,6 +200,14 @@ switch($_SERVER["REQUEST_METHOD"])
 				require_once 'sendMessage.php';
 			}else
 				error_message('403');
+		}else if($action=="deleteBoxOrder"){
+			if(get_user_permissions(["order", "admin"], $token)){
+				execSQL("DELETE FROM order_boxes WHERE ID=?", array('i', $_POST['ID']), true);
+				$response['response']="success";
+				echo json_encode($response);
+				die;
+			}else
+				error_message('403');
 		}else
 			error_message('405');
 	break;
@@ -189,6 +215,4 @@ switch($_SERVER["REQUEST_METHOD"])
 			error_message('405');
 		break;
 }
-
-$conn->close();
 ?>

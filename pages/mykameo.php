@@ -506,8 +506,10 @@ include 'include/vues/mykameo/widgets/support/contact_support.html';
 
   /** ADMIN **/
   if (get_user_permissions("admin", $token)) {
-//MAINTENANCES
+    //MAINTENANCES
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/maintenances/main.php';
+    //MAINTENANCES
+    include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/plannings/main.php';
     //CUSTOMERS
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/customers/main.php';
     //ORDERS

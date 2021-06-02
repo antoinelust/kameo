@@ -7,7 +7,7 @@ $(".fleetmanager").click(function () {
       if (response.response == "error") {
         console.log(response.message);
       }
-      document.getElementById("statisticsCounter").innerHTML ='<span style="color:#3cb395" data-speed="1" data-refresh-interval="4" data-to="' + Math.round(response.progressCA*100) + '" data-from="0" data-seperator="false">' + Math.round(response.progressCA*100) + "%</span>";
+      document.getElementById("statisticsCounter").innerHTML ='<span style="color:#3cb395" data-speed="1" data-refresh-interval="4" data-seperator="false">' + Math.round(response.progressCA*100) + "%</span>";
 
       if (response.progressCA > 0) {
         $("#statisticsCounter").css("color", "#3cb395");
@@ -28,22 +28,21 @@ $("#statisticsListing").on("show.bs.modal", function (event) {
     data: { action: "getStatistics" },
     success: function (response) {
 
-      var total = 0;
+      var totalLeasing = 0;
+      var totalSelling = 0;
+      var totalBoxes = 0;
       for (var i = 0; i < response.leasingOrders.length; i++) {
         if(new Date(response.commandsMonth[i])>=new Date('2021-01-01')){
-          total += response.leasingOrders[i] << 0;
+          totalLeasing += response.leasingOrders[i] << 0;
+          totalSelling += response.sellingOrders[i] << 0;
+          totalBoxes += response.boxesOrders[i] << 0;
+
         }
       }
-      $('#statisticsListing span[name=ordersStatisticsTotalLeasing]').html(total);
-
-      var total = 0;
-      for (var i = 0; i < response.sellingOrders.length; i++) {
-        if(new Date(response.commandsMonth[i])>=new Date('2021-01-01')){
-          total += response.sellingOrders[i] << 0;
-        }
-      }
-      $('#statisticsListing span[name=ordersStatisticsTotalSelling]').html(total);
-
+      $('#statisticsListing span[name=ordersStatisticsTotalLeasing]').html(totalLeasing);
+      $('#statisticsListing span[name=ordersStatisticsTotalSelling]').html(totalSelling);
+      $('#statisticsListing span[name=ordersStatisticsTotalBoxes]').html(totalBoxes);
+      $('#statisticsListing span[name=ordersStatisticsTotal]').html(totalLeasing+totalSelling+totalBoxes);
 
 
       $("canvas#ordersStatisticsChart").remove();
@@ -58,19 +57,27 @@ $("#statisticsListing").on("show.bs.modal", function (event) {
           datasets: [
             {
               label: "Commnandes - Leasing",
-              borderColor: "rgba(44, 132, 109, 0.5)",
-              backgroundColor: "rgba(60, 179, 149, 0.5)",
+              borderColor: "rgba(42, 157, 143, 1)",
+              backgroundColor: "rgba(42, 157, 143, 0.5)",
               borderWidth: 2,
               stack: 'Stack 0',
               data: response.leasingOrders
             },
             {
               label: "Commandes - Ventes",
-              borderColor: "rgba(176, 0, 0, 0.5)",
-              backgroundColor: "rgba(252, 39, 80, 0.5)",
+              borderColor: "rgba(231, 111, 81, 1)",
+              backgroundColor: "rgba(231, 111, 81, 0.5)",
               borderWidth: 2,
               stack: 'Stack 0',
               data: response.sellingOrders
+            },
+            {
+              label: "Commandes - Bornes",
+              borderColor: "rgba(233, 196, 106, 1)",
+              backgroundColor: "rgba(233, 196, 106, 0.5)",
+              borderWidth: 2,
+              stack: 'Stack 0',
+              data: response.boxesOrders
             }
           ],
         },
@@ -103,24 +110,31 @@ $("#statisticsListing").on("show.bs.modal", function (event) {
       });
       myChart.update();
 
-      var total = 0;
+      var totalBoxesMargin = 0;
+      var totalLeasingMargin = 0;
+      var totalSellingMargin = 0;
+      var totalLeasingValue = 0;
+      var totalSellingValue = 0;
+      var totalBoxesValue = 0;
+      var total=0;
       for (var i = 0; i < response.leasingMargin.length; i++) {
         if(new Date(response.commandsMonth[i])>=new Date('2021-01-01')){
-          total += response.leasingMargin[i] << 0;
+          totalBoxesMargin += response.boxesMargin[i] << 0;
+          totalLeasingMargin += response.leasingMargin[i] << 0;
+          totalSellingMargin += response.sellingMargin[i] << 0;
+          totalBoxesValue += (response.boxesMargin[i]+response.boxesCost[i]) <<0;
+          totalLeasingValue += (response.leasingCost[i]+response.leasingMargin[i]) <<0;
+          totalSellingValue += (response.sellingCost[i]+response.sellingMargin[i]) <<0;
         }
       }
-      $('#statisticsListing span[name=ordersStatisticsTotalLeasingValue]').html(Math.round(total).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+' €');
-
-
-      var total = 0;
-      for (var i = 0; i < response.sellingMargin.length; i++) {
-        if(new Date(response.commandsMonth[i])>=new Date('2021-01-01')){
-          total += response.sellingMargin[i] << 0;
-        }
-      }
-      $('#statisticsListing span[name=ordersStatisticsTotalSellingValue]').html(Math.round(total).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+' €');
-
-
+      $('#statisticsListing span[name=ordersStatisticsTotalMargin]').html(Math.round(totalLeasingMargin+totalSellingMargin+totalBoxesValue).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+' €');
+      $('#statisticsListing span[name=ordersStatisticsTotalBoxesMargin]').html(Math.round(totalBoxesMargin).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+' € ('+Math.round(totalBoxesMargin/totalBoxes).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+' € par commande - '+(Math.round(totalBoxesMargin/(totalBoxesValue-totalBoxesMargin)*100))+'% ROI)');
+      $('#statisticsListing span[name=ordersStatisticsTotalLeasingMargin]').html(Math.round(totalLeasingMargin).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+' € ('+Math.round(totalLeasingMargin/totalLeasing).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+' € par commande - '+(Math.round(totalLeasingMargin/(totalLeasingValue-totalLeasingMargin)*100))+'% ROI)');
+      $('#statisticsListing span[name=ordersStatisticsTotalSellingMargin]').html(Math.round(totalSellingMargin).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+' € ('+Math.round(totalSellingMargin/totalSelling).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+' € par commande - '+(Math.round(totalSellingMargin/(totalSellingValue-totalSellingMargin)*100))+'% ROI)');
+      $('#statisticsListing span[name=ordersStatisticsTotalBoxesValue]').html(Math.round(totalBoxesValue).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+' € ('+Math.round(totalBoxesValue/totalBoxes).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+' € par commande)');
+      $('#statisticsListing span[name=ordersStatisticsTotalLeasingValue]').html(Math.round(totalLeasingValue).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+' € ('+Math.round(totalLeasingValue/totalLeasing).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+' € par commande)');
+      $('#statisticsListing span[name=ordersStatisticsTotalSellingValue]').html(Math.round(totalSellingValue).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+' € ('+Math.round(totalSellingValue/totalSelling).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+' € par commande)');
+      $('#statisticsListing span[name=ordersStatisticsTotalContractValue]').html(Math.round(totalLeasingValue+totalSellingValue).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+' €');
 
 
       $("canvas#ordersMarginStatisticsChart").remove();
@@ -136,34 +150,50 @@ $("#statisticsListing").on("show.bs.modal", function (event) {
             {
               label: "Ventes - Coûts",
               stack: 'Stack 0',
-              borderColor: "rgba(176, 0, 0, 0.5)",
-              backgroundColor: "rgba(252, 39, 80, 0.5)",
+              borderColor: "rgba(231, 111, 81, 1)",
+              backgroundColor: "rgba(231, 111, 81, 0.5)",
               borderWidth: 2,
               data: response.sellingCost
             },
             {
               label: "Ventes - Marge",
               stack: 'Stack 0',
-              borderColor: "rgba(176, 0, 0, 0.5)",
-              backgroundColor: "rgba(252, 39, 80, 0.1)",
+              borderColor: "rgba(231, 111, 81, 1)",
+              backgroundColor: "rgba(231, 111, 81, 0.1)",
               borderWidth: 2,
               data: response.sellingMargin
             },
             {
               label: "Leasing - Coûts",
               stack: 'Stack 1',
-              borderColor: "rgba(44, 132, 109, 0.5)",
-              backgroundColor: "rgba(60, 179, 149, 0.5)",
+              borderColor: "rgba(42, 157, 143, 1)",
+              backgroundColor: "rgba(42, 157, 143, 0.5)",
               borderWidth: 2,
               data: response.leasingCost
             },
             {
               label: "Leasing - Marge",
               stack: 'Stack 1',
-              borderColor: "rgba(44, 132, 109, 0.5)",
-              backgroundColor: "rgba(60, 179, 149, 0.1)",
+              borderColor: "rgba(42, 157, 143, 1)",
+              backgroundColor: "rgba(42, 157, 143, 0.1)",
               borderWidth: 2,
               data: response.leasingMargin
+            },
+            {
+              label: "Bornes - Coûts",
+              stack: 'Stack 2',
+              borderColor: "rgba(233, 196, 106, 1)",
+              backgroundColor: "rgba(233, 196, 106, 0.5)",
+              borderWidth: 2,
+              data: response.boxesCost
+            },
+            {
+              label: "Bornes - Marge",
+              stack: 'Stack 2',
+              borderColor: "rgba(233, 196, 106, 1)",
+              backgroundColor: "rgba(233, 196, 106, 0.1)",
+              borderWidth: 2,
+              data: response.boxesMargin
             }
           ],
         },
@@ -224,16 +254,16 @@ $("#statisticsListing").on("show.bs.modal", function (event) {
           datasets: [
             {
               label: "Vélos placés en leasing",
-              borderColor: "rgba(44, 132, 109, 0.5)",
-              backgroundColor: "rgba(60, 179, 149, 0.5)",
+              borderColor: "rgba(42, 157, 143, 1)",
+              backgroundColor: "rgba(42, 157, 143, 0.5)",
               data: response.contractStartSum,
               borderWidth: 2,
               stack: 'Stack 0'
             },
             {
               label: "Vélos vendus",
-              borderColor: "rgba(176, 0, 0, 0.5)",
-              backgroundColor: "rgba(252, 39, 80, 0.5)",
+              borderColor: "rgba(231, 111, 81, 1)",
+              backgroundColor: "rgba(231, 111, 81, 0.5)",
               borderWidth: 2,
               data: response.soldBikesSum,
               stack: 'Stack 0'
@@ -274,6 +304,19 @@ $("#statisticsListing").on("show.bs.modal", function (event) {
       });
       myChart.update();
 
+      var total = 0;
+      for (var i = 0; i < response.soldBikesSum.length; i++) {
+        if(new Date(response.contractStartMonth[i])>=new Date('2021-01-01')){
+          total += response.soldBikesSum[i] << 0;
+        }
+      }
+      for (var i = 0; i < response.contractStartSum.length; i++) {
+        if(new Date(response.contractStartMonth[i])>=new Date('2021-01-01')){
+          total += response.contractStartSum[i] << 0;
+        }
+      }
+      $('#statisticsListing span[name=contractStartTotal]').html(total);
+
 
       var total = 0;
       for (var i = 0; i < response.deliveryNumberOfBike.length; i++) {
@@ -301,8 +344,9 @@ $("#statisticsListing").on("show.bs.modal", function (event) {
           datasets: [
             {
               label: "Nombre",
-              borderColor: "rgba(44, 132, 109, 0.5)",
-              backgroundColor: "rgba(60, 179, 149, 0.5)",
+              borderColor: "rgba(42, 157, 143, 1)",
+              backgroundColor: "rgba(42, 157, 143, 0.5)",
+              borderWidth: 2,
               data: response.deliveryNumberOfBike
             }
           ],
@@ -340,9 +384,9 @@ $("#statisticsListing").on("show.bs.modal", function (event) {
           labels: response.stockByBrandLabel,
           datasets: [{
             data: response.stockByBrandData,
-            borderColor: "rgba(44, 132, 109, 0.5)",
-            backgroundColor: "rgba(60, 179, 149, 0.5)",
-            hoverOffset: 4
+            borderColor: "rgba(42, 157, 143, 1)",
+            backgroundColor: "rgba(42, 157, 143, 0.5)",
+            borderWidth: 2
           }],
         },
         options: {
@@ -359,6 +403,13 @@ $("#statisticsListing").on("show.bs.modal", function (event) {
       });
       myChart.update();
 
+      var total = 0;
+      for (var i = 0; i < response.stockByBrandData.length; i++) {
+        total += response.stockByBrandData[i] << 0;
+      }
+      $('#statisticsListing span[name=stockTotal]').html(total);
+
+
 
       $("canvas#currentStockTypes").remove();
       $("div.currentStockTypes").append('<canvas id="currentStockTypes" class="animated fadeIn" width="100%"></canvas>');
@@ -371,11 +422,10 @@ $("#statisticsListing").on("show.bs.modal", function (event) {
         data:{
           labels: response.stockByUtilisationLabel,
           datasets: [{
-            label: 'My First Dataset',
             data: response.stockByUtilisationData,
-            borderColor: "rgba(44, 132, 109, 0.5)",
-            backgroundColor: "rgba(60, 179, 149, 0.5)",
-            hoverOffset: 4
+            borderColor: "rgba(42, 157, 143, 1)",
+            backgroundColor: "rgba(42, 157, 143, 0.5)",
+            borderWidth: 2
           }],
         },
         options: {
@@ -405,16 +455,16 @@ $("#statisticsListing").on("show.bs.modal", function (event) {
           datasets: [
             {
               label: "Coût d'achat",
-              borderWidth: 2,
               stack: 'Stack 0',
-              borderColor: "rgba(44, 132, 109, 0.5)",
-              backgroundColor: "rgba(60, 179, 149, 0.5)",
+              borderColor: "rgba(42, 157, 143, 1)",
+              backgroundColor: "rgba(42, 157, 143, 0.5)",
+              borderWidth: 2,
               data: response.deliveryCost
             },
             {
               label: "Marge potentielle sur vente",
-              borderColor: "rgba(44, 132, 109, 0.5)",
-              backgroundColor: "rgba(60, 179, 149, 0.1)",
+              borderColor: "rgba(42, 157, 143, 1)",
+              backgroundColor: "rgba(42, 157, 143, 0.1)",
               borderWidth: 2,
               stack: 'Stack 0',
               data: response.retailMargin
@@ -470,7 +520,33 @@ $("#statisticsListing").on("show.bs.modal", function (event) {
       $("canvas#myChartCA").remove();
       $("div.myChartCA").append('<canvas id="myChartCA" class="animated fadeIn" width="100%"></canvas>');
 
-      $('#statisticsListing span[name=totalCA]').html(Math.round(response.totalCA).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+' €');
+      var totalBikeLeasing=0;
+      var totalBikeSelling=0;
+      var totalBoxesLeasing=0;
+      var totalAccessoryLeasing=0;
+      var totalAccessorySelling=0;
+      var totalMaintenance=0;
+      var total=0;
+
+      for (var i = 0; i < response.bikeLeasing.length; i++) {
+        if(new Date(response.arrayDatesCA[i])>=new Date('2021-01-01')){
+          totalBikeLeasing += response.bikeLeasing[i] << 0;
+          totalBikeSelling += response.bikeSelling[i] << 0;
+          totalBoxesLeasing += response.boxesLeasing[i] << 0;
+          totalAccessoryLeasing += response.accessoryLeasing[i] << 0;
+          totalAccessorySelling += response.accessorySelling[i] << 0;
+          totalMaintenance += response.maintenance[i] << 0;
+        }
+      }
+      total = totalBikeLeasing + totalBikeSelling + totalBoxesLeasing + totalAccessoryLeasing + totalAccessorySelling + totalMaintenance;
+      $('#statisticsListing span[name=totalCALeasingBikes]').html(Math.round(totalBikeLeasing).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+' €');
+      $('#statisticsListing span[name=totalCASellingBikes]').html(Math.round(totalBikeSelling).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+' €');
+      $('#statisticsListing span[name=totalCALeasingBoxes]').html(Math.round(totalBoxesLeasing).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+' €');
+      $('#statisticsListing span[name=totalCALeasingAccessories]').html(Math.round(totalAccessoryLeasing).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+' €');
+      $('#statisticsListing span[name=totalCASellingAccessories]').html(Math.round(totalAccessorySelling).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+' €');
+      $('#statisticsListing span[name=totalCAMaintenance]').html(Math.round(totalMaintenance).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+' €');
+      $('#statisticsListing span[name=totalCA]').html(Math.round(total).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+' €');
+
       var ctx = document.getElementById("myChartCA").getContext("2d");
       ctx.height = 500;
       var myChart = new Chart(ctx, {
@@ -480,48 +556,42 @@ $("#statisticsListing").on("show.bs.modal", function (event) {
             {
               label: "Leasing vélos",
               fill: true,
-              borderColor: "rgba(44, 132, 109, 0.5)",
-              backgroundColor: "rgba(60, 179, 149, 0.5)",
+              backgroundColor: "rgba(42, 157, 143, 0.5)",
               stack: 'Stack 0',
               data: response.bikeLeasing
             },
             {
               label: "Vente vélos",
               fill: true,
-              borderColor: "rgba(176, 0, 0, 0.5)",
-              backgroundColor: "rgba(252, 39, 80, 0.5)",
+              backgroundColor: "rgba(231, 111, 81, 0.5)",
               stack: 'Stack 0',
               data: response.bikeSelling
             },
             {
               label: "Leasing bornes",
               fill: true,
-              borderColor: "rgba(176, 0, 0, 0.5)",
-              backgroundColor: "rgba(176, 0, 0, 0.5)",
+              backgroundColor: "rgba(233, 196, 106, 0.5)",
               stack: 'Stack 0',
               data: response.boxesLeasing
             },
             {
               label: "Leasing accessoires",
               fill: true,
-              borderColor: "rgba(60, 179, 149, 0.5)",
-              backgroundColor: "rgba(60, 179, 149, 0.5)",
+              backgroundColor: "rgba(38, 70, 83, 0.5)",
               stack: 'Stack 0',
               data: response.accessoryLeasing
             },
             {
               label: "Ventes accessoires",
               fill: true,
-              borderColor: "rgba(176, 0, 0, 0.5)",
-              backgroundColor: "rgba(176, 0, 0, 0.5)",
+              backgroundColor: "rgba(244, 162, 97, 0.5)",
               stack: 'Stack 0',
               data: response.accessorySelling
             },
             {
               label: "Main d'oeuvre",
               fill: true,
-              borderColor: "rgba(176, 0, 0, 0.5)",
-              backgroundColor: "rgba(176, 0, 0, 0.5)",
+              backgroundColor: "rgba(38, 131, 255, 0.5)",
               stack: 'Stack 0',
               data: response.maintenance
             }

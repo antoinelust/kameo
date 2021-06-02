@@ -194,11 +194,11 @@ function initializeUpdatePortfolioBike(ID) {
 
         document.getElementsByClassName("bikeCatalogImage")[0].src =
           "images_bikes/" +
-          response.img +
+          response.ID +
           ".jpg?date="+Date.now();;
         document.getElementsByClassName("bikeCatalogImageMini")[0].src =
           "images_bikes/" +
-          response.img +
+          response.ID +
           "_mini.jpg?date="+Date.now();;
         $("#widget-updateCatalog-form input[name=file]").val("");
         $("#widget-updateCatalog-form input[name=fileMini]").val("");

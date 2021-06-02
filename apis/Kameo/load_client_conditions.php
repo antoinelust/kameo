@@ -19,12 +19,11 @@ if($token != NULL)
 {
   $company=execSQL("select COMPANY from customer_referential where TOKEN = ?", array('s', $token), false)[0]['COMPANY'];
   $email=execSQL("select EMAIL from customer_referential where TOKEN = ?", array('s', $token), false)[0]['EMAIL'];
-  $resultat=execSQL("select * from specific_conditions where COMPANY = ? AND EMAIL=? AND STAANN != 'D'", array('ss', $company, $email), false)[0];
-
-  if(is_null($resultat)){
+  $resultat=execSQL("select * from specific_conditions where COMPANY = ? AND EMAIL=? AND STAANN != 'D'", array('ss', $company, $email), false);
+  if(count($resultat)==0){
     $resultat=execSQL("select * from conditions where COMPANY = ?", array('s', $company), false)[0];
   }else{
-    $conditionReference=$resultat['CONDITION_REFERENCE'];
+    $conditionReference=$resultat[0]['CONDITION_REFERENCE'];
     $resultat=execSQL("select * from conditions where ID = ?", array('i', $conditionReference), false)[0];
   }
 

@@ -174,7 +174,7 @@
     if(count($bikes) > 0){
       foreach($bikes as $bike) {
         for($i=0; $i<$bike['bikeNumber']; $i++){
-          if($buyOrLeasing=='buy'){
+          if($buyOrLeasing=='achat'){
             $totalPerMonth+=$bike['bikePriceAchat'];
           }else{
             $totalPerMonth+=$bike['finalPrice'];
@@ -215,7 +215,7 @@
     if(count($bikes) > 0){
       foreach($bikes as $bike) {
         for($i=0; $i<$bike['bikeNumber']; $i++){
-          if($buyOrLeasing=='buy'){
+          if($buyOrLeasing=='achat'){
             $totalPerMonth+=$bike['bikePriceAchat'];
             execSQL("INSERT INTO offers_details (USR_MAJ, OFFER_ID, ITEM_TYPE, ITEM_ID, ITEM_LOCATION_PRICE, ITEM_INSTALLATION_PRICE, SIZE, STAANN) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", array('sisiiiss', $email, $offerID, 'bike', $bike['ID'], 0, $bike['bikePriceAchat'], $bike['bikeSize'], ''), true);
           }else{

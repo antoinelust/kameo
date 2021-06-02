@@ -1,12 +1,4 @@
-<div
-  class="modal fade"
-  id="portfolioAccessoriesManager"
-  tabindex="1"
-  role="modal"
-  aria-labelledby="modal-label"
-  aria-hidden="true"
-  style="display: none; overflow-y: auto !important"
->
+<div class="modal fade" id="portfolioAccessoriesManager" tabindex="1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -30,36 +22,16 @@
   </div>
 </div>
 
-<div
-  class="modal fade"
-  id="portfolioAccessoryManagement"
-  tabindex="-1"
-  role="modal"
-  aria-labelledby="modal-label"
-  aria-hidden="true"
-  style="display: none"
->
+<div class="modal fade" id="portfolioAccessoryManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-hidden="true"
-        >
-          ×
-        </button>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
       </div>
       <div class="modal-body">
         <div class="row">
           <h4 class="text-green accessoryManagementTitle" ><?=L::accessories_add_accessory;?></h4>
-          <form
-            id="widget-addCatalogAccessory-form"
-            action="apis/Kameo/accessories/add_catalog_accessory.php"
-            role="form"
-            method="post"
-          >
+          <form id="widget-addCatalogAccessory-form" action="apis/Kameo/accessories/add_catalog_accessory.php" role="form" method="post">
             <div class="col-sm-12">
               <h4 class="text-green">Informations sur le modèle</h4>
               <div class="col-sm-12">
@@ -103,16 +75,23 @@
                   </label>
                     <select class="form-control required" name="provider">
                       <option value="Abus">Abus</option>
+                      <option value="Altinnova">Altinnova</option>
                       <option value="Accentry">Accentry</option>
+                      <option value="Ahooga">Ahooga</option>
                       <option value="Benno">Benno</option>
                       <option value="Bike2Be">Bike2Be</option>
                       <option value="Bike component">Bike component</option>
+                      <option value="Bzen">Bzen</option>
+                      <option value="Cojoint">Cojoint</option>
                       <option value="Endura">Endura</option>
                       <option value="Fuerza">Fuerza</option>
                       <option value="Guru">Guru</option>
                       <option value="Hartje">Hartje</option>
                       <option value="Invoxia">Invoxia</option>
+                      <option value="LMC Sport">LMC Sport</option>
                       <option value="Magura">Magura</option>
+                      <option value="Moustache">Moustache</option>
+                      <option value="Now Company">Now Company</option>
                       <option value="ProBikeShop">ProBikeShop</option>
                       <option value="Shimano">Shimano</option>
                       <option value="SKS">SKS</option>
@@ -120,35 +99,21 @@
                     </select>
                 </div>
                 <div class="col-sm-4">
-                  <label for="articleNbr">
-                    Numéro d'article :
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control required"
-                    name="articleNbr"
-                  />
+                  <label for="articleNbr">Numéro d'article fabricant:</label>
+                  <input type="text" class="form-control required" name="articleNbr">
+                </div>
+                <div class="col-sm-4">
+                  <label for="EANCode">Code EAN :</label>
+                  <input type="text" class="form-control required" name="EANCode">
                 </div>
                 <div class="col-sm-12">
                 <div class="col-sm-4">
                     <label for="minimalStockAccessory"> Stock Minimal : </label>
-                    <input
-                      type="number"
-                      min='0'
-                      max='100'
-                      class="form-control required"
-                      name="minimalStockAccessory"
-                    />
+                    <input type="number" min='0' max='100' class="form-control required" name="minimalStockAccessory">
                   </div>
                    <div class="col-sm-4">
                     <label for="optimumStockAccessory"> Stock Optimum : </label>
-                    <input
-                      type="number"
-                      min='0'
-                      max='100'
-                      class="form-control required"
-                      name="optimumStockAccessory"
-                    />
+                    <input type="number" min='0' max='100' class="form-control required" name="optimumStockAccessory">
                   </div>
                 </div>
                 <div class="col-sm-12">
@@ -156,12 +121,7 @@
                     <?=L::generic_description;?>
                     :
                   </label>
-                  <textarea
-                    class="form-control required"
-                    rows="5"
-                    name="description"
-                  >
-                  </textarea>
+                  <textarea class="form-control required" rows="5" name="description"></textarea>
                 </div>
               </div>
               <div class="separator"></div>
@@ -183,19 +143,12 @@
                     <?=L::generic_selling_price;?>
                     :
                   </label>
-                  <input
-                    type="int"
-                    class="form-control required"
-                    name="sellingPrice"
-                  />
+                  <input type="int" class="form-control required" name="sellingPrice">
                 </div>
               </div>
               <div class="col-sm-12">
                 <div class="col-sm-4">
-                  <label for="display"
-                    ><?=L::generic_display;?>
-                    ?
-                  </label>
+                  <label for="display"><?=L::generic_display;?> ?</label>
                   <input type="checkbox" name="display" />
                 </div>
               </div>
@@ -205,19 +158,8 @@
                 <label for="file"><?=L::generic_picture;?></label>
                 <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
                 <input
-                  type="file"
-                  size="40"
-                  class="form-control required"
-                  name="file"
-                />
-                <img
-                  id="imageID"
-                  name="picture"
-                  src=""
-                  class="accessoryCatalogImage"
-                  alt="image"
-                  height="200"
-                />
+                  type="file" size="40" class="form-control required" name="file">
+                <img id="imageID" name="picture" src="" class="accessoryCatalogImage" alt="image" height="200" />
               </div>
               <input type='text' class='hidden' name='action' />
             </div>

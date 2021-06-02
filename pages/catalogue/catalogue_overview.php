@@ -93,14 +93,14 @@ include 'include/head.php';
 							<div class="space"></div>
 						</div>
 					</a>
-					<a href="catalogue.php?category=Enfant">
+					<!--<a href="catalogue.php?category=Enfant">
 						<div class="container col-md-4" style="position : relative ; text-align : center ; color : white">
 							<img src="images/Cover_Catalogue/Cover_Catalogue_enfants.jpg" alt="Snow" style="width:100%;">
 							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light"><?=L::generic_Enfant; ?></h3></div>
 						</div>
 						<div class="space"></div>
-					</a>
-					
+					</a>-->
+
 					<a href="bons-plans.php">
 						<div class="container col-md-4" style="position : relative ; text-align : center ; color : white">
 							<img src="images/Cover_Catalogue/Cover_Catalogue_bonsplans.jpg" alt="Snow" style="width:100%;">
@@ -425,10 +425,6 @@ include 'include/head.php';
 
     <!-- Theme Base, Components and Settings -->
     <script src="js/theme-functions.js"></script>
-    <!-- Search Bar Scroll Fixed -->
-    <script src="js/achat_scroll.js"></script>
-    <!-- Scroll to top button -->
-    <script src="js/achat_scroll_to_top.js"></script>
     <!-- TB Popup Redirection -->
     <script src="js/tb_popup.js"></script>
 </body>

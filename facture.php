@@ -3,8 +3,6 @@
 $company = file_get_contents(__DIR__.'/temp/company.txt');
 $billingGroup = file_get_contents(__DIR__.'/temp/billingGroup.txt');
 
-
-
 if ((file_exists(__DIR__.'/temp/dateStart.txt'))) {
    $dateStart = file_get_contents(__DIR__.'/temp/dateStart.txt');
 }else{

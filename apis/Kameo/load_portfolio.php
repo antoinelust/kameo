@@ -190,7 +190,7 @@ try{
         }
       }
 
-      $sql="(select bike_catalog.ID, BRAND as brand, bike_catalog.MODEL as model, FRAME_TYPE as frameType, UTILISATION as utilisation, ELECTRIC as electric, STOCK as stock, DISPLAY as display, BUYING_PRICE as buyPrice, PRICE_HTVA as price, (round((PRICE_HTVA*(1-0.27)*(1+0.7)+(3*84+4*100)*(1+0.3))/36)) as leasingPrice, MOTOR as motor, BATTERY as battery, TRANSMISSION as transmission, SEASON as season, PRIORITY as priority, count(case when bb.SIZE = 'XS' then 1 end) as stockXS, count(case when bb.SIZE = 'S' then 1 end) as stockS, count(case when bb.SIZE = 'M' then 1 end) as stockM, count(case when bb.SIZE = 'L' then 1 end) as stockL, count(case when bb.SIZE = 'XL' then 1 end) as stockXL, count(case when bb.SIZE = 'Uni' then 1 end) as stockUni, COUNT(1) as stockTotal, NULL as estimatedDeliveryDate, SIZES as sizes
+      $sql="(select bike_catalog.ID, BRAND as brand, bike_catalog.MODEL as model, FRAME_TYPE as frameType, UTILISATION as utilisation, ELECTRIC as electric, STOCK as stock, DISPLAY as display, BUYING_PRICE as buyPrice, PRICE_HTVA as price, (round((PRICE_HTVA*(1-0.27)*(1+0.7)+(3*84+4*100)*(1+0.3))/36)) as leasingPrice, MOTOR as motor, BATTERY as battery, TRANSMISSION as transmission, SEASON as season, PRIORITY as priority, count(case when bb.SIZE = 'XS' then 1 end) as stockXS, count(case when bb.SIZE = 'S' then 1 end) as stockS, count(case when bb.SIZE = 'M' then 1 end) as stockM, count(case when bb.SIZE = 'L' then 1 end) as stockL, count(case when bb.SIZE = 'XL' then 1 end) as stockXL, count(case when bb.SIZE = 'unique' then 1 end) as stockUni, COUNT(1) as stockTotal, NULL as estimatedDeliveryDate, SIZES as sizes
       from bike_catalog, customer_bikes bb WHERE bike_catalog.ID=bb.TYPE AND bb.STAANN!='D' AND bike_catalog.STAANN != 'D' and bb.COMPANY='KAMEO' and bb.CONTRACT_TYPE='stock' ".$stockQuery."  ".$sizeInPortfolioQuery."  GROUP BY TYPE)
 
       UNION ALL
@@ -255,33 +255,9 @@ try{
       die;
     }
     if($action=="retrieve"){
-      include 'connexion.php';
-      $sql="SELECT ID, BRAND as brand, MODEL as model, FRAME_TYPE as frameType, UTILISATION as utilisation, ELECTRIC as electric, STOCK as stock, DISPLAY as display, BUYING_PRICE as buyingPrice, PRICE_HTVA as portfolioPrice, MOTOR as motor, BATTERY as battery, TRANSMISSION as transmission, SEASON as season, PRIORITY as priority, SIZES as sizes, MINIMAL_STOCK as minimalStock FROM bike_catalog WHERE ID='$ID'";
-      $stmt = $conn->prepare($sql);
-      if($stmt){
-                //$stmt->bind_param('ffi', $marginBike, $marginOther, $leasingDuration);
-        $stmt->execute();
-        $response = array("response" => "success");
-        $response = array_merge($response,$stmt->get_result()->fetch_array(MYSQLI_ASSOC));
-      }else{
-        error_message('500', 'Unable to retrieve portfolio bike');
-      }
-      $stmt->close();
-      $conn->close();
-
-
-      include 'connexion.php';
-      $sqlTypeBike = "SELECT * FROM customer_bikes WHERE TYPE = '$ID' AND CONTRACT_TYPE= 'stock' AND SIZE= '$SIZE' ;";
-      $resultTypeBike =mysqli_query($conn, $sqlTypeBike);
-      $i=0;
-      while($row = mysqli_fetch_array($resultTypeBike)){
-        $response['bike'][$i]['type']= $row['MODEL'].' : N°'.$row['ID'];
-        $response['bike'][$i]['id']=$row['ID'];
-        $i++;
-      }
-      $response['numberType']=$i;
-      $response['img']=$response['ID'];
-
+      $response=execSQL("SELECT ID, BRAND as brand, MODEL as model, FRAME_TYPE as frameType, UTILISATION as utilisation, ELECTRIC as electric, STOCK as stock, DISPLAY as display, BUYING_PRICE as buyingPrice, PRICE_HTVA as portfolioPrice, MOTOR as motor, BATTERY as battery, TRANSMISSION as transmission, SEASON as season, PRIORITY as priority, SIZES as sizes, MINIMAL_STOCK as minimalStock FROM bike_catalog WHERE ID=?", array('i', $ID), false)[0];
+      include_once 'get_prices.php';
+      $response['leasingPrice']=get_prices($response['portfolioPrice']);
 
       echo json_encode($response);
       die;

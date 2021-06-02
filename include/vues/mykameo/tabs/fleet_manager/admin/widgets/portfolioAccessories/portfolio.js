@@ -48,12 +48,46 @@ $(".portfolioAccessoriesManagerClick").click(function () {
           );
         },
       },
+      {
+        title: "Catégorie",
+        data: "CATEGORY",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html(traduction['accessoryCategories_'+sData]);
+        },
+      },
+
       {title: "Marque", data: "BRAND"},
-      { title: "Modèle", data: "MODEL" },
-      { title: "Prix d'achat", data: "BUYING_PRICE"},
-      { title: "Prix de vente", data: "PRICE_HTVA" },
-      {title: "Stock",data: "STOCK"},
-      {title: "Afficher ?",data: "DISPLAY"},
+      {title: "Modèle", data: "MODEL" },
+      {
+        title: "Achat",
+        data: "BUYING_PRICE",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html(sData + ' €');
+        },
+      },
+      {
+        title: "Vente",
+        data: "PRICE_HTVA",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html(sData + ' €');
+        },
+      },
+
+      {
+        title: "Stock",
+        data: "STOCK"
+      },
+      {
+        title: "Afficher ?",
+        data: "DISPLAY",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          if(sData=='Y'){
+            $(nTd).html('<i class="fa fa-check" style="color:green" aria-hidden="true"></i>');
+          }else{
+            $(nTd).html('<i class="fa fa-close" style="color:red" aria-hidden="true"></i>');
+          }
+        }
+      },
       {title: "Fournisseur", data: "PROVIDER"},
       {title: "Référence",data: "REFERENCE"},
       {
@@ -71,6 +105,10 @@ $(".portfolioAccessoriesManagerClick").click(function () {
     order: [
       [0, "asc"]
     ],
+    columnDefs: [
+      { width: 0, targets: 1 }
+    ],
+
     paging : false
   });
 });
@@ -218,40 +256,18 @@ function getPortfolioDetails(ID) {
     if (response.response == "error") {
       console.log(response.message);
     } else {
-      $("#widget-addCatalogAccessory-form [name=ID]").val(
-        ID
-      );
-      $("#widget-addCatalogAccessory-form [name=brand]").val(
-        response.accessory.BRAND
-      );
-      $("#widget-addCatalogAccessory-form [name=model]").val(
-        response.accessory.MODEL
-      );
-      $("#widget-addCatalogAccessory-form [name=description]").val(
-        response.accessory.DESCRIPTION
-      );
-      $("#widget-addCatalogAccessory-form select[name=category]").val(
-        response.accessory.ACCESSORIES_CATEGORIES
-      );
-      $("#widget-addCatalogAccessory-form [name=buyingPrice]").val(
-        response.accessory.BUYING_PRICE
-      );
-      $("#widget-addCatalogAccessory-form [name=sellingPrice]").val(
-        response.accessory.PRICE_HTVA
-      );
-      $("#widget-addCatalogAccessory-form select[name=provider]").val(
-        response.accessory.PROVIDER
-      );
-      $("#widget-addCatalogAccessory-form [name=articleNbr]").val(
-        response.accessory.REFERENCE
-      );
-      $("#widget-addCatalogAccessory-form [name=minimalStockAccessory]").val(
-        response.accessory.MINIMAL_STOCK
-      );
-
-        $("#widget-addCatalogAccessory-form [name=optimumStockAccessory]").val(
-        response.accessory.STOCK_OPTIMUM
-      );
+      $("#widget-addCatalogAccessory-form [name=ID]").val(ID);
+      $("#widget-addCatalogAccessory-form [name=brand]").val(response.accessory.BRAND);
+      $("#widget-addCatalogAccessory-form [name=model]").val(response.accessory.MODEL);
+      $("#widget-addCatalogAccessory-form [name=description]").val(response.accessory.DESCRIPTION);
+      $("#widget-addCatalogAccessory-form select[name=category]").val(response.accessory.ACCESSORIES_CATEGORIES);
+      $("#widget-addCatalogAccessory-form [name=buyingPrice]").val(response.accessory.BUYING_PRICE);
+      $("#widget-addCatalogAccessory-form [name=sellingPrice]").val(response.accessory.PRICE_HTVA);
+      $("#widget-addCatalogAccessory-form select[name=provider]").val(response.accessory.PROVIDER);
+      $("#widget-addCatalogAccessory-form [name=articleNbr]").val(response.accessory.REFERENCE);
+      $("#widget-addCatalogAccessory-form input[name=EANCode]").val(response.accessory.EAN_CODE);
+      $("#widget-addCatalogAccessory-form [name=minimalStockAccessory]").val(response.accessory.MINIMAL_STOCK);
+      $("#widget-addCatalogAccessory-form [name=optimumStockAccessory]").val(response.accessory.STOCK_OPTIMUM);
 
 
       if (response.accessory.DISPLAY == "Y") {

@@ -44,6 +44,7 @@ $( ".orderAccessoriesClick" ).click(function() {
 
 	$("#displayorderAcessory").dataTable({
 		"scrollXInner": true,
+		destroy: true,
 		ajax: {
 			url: "apis/Kameo/accessories/accessories.php",
 			contentType: "application/json",
@@ -53,7 +54,7 @@ $( ".orderAccessoriesClick" ).click(function() {
 			},
 		},
 		sAjaxDataProp: "",
-		columnDefs: [{ width: "100%", targets: 0 }],
+		columnDefs: [{ width: "0%", targets: 0 }],
 		columns: [
 			{ title: "ID",
 				data: "ID",
@@ -77,6 +78,12 @@ $( ".orderAccessoriesClick" ).click(function() {
 			{
 				title: "Statut de la commande",
 				data: "STATUS",
+			},
+			{ title: "",
+				data: "ID",
+				fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+					$(nTd).html('<a href="#" class="text-green" data-target="#accessoryOrderManagement" data-toggle="modal" data-action="update" data-id="'+sData+'">Update</a>');
+				},
 			}
 		],
 		order: [
@@ -96,14 +103,16 @@ $("#accessoryOrderManagement").on("show.bs.modal", function (event) {
 		$('#accessoryOrderManagement [type=submit]').addClass("hidden");
 		$('#accessoryOrderManagement input[name=ID]').closest('div').removeClass("hidden");
 	}else{
+		getOrderDetailAcessory(ID);
 		$('#accessoryOrderManagement input').attr('disabled', false);
 		$('#accessoryOrderManagement select').attr('disabled', false);
 		$('#accessoryOrderManagement [type=submit]').removeClass("hidden");
-		$('#accessoryOrderManagement input[name=ID]').attr('readonly', true);
-		getOrderDetailAcessory(ID);
-		$('#accessoryOrderManagement input[name=action]').val("update");
+		$('#accessoryOrderManagement input[name=id]').closest('div').removeClass("hidden");
+		$('#accessoryOrderManagement input[name=id]').attr('readonly', true);
+		$('#accessoryOrderManagement input[name=grouped_id]').attr('readonly', true);
+		$('#accessoryOrderManagement select[name=company]').attr('readonly', true);
+		$('#accessoryOrderManagement input[name=action]').val("updateOrderDetailAcessory");
 		$('#accessoryOrderManagement .title').text("Modifier une commande");
-		$('#accessoryOrderManagement input[name=ID]').closest('div').removeClass("hidden");
 	}
 });
 

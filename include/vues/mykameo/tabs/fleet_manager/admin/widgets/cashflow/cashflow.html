@@ -20,33 +20,47 @@
         </button>
       </div>
       <div data-example-id="contextual-table" class="bs-example">
-        <span id="contractsBikesListingSpan"></span>
-        <div class="separator"></div>
-        <span id="contractsBoxesListingSpan"></span>
-        <div class="separator"></div>
-        <span id="cashListingSpan"></span>
-        <div class="separator"></div>
-        <span id="costsListingSpan"></span>
-
-      </div>
-      <div class="separator"></div>
-      <h4 class="text-green">Vélos Vendus :</h4>
-      <p>
-        <button
-          class="btn btn-primary"
-          type="button"
-          data-toggle="collapse"
-          data-target="#collapseExample"
-          aria-expanded="false"
-          aria-controls="collapseExample"
-        >
-          Afficher
-        </button>
-      </p>
-      <div class="collapse" id="collapseExample">
-        <div class="card card-body">
-          <span id="soldBikesListingSpan"></span>
+        <h4 class="text-green">Vélos leasés : <span name='totalLeasingValue'></span></h4>
+        <p>
+          <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#leasingBikesListingSpan" aria-expanded="false" aria-controls="collapseExample">Afficher</button>
+        </p>
+        <div class="collapse" id="leasingBikesListingSpan">
+          <div class="card card-body">
+            <span name="leasingBikesListingSpan"></span>
+          </div>
         </div>
+        <div class="separator"></div>
+        <h4 class="text-green">Vélos Vendus : <span name='totalSellingValue'></span></h4>
+        <p>
+          <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#soldBikesListingSpan" aria-expanded="false" aria-controls="collapseExample">Afficher</button>
+        </p>
+        <div class="collapse" id="soldBikesListingSpan">
+          <div class="card card-body">
+            <span name="soldBikesListingSpan"></span>
+          </div>
+        </div>
+        <div class="separator"></div>
+        <h4 class="text-green">Bornes leasées : <span name='totalBoxesValue'></span></h4>
+        <p>
+          <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#contractsBoxesListingSpan" aria-expanded="false" aria-controls="collapseExample">Afficher</button>
+        </p>
+        <div class="collapse" id="contractsBoxesListingSpan">
+          <div class="card card-body">
+            <span name="contractsBoxesListingSpan"></span>
+          </div>
+        </div>
+        <div class="separator"></div>
+        <h4 class="text-green">Coûts : <span name='totalCostsValue'></span></h4>
+        <p>
+          <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#totalCostsValue" aria-expanded="false" aria-controls="collapseExample">Afficher</button>
+        </p>
+        <div class="collapse" id="totalCostsValue">
+          <div class="card card-body">
+            <span name="costsListingSpan"></span>
+          </div>
+        </div>
+        <div class="separator"></div>
+        <span name="cashListingSpan"></span>
       </div>
       <div class="separator"></div>
       <h4 class="text-green">Prévision cash-flow :</h4>

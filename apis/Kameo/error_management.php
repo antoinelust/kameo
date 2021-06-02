@@ -24,78 +24,14 @@ $token = getBearerToken();
           if($item=="bikesAndBoxes"){
 
             $response=array();
-            include 'connexion.php';
-            $sql="SELECT * FROM company_actions aa WHERE not exists (select 1 from companies bb where aa.COMPANY_ID=bb.ID)";
-            if ($conn->query($sql) === FALSE) {
-                $response = array ('response'=>'error', 'message'=> $conn->error);
-                echo json_encode($response);
-                die;
-            }
-            $result = mysqli_query($conn, $sql);
-            $conn->close();
+            $response['bike']['selling']=execSQL("SELECT ID as bikeID, FRAME_NUMBER as frameNumber from customer_bikes WHERE CONTRACT_TYPE='selling' AND SELLING_DATE is NULL", array(), false);
+            $response['bike']['sellingCompany']=execSQL("SELECT ID as bikeID, FRAME_NUMBER as frameNumber from customer_bikes WHERE CONTRACT_TYPE='selling' AND COMPANY = 'KAMEO'", array(), false);
+            $response['bike']['order']=execSQL("SELECT customer_bikes.ID as 'bikeID', client_orders.ESTIMATED_DELIVERY_DATE as 'clientDeliveryDate', customer_bikes.ESTIMATED_DELIVERY_DATE as 'supplierDeliveryDate' FROM client_orders, customer_bikes WHERE customer_bikes.CONTRACT_TYPE = 'order' AND client_orders.BIKE_ID=customer_bikes.ID AND client_orders.STATUS='confirmed' AND (client_orders.ESTIMATED_DELIVERY_DATE < customer_bikes.ESTIMATED_DELIVERY_DATE OR client_orders.ESTIMATED_DELIVERY_DATE > DATE_ADD(customer_bikes.ESTIMATED_DELIVERY_DATE, INTERVAL 20 DAY))", array(), false);
+            $response['bike']['stock']=execSQL("SELECT ID as id, FRAME_NUMBER as frameNumber FROM customer_bikes WHERE CONTRACT_TYPE='stock' AND COMPANY != 'KAMEO'", array(), false);
 
-            $i=0;
-            $response['company']=array();
-            while($row = mysqli_fetch_array($result)){
-                $response['company']['action'][$i]['id']=$row['ID'];
-                $response['company']['action'][$i]['description']="Pas de société définie pour l'action suivante.<br/><strong>Titre : </strong>".$row['TITLE']."<br /> Actuellement identifié sur la société : <strong>".$row['COMPANY']."</strong>";
-                $i++;
-            }
-            include 'connexion.php';
-            $sql="SELECT ID as bikeID, FRAME_NUMBER as frameNumber from customer_bikes WHERE CONTRACT_TYPE='selling' AND SELLING_DATE is NULL";
-            $result = $conn->query($sql);
 
-            $response['bike']['selling']=array();
-            if ($result && $result = $conn->query($sql)){
-              $response['bike']['selling'] = $result->fetch_all(MYSQLI_ASSOC);
-            }else{
-              if ($conn->query($sql) === FALSE){
-                  $response = array ('response'=>'error', 'message'=> $conn->error);
-                  echo json_encode($response);
-                  die;
-              }
-            }
+            $response['bike']['bill']=array();
 
-            include 'connexion.php';
-            $sql="SELECT ID as bikeID, FRAME_NUMBER as frameNumber from customer_bikes WHERE CONTRACT_TYPE='selling' AND COMPANY = 'KAMEO'";
-            $result = $conn->query($sql);
-
-            if ($result && $result = $conn->query($sql)){
-              $response['bike']['sellingCompany'] = $result->fetch_all(MYSQLI_ASSOC);
-            }else{
-              if ($conn->query($sql) === FALSE){
-                  $response = array ('response'=>'error', 'message'=> $conn->error);
-                  echo json_encode($response);
-                  die;
-              }
-            }
-
-            $sql="SELECT customer_bikes.ID as 'bikeID', client_orders.ESTIMATED_DELIVERY_DATE as 'clientDeliveryDate', customer_bikes.ESTIMATED_DELIVERY_DATE as 'supplierDeliveryDate' FROM client_orders, customer_bikes WHERE customer_bikes.CONTRACT_TYPE = 'order' AND client_orders.BIKE_ID=customer_bikes.ID AND client_orders.STATUS='confirmed' AND (client_orders.ESTIMATED_DELIVERY_DATE < customer_bikes.ESTIMATED_DELIVERY_DATE OR client_orders.ESTIMATED_DELIVERY_DATE > DATE_ADD(customer_bikes.ESTIMATED_DELIVERY_DATE, INTERVAL 20 DAY))";
-            if ($conn->query($sql) === FALSE){
-                $response = array ('response'=>'error', 'message'=> $conn->error);
-                echo json_encode($response);
-                die;
-            }
-            $result = mysqli_query($conn, $sql);
-            $response['bike']['order'] = $result->fetch_all(MYSQLI_ASSOC);
-
-            include 'connexion.php';
-            $sql="SELECT * FROM customer_bikes WHERE CONTRACT_TYPE='stock' AND COMPANY != 'KAMEO'";
-            if ($conn->query($sql) === FALSE){
-                $response = array ('response'=>'error', 'message'=> $conn->error);
-                echo json_encode($response);
-                die;
-            }
-            $result = mysqli_query($conn, $sql);
-            $conn->close();
-
-            $i=0;
-
-            while($row = mysqli_fetch_array($result)){
-                $response['bike']['stock'][$i]['id']=$row['ID'];
-                $response['bike']['stock'][$i]['frameNumber']=$row['FRAME_NUMBER'];
-                $i++;
-            }
             include 'connexion.php';
             $sql="SELECT * FROM customer_bikes aa WHERE COMPANY != 'KAMEO' AND CONTRACT_START is NOT NULL and STAANN != 'D' and (CONTRACT_TYPE = 'leasing' OR CONTRACT_TYPE = 'renting') and BILLING_TYPE != 'paid'";
             if ($conn->query($sql) === FALSE) {
@@ -229,46 +165,8 @@ $token = getBearerToken();
                   $dateTemp->setDate($year, $month, $dayTemp);
                 }
             }
-
-            $j=0;
-            include 'connexion.php';
-            $sql="SELECT * FROM customer_bikes aa WHERE COMPANY != 'KAMEO' AND CONTRACT_START is NOT NULL and STAANN != 'D' and (CONTRACT_TYPE = 'selling') and SOLD_PRICE != '0'";
-            if ($conn->query($sql) === FALSE) {
-                $response = array ('response'=>'error', 'message'=> $conn->error);
-                echo json_encode($response);
-                die;
-            }
-            $result = mysqli_query($conn, $sql);
-
-            while($row = mysqli_fetch_array($result)){
-                $bikeID=$row['ID'];
-                $bikeNumber=$row['FRAME_NUMBER'];
-                $dateTempString=$row['CONTRACT_START'];
-
-                $sql="SELECT * FROM factures_details WHERE ITEM_TYPE='bike' AND ITEM_ID='$bikeID'";
-
-                //$response['bike']['log'][$j]['bikeID']=$bikeID;
-                //$response['bike']['log'][$j]['bikeNumber']=$bikeNumber;
-                $j++;
-                if ($conn->query($sql) === FALSE) {
-                    $response = array ('response'=>'error', 'message'=> $conn->error);
-                    echo json_encode($response);
-                    die;
-                }
-                $result2 = mysqli_query($conn, $sql);
-                $length = $result2->num_rows;
-
-                if($length == 0){
-                    $response['bike']['bill'][$i]['bikeID']=$bikeID;
-                    //$response['bike']['bill'][$i]['sql']=$sql;
-                    $response['bike']['bill'][$i]['bikeNumber']=$bikeNumber;
-                    $response['bike']['bill'][$i]['description']="Facture manquante pour le vélo vendu à la date du $dateTempString";
-                    $i++;
-                }
-            }
-            $conn->close();
-
             $response['contract']=$errorArrayLeasingDuration;
+
             include 'connexion.php';
             $sql="SELECT * FROM boxes aa WHERE COMPANY != 'KAMEO' AND START is NOT NULL and STAANN != 'D'";
             if ($conn->query($sql) === FALSE) {
@@ -343,6 +241,12 @@ $token = getBearerToken();
                     $dateTemp->setDate($year, $month, $dayTemp);
                 }
             }
+
+            $response['orders']=execSQL("SELECT client_orders.ID, client_orders.BIKE_ID FROM client_orders, customer_bikes WHERE client_orders.BIKE_ID=customer_bikes.ID AND customer_bikes.CONTRACT_TYPE in ('leasing', 'renting', 'selling') AND client_orders.STATUS != 'done'", array(), false);
+
+            $response['maintenance']['KAMEOBikes']=execSQL("SELECT entretiens.ID, customer_bikes.ID as bikeID FROM entretiens, customer_bikes WHERE entretiens.STATUS in ('DONE', 'DELIVERED_TO_CLIENT') AND AVOID_BILLING=0 AND entretiens.EXTERNAL_BIKE=0 AND entretiens.BIKE_ID=customer_bikes.ID AND (customer_bikes.CONTRACT_TYPE in ('selling') OR (customer_bikes.CONTRACT_TYPE='leasing') AND entretiens.LEASING_TO_BILL=1) AND NOT EXISTS (SELECT 1 FROM factures_details WHERE factures_details.ITEM_TYPE='maintenance' AND factures_details.ITEM_ID=entretiens.ID)", array(), false);
+            $response['maintenance']['externalBikes']=execSQL("SELECT entretiens.ID, external_bikes.ID as bikeID FROM entretiens, external_bikes WHERE entretiens.STATUS in ('DONE', 'DELIVERED_TO_CLIENT') AND AVOID_BILLING=0 AND entretiens.EXTERNAL_BIKE=1 AND entretiens.BIKE_ID=external_bikes.ID AND NOT EXISTS (SELECT 1 FROM factures_details WHERE factures_details.ITEM_TYPE='maintenance' AND factures_details.ITEM_ID=entretiens.ID)", array(), false);
+
             $response['response']="success";
             echo json_encode($response);
             die;
@@ -352,9 +256,6 @@ $token = getBearerToken();
 
       }
     }
-//}else{
-//    errorMessage("ES0012");
-//}
 
 
 ?>

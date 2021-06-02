@@ -12,34 +12,37 @@ $mail = new PHPMailer();
 
 
 // Form Fields
-$name = isset($_POST["widget-offer-name"]) ? addslashes($_POST["widget-offer-name"]) : "N/A";
-$firstName = isset($_POST["widget-offer-firstName"]) ? addslashes($_POST["widget-offer-firstName"]) : "N/A";
-$email = isset($_POST["widget-offer-email"]) ? addslashes($_POST["widget-offer-email"]) : "N/A";
-$brand = isset($_POST["widget-offer-brand"]) ? addslashes($_POST["widget-offer-brand"]) : "N/A";
-$model = isset($_POST["widget-offer-model"]) ? addslashes($_POST["widget-offer-model"]) : "N/A";
-$frameType = isset($_POST["widget-offer-frame-type"]) ? addslashes($_POST["widget-offer-frame-type"]) : "N/A";
-$phone = isset($_POST["widget-offer-phone"]) ? addslashes($_POST["widget-offer-phone"]) : null;
-$subject = "Demande de commande pour le vélo ".$brand." ".$model." par ".$firstName." ".$name;
-$velo = $_POST["widget-offer-brand"].' '.$_POST["widget-offer-model"].' '.$_POST["widget-offer-frame-type"];
-$leasing = isset($_POST["widget-offer-leasing"]) ? addslashes($_POST["widget-offer-leasing"]) : "N/A";
-$antispam = addslashes($_POST['widget-offer-antispam']);
+$name = isset($_POST["name"]) ? addslashes($_POST["name"]) : NULL;
+$firstName = isset($_POST["firstName"]) ? addslashes($_POST["firstName"]) : NULL;
+$email = isset($_POST["email"]) ? addslashes($_POST["email"]) : NULL;
+$phone = isset($_POST["phone"]) ? addslashes($_POST["phone"]) : null;
+$catalogID = isset($_POST["catalogID"]) ? addslashes($_POST["catalogID"]) : NULL;
+$billingType = isset($_POST["billingType"]) ? addslashes($_POST["billingType"]) : NULL;
+$type = isset($_POST["type"]) ? addslashes($_POST["type"]) : NULL;
 
 
+if($type=='accessory'){
+	$resultat=execSQL("SELECT * FROM accessories_catalog WHERE ID=?", array('i', $catalogID), false)[0];
+	$subject = "Demande de commande pour l'accessoire ".$resultat['BRAND']." ".$resultat['MODEL']." par ".$firstName." ".$name;
+}else{
+	$resultat=execSQL("SELECT * FROM bike_catalog WHERE ID=?", array('i', $catalogID), false)[0];
+	$subject = "Demande de commande pour le vélo ".$resultat['BRAND']." ".$resultat['MODEL']." par ".$firstName." ".$name;
+}
+$brand=$resultat['BRAND'];
+$model=$resultat['MODEL'];
 $length = strlen($phone);
-if ($length<8 or $length>12) {
+if ($length<8 or $length>16) {
 	errorMessage("ES0004");
 }
 
-if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '') {
+if( $_SERVER['REQUEST_METHOD'] == 'POST') {
 
- if($email != '' && $phone != '' && $velo != '' && $leasing != '') {
+ if(isset($name) && isset($firstName) && isset($email) && isset($phone) && isset($catalogID) && isset($billingType) && isset($type)) {
 
 
         $mail->IsHTML(true);                                    // Set email format to HTML
         $mail->CharSet = 'UTF-8';
-
-         $mail->AddAddress('younes.chillah@kameobikes.com', 'Younes Chillah');
-
+       	$mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
         $mail->From = $email;
         $mail->FromName = $firstName.' '.$name;
         $mail->AddReplyTo($email, $name);
@@ -50,7 +53,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '')
 				Numéro de téléphone: '.$phone.'<br>
 				Marque: '.$brand.'<br>
 				Modèle: '.$model.'<br>
-				Mode de financement souhaité:'.$leasing;
+				ID Catalogue: '.$catalogID.'<br>
+				Mode de financement souhaité:'.$billingType;
 
 
         $body = $body."
@@ -152,31 +156,6 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '')
         include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mails/mail_footer.php';
 
         $mail->Body = $body;
-
-        include 'connexion.php';
-
-        $sql = "INSERT INTO companies(USR_MAJ, COMPANY_NAME, AUDIENCE,BILLING_GROUP,STREET,ZIP_CODE,TOWN,VAT_NUMBER,INTERNAL_REFERENCE,EMAIL_CONTACT,NOM_CONTACT, PRENOM_CONTACT,TYPE,AUTOMATIC_STATISTICS,BILLS_SENDING,STAANN) SELECT '$email','$firstName"." "."$name', 'B2B',1,' ',0,' ','/','$firstName"." "."$name',' ','$name ','$firstName','Prospect','N','N','N' FROM DUAL WHERE NOT EXISTS(SELECT COMPANY_NAME FROM companies WHERE COMPANY_NAME='$firstName"." "."$name')";
-        if ($conn->query($sql) === FALSE) {
-            $response = array ('response'=>'error', 'message'=> $conn->error);
-            echo json_encode($response);
-            die;
-        }
-
-				$companyID=$conn->insert_id;
-				$sql = "INSERT INTO companies_contact(USR_MAJ, NOM, PRENOM,EMAIL,PHONE,ID_COMPANY,BIKES_STATS) SELECT '$email','$name', '$firstName', '$email','$phone','$companyID','N' FROM DUAL WHERE NOT EXISTS(SELECT 1 FROM companies_contact WHERE ID_COMPANY='$companyID' AND EMAIL='$email')";
-        if ($conn->query($sql) === FALSE) {
-            $response = array ('response'=>'error', 'message'=> $conn->error);
-            echo json_encode($response);
-            die;
-        }
-
-        $sql = "INSERT INTO company_actions(USR_MAJ, TYPE, CHANNEL, COMPANY, DATE, DATE_REMINDER, TITLE, DESCRIPTION, STATUS, OWNER) VALUES('$email', 'contact', 'site', '$firstName"." "."$name', CURDATE(), CURDATE() , ' $subject', ' $message', 'TO DO', 'julien@kameobikes.com')";
-        if ($conn->query($sql) === FALSE) {
-            $response = array ('response'=>'error', 'message'=> $conn->error);
-            echo json_encode($response);
-            die;
-        }
-        $conn->close();
 
         if(constant('ENVIRONMENT')=="test" || constant('ENVIRONMENT')=="production"){
             if(!$mail->Send()) {

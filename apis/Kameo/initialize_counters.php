@@ -381,44 +381,16 @@ if($company=='KAMEO'){
 
     if($type=="cashFlow"){
 
-        include 'connexion.php';
-        $sql="SELECT SUM(CASE WHEN BILLING_TYPE = 'annual'  THEN LEASING_PRICE/12 ELSE LEASING_PRICE END) as 'SOMME' from customer_bikes WHERE CONTRACT_START < CURRENT_TIMESTAMP AND (CONTRACT_END > CURRENT_TIMESTAMP OR CONTRACT_END is NULL) AND CONTRACT_TYPE IN ('location', 'leasing') AND STAANN !='D' AND COMPANY != 'KAMEO'";
-        if ($conn->query($sql) === FALSE) {
-            $response = array ('response'=>'error', 'message'=> $conn->error);
-            echo json_encode($response);
-            die;
-        }
-        $result = mysqli_query($conn, $sql);
-        $resultat = mysqli_fetch_assoc($result);
-        $response['sumContractsCurrent'] = $resultat['SOMME'];
-        $conn->close();
-
-
-        include 'connexion.php';
-        $sql="SELECT SUM(AMOUNT) as 'PRICE' FROM boxes WHERE START<CURRENT_TIMESTAMP AND STAANN != 'D' and COMPANY != 'KAMEO' and COMPANY!='KAMEO VELOS TEST'";
-        if ($conn->query($sql) === FALSE) {
-            $response = array ('response'=>'error', 'message'=> $conn->error);
-            echo json_encode($response);
-            die;
-        }
-        $result = mysqli_query($conn, $sql);
-        $resultat = mysqli_fetch_assoc($result);
-        $response['sumContractsCurrent'] += $resultat['PRICE'];
-        $conn->close();
-
-        include 'connexion.php';
-        $sql="SELECT SUM(AMOUNT) as 'PRICE' FROM costs WHERE START<CURRENT_TIMESTAMP AND (END > CURRENT_TIMESTAMP OR END is NULL) AND STAANN != 'D'";
-
-        if ($conn->query($sql) === FALSE) {
-            $response = array ('response'=>'error', 'message'=> $conn->error);
-            echo json_encode($response);
-            die;
-        }
-        $result = mysqli_query($conn, $sql);
-        $resultat = mysqli_fetch_assoc($result);
-        $response['sumContractsCurrent']-=$resultat['PRICE'];
+        $response['sumContractsCurrent'] = execSQL("SELECT SUM(CASE WHEN BILLING_TYPE = 'annual'  THEN LEASING_PRICE/12 ELSE LEASING_PRICE END) as 'SOMME' from customer_bikes WHERE CONTRACT_START < CURRENT_TIMESTAMP AND (CONTRACT_END > CURRENT_TIMESTAMP OR CONTRACT_END is NULL) AND CONTRACT_TYPE IN ('location', 'leasing') AND STAANN !='D' AND COMPANY != 'KAMEO'", array(), false)[0]['SOMME'];
+        $response['sumContractsCurrent'] += execSQL("SELECT SUM(AMOUNT) as 'PRICE' FROM boxes WHERE START<CURRENT_TIMESTAMP AND STAANN != 'D' and COMPANY != 'KAMEO' and COMPANY!='KAMEO VELOS TEST'", array(), false)[0]['PRICE'];
+        $now = time(); // or your date as well
+        $firstJanuary = strtotime("2021-01-01");
+        $datediff = $now - $firstJanuary;
+        $days=round($datediff / (60 * 60 * 24));
+        $sellingBikesSince1stJanuary=execSQL("SELECT SUM(factures_details.AMOUNT_HTVA) as SOMME FROM factures_details WHERE factures_details.ITEM_TYPE='bike' AND factures_details.DATE_START=factures_details.DATE_END AND factures_details.DATE_START>='2021-01-01'", array(), false)[0]['SOMME'];
+        $response['sumContractsCurrent'] += ($sellingBikesSince1stJanuary/$days)*30;
+        $response['sumContractsCurrent']-=execSQL("SELECT SUM(AMOUNT) as 'PRICE' FROM costs WHERE START<CURRENT_TIMESTAMP AND (END > CURRENT_TIMESTAMP OR END is NULL) AND STAANN != 'D'", array(), false)[0]['PRICE'];
         $response['response']="success";
-        $conn->close();
         echo json_encode($response);
         die;
 

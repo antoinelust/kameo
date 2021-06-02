@@ -53,14 +53,16 @@ $("#groupedOrdersListing").on("show.bs.modal", function (event){
 			{ title: "Nom de la société", data: "COMPANY_NAME"},
 			{ title: "Assigné à", data: "EMAIL"},
 			{ title: "Nombre de vélos", data: "numberBikes"},
-			{ title: "Encore à délivrer", data: "numberBikesNotDelivered"},
+			{ title: "Done", data: "numberBikesNotDelivered"},
 			{ title: "Nombre d'accessoires", data: "numberAccessories"},
-			{ title: "Encore à délivrer", data: "numberAccessoriesNotDelivered"},
+			{ title: "Done", data: "numberAccessoriesNotDelivered"},
+			{ title: "Nombre de bornes", data: "numberBoxes"},
+			{ title: "Done", data: "numberBoxesNotDelivered"},
 			{
 				title: "Progrès",
 				data: "ID",
 				fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-					$(nTd).html(Math.round(100-(oData.numberBikesNotDelivered+oData.numberAccessoriesNotDelivered)/(oData.numberBikes+oData.numberAccessories)*100)+' %');
+					$(nTd).html(Math.round(100-(oData.numberBikesNotDelivered+oData.numberAccessoriesNotDelivered+oData.numberBoxesNotDelivered)/(oData.numberBikes+oData.numberAccessories+oData.numberBoxes)*100)+' %');
 				},
 			},
 			{ title: "",
@@ -71,7 +73,7 @@ $("#groupedOrdersListing").on("show.bs.modal", function (event){
 			}
 		],
 		order: [
-			[7, "desc"]
+			[9, "desc"]
 		],
 	});
 })
@@ -142,8 +144,10 @@ function retrieveGroupedOrder(ID){
 	$('#widget_groupedOrderManagement-form').trigger("reset");
 	$('#widget_groupedOrderManagement-form .bikeNumberTable tbody').html("");
 	$('#widget_groupedOrderManagement-form .accessoriesTable tbody').html("");
+	$('#widget_groupedOrderManagement-form .boxesTable tbody').html("");
 	$('#widget_groupedOrderManagement-form .bikesNumber').html(0);
 	$('#widget_groupedOrderManagement-form .accessoriesNumber').html(0);
+	$('#widget_groupedOrderManagement-form .boxesNumber').html(0);
 	$('#groupedOrderManagement input[name=ID]').val(ID);
 	$.ajax({
 		url: 'api/orders',
@@ -217,6 +221,34 @@ function retrieveGroupedOrder(ID){
 				});
 			});
 
+			response.boxes.forEach(function(box){
+				if(box.ESTIMATED_DELIVERY_DATE==null){
+					box.ESTIMATED_DELIVERY_DATE='N/A';
+				}
+				$('#groupedOrderManagement .boxesTable').find('tbody')
+				.append('<tr><td>'+box.ID+'</td><td>'+box.MODEL+'</td><td>'+box.INSTALLATION_PRICE+' €</td><td>'+box.MONTHLY_PRICE+' €/mois</td><td>'+box.ESTIMATED_DELIVERY_DATE.shortDate()+'</td><td>'+box.STATUS+'</td><td><button class="button small red button-3d rounded icon-right deleteBoxOrder" type="button" data-id="'+box.ID+'">-</button></td>');
+			})
+
+			$('.deleteBoxOrder').off();
+			$('.deleteBoxOrder').click(function(){
+				var ID = $(this).data('id');
+				$.ajax({
+					url: 'api/boxes',
+					type: 'post',
+					data: { action: "deleteBoxOrder", 'ID': ID},
+					success: function(response){
+						$.notify({
+						 message: "Commande supprimée"
+						}, {
+						 type: 'success'
+						});
+						retrieveGroupedOrder($('#groupedOrderManagement input[name=ID]').val());
+						$("#groupedOrdersListingTable").dataTable().api().ajax.reload();
+					}
+				});
+			});
+
+
 
 
 
@@ -244,7 +276,7 @@ function retrieveGroupedOrder(ID){
 $('#groupedOrderManagement .bikes .glyphicon-minus').unbind();
 $('#groupedOrderManagement .bikes .glyphicon-minus').click(function(){
 	$('#groupedOrderManagement .bikeNumberTable tbody .bikeRow:last-child').remove();
-	bikesNumber = $('#groupedOrderManagement .bikeNumberTable tbody tr').length
+	bikesNumber = $('#groupedOrderManagement .bikeNumberTable tbody tr').length;
 	$('#groupedOrderManagement').find('.bikesNumber').html(bikesNumber);
 
 })
@@ -252,8 +284,15 @@ $('#groupedOrderManagement .bikes .glyphicon-minus').click(function(){
 $('#groupedOrderManagement .accessories .glyphicon-minus').unbind();
 $('#groupedOrderManagement .accessories .glyphicon-minus').click(function(){
 	$('#groupedOrderManagement .accessoriesTable tbody .accessoryRow:last-child').remove();
-	accessoriesNumber = $('#groupedOrderManagement .bikeNumberTable tbody tr').length
+	accessoriesNumber = $('#groupedOrderManagement .accessoriesTable tbody tr').length;
 	$('#groupedOrderManagement').find('.accessoriesNumber').html(accessoriesNumber);
+})
+
+$('#groupedOrderManagement .boxes .glyphicon-minus').unbind();
+$('#groupedOrderManagement .boxes .glyphicon-minus').click(function(){
+	$('#groupedOrderManagement .boxesTable tbody .boxRow:last-child').remove();
+	boxesNumber = $('#groupedOrderManagement .boxesTable tbody tr').length;
+	$('#groupedOrderManagement').find('.boxesNumber').html(boxesNumber);
 })
 
 
@@ -400,5 +439,55 @@ $('#groupedOrderManagement .accessories .glyphicon-plus').click(function(){
 		}else{
 			$amount.val(Math.round((retailPrice*1.25/36)*100)/100);
 		}
+	})
+});
+
+
+
+
+$('#groupedOrderManagement .boxes .glyphicon-plus').unbind();
+$('#groupedOrderManagement .boxes .glyphicon-plus').click(function(){
+	boxesNumber = $("#groupedOrderManagement").find('.boxesNumber').html()*1+1;
+	$('#groupedOrderManagement').find('.boxesNumber').html(boxesNumber);
+
+	$('#groupedOrderManagement .boxesTable').find('tbody')
+	.append(`<tr class="boxRow form-group">
+	<td class="bLabel">Box n°`+boxesNumber+`</td>
+	<td class="model"><select name='boxModel[]'><option value='5keys'>5 clés</option><option value='10keys'>10 clés</option><option value='20keys'>20 clés</option><option value='40keys'>40 clés</option></select></td>
+	<td class="boxInstallationPrice"><input type='amount' step='0.01' name="boxInstallationPrice[]" class="form-control required"></td>
+	<td class="boxMonthlyPrice"><input type='amount' step='0.01' name="boxMonthlyPrice[]" class="form-control required"></td>
+	<td class="boxEstimatedDeliveryDate"><input type="date" class="form-control required" name='boxEstimatedDeliveryDate[]'></td>
+	<td class="boxStatus">
+		<select name="boxStatus[]" class="form-control required">
+			<option value="new">Nouvelle Commande</option>
+			<option value="confirmed">Commande confirmée</option>
+			<option value="done">Commande délivrée</option>
+		</select>
+	</td>
+	</tr>`);
+
+	$row=$('#groupedOrderManagement .boxesTable tbody tr:last-child');
+	$row.find('select').val('');
+
+
+	$row.find('.model select').change(function(){
+		$boxInstallationPrice=$(this).closest('tr').find('.boxInstallationPrice input');
+		$boxMonthlyPrice=$(this).closest('tr').find('.boxMonthlyPrice input');
+
+		$.ajax({
+			url: 'api/boxes',
+			type: 'get',
+			data: { action: "getPrice", 'model': $(this).val()},
+			success: function(response){
+				$boxInstallationPrice.find('option')
+				.remove()
+				.end();
+				$boxMonthlyPrice.find('option')
+				.remove()
+				.end();
+				$boxInstallationPrice.val(response.installationPrice);
+				$boxMonthlyPrice.val(response.monthlyPrice);
+			}
+		})
 	})
 })

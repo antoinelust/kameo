@@ -13,7 +13,7 @@ function update_user_information_admin(email){
         $('#widget-updateUserAdmin-form input[name=widget-updateUser-form-name]').val(response.user.name);
         $('#widget-updateUserAdmin-form input[name=widget-updateUser-form-mail]').val(response.user.email);
         $('#widget-updateUserAdmin-form input[name=widget-updateUser-form-phone]').val(response.user.phone);
-        if(response.user.administrator=="Y"){
+        if(response.user.fleetManager=="Y"){
           $("#widget-updateUserAdmin-form input[name=fleetManager]").prop( "checked", true );
         }else{
           $("#widget-updateUserAdmin-form input[name=fleetManager]").prop( "checked", false );

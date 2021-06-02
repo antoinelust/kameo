@@ -22,8 +22,10 @@ $size=$_POST['size'];
 $color=isset($_POST['color']) ? $_POST['color'] : NULL;
 $portfolioID=$_POST['portfolioID'];
 $frameReference=$_POST['frameReference'];
-$lockerReference=$_POST['lockerReference'];
-$gpsID=$_POST['gpsID'];
+$bikeKeyReference=isset($_POST['bikeKeyReference']) ? $_POST['bikeKeyReference'] : NULL;
+$lockerReference=isset($_POST['lockerReference']) ? $_POST['lockerReference'] : NULL;
+$plateNumber=isset($_POST['plateNumber']) ? $_POST['plateNumber'] : NULL;
+$gpsID=isset($_POST['gpsID']) ? $_POST['gpsID'] : NULL;
 $localisation=isset($_POST['localisation']) ? $_POST['localisation'] : NULL;
 $type_bike = $_POST['bikeType'];
 $buyingPrice=isset($_POST['price']) ? $_POST['price'] : NULL;
@@ -34,7 +36,6 @@ $sellPrice = isset($_POST['bikeSoldPrice']) ? $_POST['bikeSoldPrice'] : 0;
 $orderingDate=isset($_POST['orderingDate']) ? $_POST['orderingDate'] : NULL;
 $estimatedDeliveryDate=isset($_POST['estimatedDeliveryDate']) ? $_POST['estimatedDeliveryDate'] : NULL;
 $deliveryDate=isset($_POST['deliveryDate']) ? $_POST['deliveryDate'] : NULL;
-
 $orderNumber=isset($_POST['orderNumber']) ? $_POST['orderNumber'] : NULL;
 $offerReference=isset($_POST['offerReference']) ? $_POST['offerReference'] : NULL;
 $clientReference=isset($_POST['clientReference']) ? $_POST['clientReference'] : NULL;
@@ -42,6 +43,8 @@ $billingPrice=isset($_POST['billingPrice']) ? $_POST['billingPrice'] : NULL;
 $billingType=isset($_POST['billingType']) ? $_POST['billingType'] : NULL;
 $billingGroup=isset($_POST['billingGroup']) ? $_POST['billingGroup'] : NULL;
 $address=isset($_POST['address']) ? ($_POST['address'] != '' ? $_POST['address'] : NULL) : NULL;
+$insuranceCivilResponsibilityContract=isset($_POST['insuranceCivilResponsibilityContract']) ? ($_POST['insuranceCivilResponsibilityContract'] != '' ? $_POST['insuranceCivilResponsibilityContract'] : NULL) : NULL;
+
 
 if($contractType=="stock" && $company != 'KAMEO'){
     errorMessage("ES0060");
@@ -93,6 +96,8 @@ if(isset($_POST['insurance'])){
 
 if(isset($_POST['insuranceIndividual'])){$insuranceIndividual=true;}
 else{$insuranceIndividual=0;}
+if(isset($_POST['insuranceCivilResponsibility'])){$insuranceCivilResponsibility=true;}
+else{$insuranceCivilResponsibility=0;}
 
 
 $response=array();
@@ -102,8 +107,7 @@ if($frameNumberOriginel != $frameNumber){
 if($contractType=="order"){
   execSQL("update customer_bikes set HEU_MAJ = CURRENT_TIMESTAMP, USR_MAJ=?, MODEL=?, TYPE=?, SIZE=?, COLOR=?, CONTRACT_TYPE=?, COMPANY=?, BIKE_BUYING_DATE=?, ESTIMATED_DELIVERY_DATE=?, ORDER_NUMBER=?, OFFER_ID=? where ID =?", array('ssissssssssi', $token, $model, $portfolioID, $size, $color, $contractType, $company, $orderingDate, $estimatedDeliveryDate, $orderNumber, $offerReference, $bikeID), true);
 }else{
-
-  execSQL("update customer_bikes set HEU_MAJ = CURRENT_TIMESTAMP, USR_MAJ=?, MODEL=?, TYPE=?, SIZE='$size', COLOR=?, CONTRACT_TYPE=?, CONTRACT_START=?, CONTRACT_END=?, COMPANY=?, FRAME_REFERENCE=?, LOCKER_REFERENCE=?, GPS_ID=?, BIKE_BUYING_DATE=?, AUTOMATIC_BILLING=?, INSURANCE=?, INSURANCE_INDIVIDUAL=?, BILLING_TYPE=?, LEASING_PRICE=?, BILLING_GROUP=?, BIKE_PRICE=?, SOLD_PRICE = ?, EMAIL=?, ADDRESS=?, DELIVERY_DATE=?, LOCALISATION=? where ID = ?", array('ssisssssssssssssssddssssi', $token, $model, $portfolioID, $color, $contractType, $contractStart, $contractEnd, $company, $frameReference, $lockerReference, $gpsID, $orderingDate, $automaticBilling, $insurance, $insuranceIndividual, $billingType, $billingPrice, $billingGroup, $buyingPrice, $sellPrice, $clientReference, $address, $deliveryDate, $localisation, $bikeID), true);
+  execSQL("update customer_bikes set HEU_MAJ = CURRENT_TIMESTAMP, USR_MAJ=?, MODEL=?, TYPE=?, SIZE='$size', COLOR=?, CONTRACT_TYPE=?, CONTRACT_START=?, CONTRACT_END=?, COMPANY=?, FRAME_REFERENCE=?, BIKE_KEY_REFERENCE=?, LOCKER_REFERENCE=?, PLATE_NUMBER=?, GPS_ID=?, BIKE_BUYING_DATE=?, AUTOMATIC_BILLING=?, INSURANCE=?, INSURANCE_INDIVIDUAL=?, INSURANCE_CIVIL_RESPONSIBILITY=?, INSURANCE_CIVIL_RESPONSIBILITY_CONTRACT=?, BILLING_TYPE=?, LEASING_PRICE=?, BILLING_GROUP=?, BIKE_PRICE=?, SOLD_PRICE = ?, EMAIL=?, ADDRESS=?, DELIVERY_DATE=?, LOCALISATION=? where ID = ?", array('ssisssssssssssssssssssddssssi', $token, $model, $portfolioID, $color, $contractType, $contractStart, $contractEnd, $company, $frameReference, $bikeKeyReference, $lockerReference, $plateNumber, $gpsID, $orderingDate, $automaticBilling, $insurance, $insuranceIndividual, $insuranceCivilResponsibility, $insuranceCivilResponsibilityContract, $billingType, $billingPrice, $billingGroup, $buyingPrice, $sellPrice, $clientReference, $address, $deliveryDate, $localisation, $bikeID), true);
 }
 
 $customerBikes=array();

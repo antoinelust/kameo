@@ -205,6 +205,17 @@
 							<p>Vue sur les entretiens</p>
 						</div>
 					</div>
+					<div class="col-md-4" style="height:164px">
+						<div class="icon-box medium fancy">
+							<div class="icon bold" data-animation="pulse infinite">
+								<a data-toggle="modal" data-target="#planningsListing" href="#">
+									<i style="opacity:0.15" class="fa fa-wrench"></i>
+								</a>
+							</div>
+							<div class="counter bold" id="counterPlannings" style="color:#3cb395"></div>
+							<p>Vue sur les plannings</p>
+						</div>
+					</div>
           <div class="col-md-4 " id="portfolioAccessoriesManagement" style="height:164px">
             <div class="icon-box medium fancy">
               <div class="icon bold" data-animation="pulse infinite">
@@ -336,7 +347,7 @@
                 </a>
               </div>
               <div class="counter bold" id=\'counterBills\' style="color:#3cb395"></div>
-              <p>Aperçu des factures</p>
+              <p>'.L::widgetTitle_billsManager.'</p>
             </div>
           </div>
 				</div>';

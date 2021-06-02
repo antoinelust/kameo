@@ -61,9 +61,8 @@
 			  }, {
 				type: 'success'
 			  });
-			  get_users_listing();
-			  $('#updateUserInformation').modal('toggle');
-			  $('#usersListing').modal('toggle');
+				get_company_details($('#widget-companyDetails-form input[name=ID]').val());
+			  $('#updateUserAdmin').modal('toggle');
 			} else {
 			  $.notify({
 				message: response.message

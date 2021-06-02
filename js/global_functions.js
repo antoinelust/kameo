@@ -9,6 +9,11 @@ String.prototype.shortHours=function(){
     return this.substr(11,2)+":"+this.substr(14,2);
 };
 
+window.addEventListener("mousewheel", (e) => {
+  if (e.deltaY === 1) {
+    e.preventDefault();
+  }
+})
 
 function get_date_string(date = Date.now()){
   var dateNow=new Date(date);

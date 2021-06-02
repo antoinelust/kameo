@@ -1,3 +1,4 @@
+
 function setFr() {
   $.ajax({
     url: "include/langues.php",

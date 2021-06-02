@@ -112,26 +112,13 @@ switch($_SERVER["REQUEST_METHOD"])
 	}
 	else if ($action === 'updateOrderDetailAcessory'){
 		$id=isset($_GET['id']) ? $_GET['id'] : NULL;
-		$company=isset($_GET['company']) ? $_GET['company'] : NULL;
 		$idAccessory = isset($_GET['accessory']) ? $_GET['accessory'] : NULL;
 
 		if(get_user_permissions("admin", $token)){
-			$listOrderAcessories= execSQL("SELECT * FROM accessories_stock WHERE ID='$idAccessory'", array(), false);
-			if($listOrderAcessories[0]['CONTRACT_TYPE']=='order'){
-				$contrat='order';
-			}
-			else{
-				$contrat='pending_delivery';
-			}
-			$companyDetail= execSQL("SELECT * FROM companies WHERE COMPANY_NAME='$company'", array(), false);
-			$idComp = $companyDetail[0]['ID'];
-
-			$sql="UPDATE accessories_stock SET COMPANY_ID='$idComp', ORDER_ID='$id',CONTRACT_TYPE='$contrat' WHERE ID='$idAccessory'";
-			$stmt = $conn->prepare($sql);
-			$stmt->execute();
-
-			$retrieveOrderAcessories['response']="success";
-			echo json_encode($retrieveOrderAcessories);
+			$sql=execSQL("UPDATE order_accessories SET STATUS=?, BRAND=?, PRICE_HTVA=?, TYPE=? WHERE ID=?", array('sidsi', $_GET['status'], $_GET['model'], $_GET['priceHTVA'], $_GET['contractType'], $id), true);
+			$response['response']="success";
+			echo json_encode($response);
+			die;
 		}
 		else{
 			error_message('403');
@@ -161,7 +148,7 @@ switch($_SERVER["REQUEST_METHOD"])
 	}else if($action === 'retrieveCatalog'){
 		if(get_user_permissions("admin", $token)){
 			$ID=isset($_GET['ID']) ? $_GET['ID'] : NULL;
-			$response['accessory']=execSQL("SELECT accessories_catalog.ID, accessories_catalog.BRAND, accessories_catalog.MODEL, accessories_catalog.DESCRIPTION, accessories_catalog.ACCESSORIES_CATEGORIES, accessories_catalog.BUYING_PRICE, accessories_catalog.PRICE_HTVA, accessories_catalog.DISPLAY, accessories_catalog.PROVIDER, accessories_categories.ID, accessories_categories.CATEGORY, accessories_catalog.REFERENCE, accessories_catalog.MINIMAL_STOCK,accessories_catalog.STOCK_OPTIMUM
+			$response['accessory']=execSQL("SELECT accessories_catalog.ID, accessories_catalog.BRAND, accessories_catalog.MODEL, accessories_catalog.DESCRIPTION, accessories_catalog.ACCESSORIES_CATEGORIES, accessories_catalog.BUYING_PRICE, accessories_catalog.PRICE_HTVA, accessories_catalog.DISPLAY, accessories_catalog.PROVIDER, accessories_categories.ID, accessories_categories.CATEGORY, accessories_catalog.REFERENCE, accessories_catalog.MINIMAL_STOCK,accessories_catalog.STOCK_OPTIMUM, accessories_catalog.EAN_CODE
 				FROM accessories_catalog, accessories_categories
 				WHERE accessories_catalog.ACCESSORIES_CATEGORIES = accessories_categories.ID AND accessories_catalog.ID=?", array('i', $ID), false)[0];
 			$response['response']='success';
@@ -177,20 +164,7 @@ switch($_SERVER["REQUEST_METHOD"])
 	}else if($action === 'getBikeFromCompany'){
 		if(get_user_permissions("admin", $token)){
 			$idComp=isset($_GET['ID']) ? $_GET['ID'] : NULL;
-			$result=execSQL("SELECT customer_bikes.* FROM customer_bikes, companies where companies.ID=? AND companies.INTERNAL_REFERENCE=customer_bikes.COMPANY", array('i', $idComp), false);
-			$i=0;
-			if(is_null($result)){
-				$response['bikeNumber']=0;
-				$response['bike']=array();
-			}else{
-				foreach($result as $row){
-					$response['bike'][$i]['id']=$row['ID'];
-					$response['bike'][$i]['model']=$row['MODEL'];
-					$response['bike'][$i]['contract']=$row['CONTRACT_TYPE'];
-					$i++;
-				}
-			}
-			$response['bikeNumber']=$i;
+			$response['bike']=execSQL("SELECT customer_bikes.ID as id, customer_bikes.MODEL as model, customer_bikes.CONTRACT_TYPE as contract FROM customer_bikes, companies where companies.ID=? AND companies.INTERNAL_REFERENCE=customer_bikes.COMPANY", array('i', $idComp), false);
 			echo json_encode($response);
 			die;
 		}else

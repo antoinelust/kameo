@@ -178,26 +178,15 @@ h2{
     <tr>
       <td style="text-align:left; margin:0;padding:0; width:50%;">
         <div>
-          <?php if($buyOrLeasing =="buy"){ ?><div style="font-size: 25px;">Achat de vélos</div>
+          <?php if($buyOrLeasing =="achat"){ ?><div style="font-size: 25px;">Achat de vélos</div>
           <?php }else if ($buyOrLeasing =="leasing"){?><div style="font-size: 25px;">Location tout inclus VAE</div>
           <?php }else{?><div style="font-size: 25px;">Achat de vélos</div>
             <div style="font-size: 25px;">Location tout inclus VAE</div>
           <?php } ?>
         </div>
       </td>
-      <!--<td style="text-align:right; padding-right:0; margin-right:0;  width:50%;">
-      <span>
-      <?php if($buyOrLeasing =="buy"){ ?><span style="font-size: 25px;">Achat de vélos</span><br/>
-    <?php }else if ($buyOrLeasing =="leasing"){?><span style="font-size: 25px;">Location tout inclus VAE</span><br/>
-  <?php }else{?><span style="font-size: 25px;">Achat de vélos</span><br/>
-  <span style="font-size: 25px;">Location tout inclus VAE</span><br/>
-<?php } ?>
-</span>
-</td>-->
-</tr>
-
-</table>
-
+    </tr>
+  </table>
 <hr class="separator"/>
 <div>
   <table class="maxWidth" >
@@ -304,7 +293,7 @@ h2{
       echo "<div class='listItem'>• Location de " . $totalBikes . " " . $txtVelo ."</div>";
     } ?>
 
-    <?php if ($buyOrLeasing =="buy" && $totalBikes>0) {
+    <?php if ($buyOrLeasing =="achat" && $totalBikes>0) {
       echo "<div class='listItem'>• Achat de " . $totalBikes . " " . $txtVelo."</div>";
     } ?>
 
@@ -344,7 +333,7 @@ h2{
   </div>
 </page>
 
-<?php if ($buyOrLeasing == "leasing" || $buyOrLeasing == "both") { ?>
+<?php if ($buyOrLeasing == "leasing") { ?>
   <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
 
       <h1>1. Location tout inclus</h1>
@@ -686,9 +675,10 @@ if ($assurance == true) { ?>
               } ?>
             </td>
             <td style="width:30%; padding-top:3mm; padding-bottom:3mm;">
+
               <?php
               foreach ($bikes as $bike){
-                if($buyOrLeasing=="buy"){
+                if($buyOrLeasing=="achat"){
                   echo "<div style='margin-left:3mm;'>Achat :<br/>{$bike['bikePriceAchat']} € <span class='green bold'> x".$bike['bikeNumber']."</span></div><br/>";
                 }else{
                   if($bike['finalPrice'] < $bike['initialPrice']){
@@ -706,7 +696,7 @@ if ($assurance == true) { ?>
             <td style="width:30%; padding-top:3mm; padding-bottom:3mm;">
               <?php
               foreach ($bikes as $bike){
-                if($buyOrLeasing=="buy"){
+                if($buyOrLeasing=="achat"){
                   echo "<div style='margin-left:3mm;'>Achat :<br/>".round($bike['bikePriceAchat']*1.21, 2)." €  <span class='green bold'> x".$bike['bikeNumber']."</span></div><br/>";
                 }else{
                   if($bike['finalPrice'] < $bike['initialPrice']){
@@ -869,7 +859,7 @@ if ($assurance == true) { ?>
     <div class="light">KAMEO Bikes offre une garantie conforme à celle de la marque. Soit 2 ans sur le cadre et les composants.</div>
     <h2>Facturation</h2>
     <div class="light">
-      <?php if($buyOrLeasing =="buy"){?>
+      <?php if($buyOrLeasing =="achat"){?>
         La facturation s’effectuera lors de la livraison.<br/>
         Cette offre est sujette aux conditions générales de vente et de location de KAMEO Bikes SRL.
       <?php }else if($buyOrLeasing =="both"){ ?>
@@ -883,7 +873,7 @@ if ($assurance == true) { ?>
     <h2>Conditions de paiement</h2>
     <div class="light">30 jours à partir de la date de la facture. Prélèvement automatique par domiciliation.</div>
   </page>
-  <?php if($buyOrLeasing != "buy"){?>
+  <?php if($buyOrLeasing != "achat"){?>
     <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
       <h2>Rupture du contrat</h2>
       <div class="light">

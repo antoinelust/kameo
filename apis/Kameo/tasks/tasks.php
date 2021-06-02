@@ -112,7 +112,6 @@ switch($_SERVER["REQUEST_METHOD"])
 			$result = mysqli_query($conn, $sql);
 			$length = $result->num_rows;
 			$response['actionNumberTotal']=$length;
-			$response['sql1']=$sql;
 			$conn->close();
 
 			include __DIR__ .'/../connexion.php';

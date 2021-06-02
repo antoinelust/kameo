@@ -46,6 +46,7 @@
 
 	/** OFFRE **/
 	$router->map('GET','/offre[ext]', 'pages/offre.php');
+	$router->map('GET','/offre_accessoire[ext]', 'pages/offre_accessoire.php');
 
 	/** BONS PLANS **/
 	$router->map('GET','/bp_conway_ets370_f1[ext]', 'pages/catalogue/bons-plans/bp_conway_ets370_f1.php');

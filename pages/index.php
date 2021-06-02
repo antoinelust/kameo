@@ -235,7 +235,6 @@ include 'include/head.php';
 
 	<?php
 	if (isset($_GET['hash'])) {
-		echo "coucou";
 		echo $_GET['hash'];
 		echo '<script type="text/javascript">
       $("#newPassword").modal("toggle");

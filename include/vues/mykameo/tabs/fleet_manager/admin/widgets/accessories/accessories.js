@@ -94,10 +94,9 @@ $('#widget-manageStockAccessory-form select[name=company]').change(function(){
         .remove()
         .end();
         var i =0;
-        while(i<data.bike.length){
-          $("#widget-manageStockAccessory-form select[name=bike]").append('<option value='+data.bike[i].id+'>'+data.bike[i].id+' :  '+data.bike[i].model+' - '+data.bike[i].contract+'</option>');
-          i++;
-        }
+        data.bike.forEach(function(bike){
+          $("#widget-manageStockAccessory-form select[name=bike]").append('<option value='+bike.id+'>'+bike.id+' :  '+bike.model+' - '+bike.contract+'</option>');
+        })
         $("#widget-manageStockAccessory-form select[name=bike]").val("");
         if(data.bike.length==0){
           $.notify({
@@ -298,7 +297,7 @@ function list_stock_accessories(){
       title: "Type de contrat",
       data: "CONTRACT_TYPE",
       fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-        if (sData == 'achat') $(nTd).html("Vendu");
+        if (sData == 'selling') $(nTd).html("Vendu");
         else if (sData == 'leasing') $(nTd).html("Leasing");
         else if (sData == 'stock') $(nTd).html("En stock");
         else if (sData == 'pending_delivery') $(nTd).html("En attente de livraison");
@@ -388,7 +387,7 @@ $('body').on('click','.accessoriesInOrder', function(){
 $('body').on('click','.soldAccessories', function(){
   var table = $('#stockAccessoriesList').DataTable()
   .column(6)
-  .search("achat", true, false )
+  .search("selling", true, false )
   .draw();
 })
 
@@ -460,10 +459,9 @@ function get_stock_accessory(ID){
               .remove()
               .end();
               var i =0;
-              while(i<data.bike.length){
-                $("#widget-manageStockAccessory-form select[name=bike]").append('<option value='+data.bike[i].id+'>'+data.bike[i].id+' :  '+data.bike[i].model+' - '+data.bike[i].contract+'</option>');
-                i++;
-              }
+              data.bike.forEach(function(bike){
+                $("#widget-manageStockAccessory-form select[name=bike]").append('<option value='+bike.id+'>'+bike.id+' :  '+bike.model+' - '+bike.contract+'</option>');
+              })
               if(bikeID != 'null'){
                 $("#widget-manageStockAccessory-form select[name=bike]").val(bikeID);
               }else{
@@ -495,8 +493,10 @@ function get_stock_accessory(ID){
          $("#widget-manageStockAccessory-form input[name=sellingDate]").parent().fadeOut();
          $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeOut();
          $("#widget-manageStockAccessory-form select[name=user]").parent().fadeIn();
+         $("#widget-manageStockAccessory-form input[name=deliveryDate]").parent().fadeOut();
+         $("#widget-manageStockAccessory-form input[name=estimateDeliveryDate]").parent().fadeOut();
+
        }else if(data.CONTRACT_TYPE == 'selling'){
-         $("#widget-manageStockAccessory-form select[name=user]").parent().fadeIn();
          $("#widget-manageStockAccessory-form input[name=sellingDate]").val(data.SELLING_DATE);
          $("#widget-manageStockAccessory-form input[name=sellingAmount]").val(data.SELLING_AMOUNT);
          $("#widget-manageStockAccessory-form input[name=contractStart]").parent().fadeOut();
@@ -504,6 +504,10 @@ function get_stock_accessory(ID){
          $("#widget-manageStockAccessory-form input[name=leasingAmount]").parent().parent().fadeOut();
          $("#widget-manageStockAccessory-form input[name=sellingDate]").parent().fadeIn();
          $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeIn();
+         $("#widget-manageStockAccessory-form input[name=deliveryDate]").parent().fadeOut();
+         $("#widget-manageStockAccessory-form input[name=estimateDeliveryDate]").parent().fadeOut();
+         $("#widget-manageStockAccessory-form select[name=user]").parent().fadeIn();
+
        }
        else if(data.CONTRACT_TYPE=="order"){
          $("#widget-manageStockAccessory-form select[name=user]").parent().fadeIn();

@@ -18,13 +18,17 @@ $response['frameNumber']=$row['FRAME_NUMBER'];
 $response['model']=$row['MODEL'];
 $response['type']=$row['TYPE'];
 $response['frameReference']=$row['FRAME_REFERENCE'];
+$response['bikeKeyReference']=$row['BIKE_KEY_REFERENCE'];
 $response['lockerReference']=$row['LOCKER_REFERENCE'];
+$response['plateNumber']=$row['PLATE_NUMBER'];
 $response['company']=$row['COMPANY'];
 $response['size']=$row['SIZE'];
 $response['color']=$row['COLOR'];
 $response['leasing']=$row['AUTOMATIC_BILLING'];
 $response['insurance']=$row['INSURANCE'];
 $response['insuranceIndividual']=$row['INSURANCE_INDIVIDUAL'];
+$response['insuranceCivilResponsibility']=$row['INSURANCE_CIVIL_RESPONSIBILITY'];
+$response['insuranceCivilResponsibilityContract']=$row['INSURANCE_CIVIL_RESPONSIBILITY_CONTRACT'];
 $response['leasingPrice']=$row['LEASING_PRICE'];
 $response['bikePrice']=$row['BIKE_PRICE'];
 $response['buyingDate']=$row['BIKE_BUYING_DATE'];
@@ -50,6 +54,7 @@ $response['img']=$resultat['ID'];
 $response['brand']=$resultat['BRAND'];
 $response['modelCatalog']=$resultat['MODEL'];
 $response['catalogPrice']=$resultat['PRICE_HTVA'];
+$response['utilisation']=$resultat['UTILISATION'];
 $response['motor']=$resultat['MOTOR'];
 $response['battery']=$resultat['BATTERY'];
 $response['transmission']=$resultat['TRANSMISSION'];
@@ -87,9 +92,11 @@ $emailOwner=execSQL("SELECT EMAIL FROM customer_bike_access WHERE TYPE='personne
 if(count($emailOwner)!=0){
   $response['biketype']='personnel';
   $response['bikeOwner']=$emailOwner[0]['EMAIL'];
-  $response['deliveryDateOrder']=execSQL("SELECT ESTIMATED_DELIVERY_DATE FROM client_orders WHERE EMAIL=?", array('s', $emailOwner), false)[0]['ESTIMATED_DELIVERY_DATE'];
-  if(is_null($response['deliveryDate'])){
+  $resultat=execSQL("SELECT ESTIMATED_DELIVERY_DATE FROM client_orders WHERE BIKE_ID=?", array('i', $id), false);
+  if(count($resultat)==0){
     $response['deliveryDateOrder']='';
+  }else{
+    $response['deliveryDateOrder']=$resultat[0]['ESTIMATED_DELIVERY_DATE'];
   }
 }else{
   $response['biketype']="partage";

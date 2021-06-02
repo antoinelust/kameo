@@ -112,7 +112,7 @@ if($billType == "manual"){
     {
         $dossier = $_SERVER['DOCUMENT_ROOT'].'/factures/';
 
-        $extensions = array('.pdf');
+        $extensions = array('.pdf', '.PDF');
         $extension = strrchr($_FILES['widget-addBill-form-file']['name'], '.');
 
         if($amountHTVA<0){

@@ -227,7 +227,7 @@ $('#buyOrLeasingSelect').on('change',function(){
     //gestion du form complet
     $("#templateForm").addClass('isLeasing');
 
-  }else if(val == "buy"){
+  }else if(val == "achat"){
     //Gestion de la partie achat/leasing
     $('.buyOrLeasing .leasingSpecific').addClass('removed').removeClass('required');
     $('.buyOrLeasing .leasingSpecific input').prop("disabled", true);

@@ -10,17 +10,13 @@ $(".fleetmanager").click(function () {
       if (response.response == "success") {
         if (response.sumContractsCurrent > 0) {
           document.getElementById("cashFlowSpan").innerHTML =
-            '<span data-speed="1" data-refresh-interval="4" data-to="' +
-            Math.round(response.sumContractsCurrent) +
-            '" data-from="0" data-    seperator="true">' +
+            '<span data-speed="1" data-refresh-interval="4"  data-seperator="true" size="-1">' +
             Math.round(response.sumContractsCurrent) +
             "</span>";
           $("#cashFlowSpan").css("color", "#3cb395");
         } else {
           document.getElementById("cashFlowSpan").innerHTML =
-            '<span data-speed="1" data-refresh-interval="4" data-to="' +
-            Math.round(response.sumContractsCurrent) +
-            '" data-from="0" data-      seperator="true">' +
+            '<span data-speed="1" data-refresh-interval="4" data-seperator="true">' +
             Math.round(response.sumContractsCurrent) +
             "</span>";
           $("#cashFlowSpan").css("color", "#d80000");
@@ -323,10 +319,10 @@ function list_contracts_offers(company) {
     success: function (response) {
         var dest = "";
         var temp =
-          '<table class="table table-condensed"><h4 class="text-green">Contrats signés (vélos) :</h4><br/><div class="seperator seperator-small visible-xs"></div><thead><tr><th><span>Société</span></th><th><span>Description</span></th><th><span>Montant</span></th></tr></thead>';
+          '<table class="table table-condensed"><thead><tr><th><span>Société</span></th><th><span>Description</span></th><th><span>Montant</span></th></tr></thead>';
         dest = dest.concat(temp);
         var total=0;
-        response.contracts.bikes.forEach(function(contractBike){
+        response.contracts.leasingBikes.forEach(function(contractBike){
           var temp =
             '<tr><td><a href="#" class="internalReferenceCompany" data-target="#companyDetails" data-toggle="modal" name="' +
             contractBike.companyID +
@@ -348,7 +344,41 @@ function list_contracts_offers(company) {
           " €/mois</strong></p>";
         dest = dest.concat(temp);
 
-        document.getElementById("contractsBikesListingSpan").innerHTML = dest;
+        $("#cashListing span[name=leasingBikesListingSpan]").html(dest);
+        $("#cashListing span[name=totalLeasingValue]").html(Math.round(total) + "€/mois");
+
+
+        var now = new Date();
+        var start = new Date(now.getFullYear(), 0, 0);
+        var diff = now - start;
+        var oneDay = 1000 * 60 * 60 * 24;
+        var day = Math.floor(diff / oneDay);
+
+        var dest = "";
+        var temp =
+          '<table class="table table-condensed"><thead><tr><th><th>Vélo</th>Société</th><th>Montant</th></tr></thead>';
+        dest = dest.concat(temp);
+        var total=0;
+        response.contracts.sellingBikes.forEach(function(bike){
+          var temp =
+            '<tr><td>' +
+            bike.companyName +
+            "</td><td>" +
+            bike.bikeID + "</td><td>" +
+            Math.round(bike.sellingPrice) +
+            "€</td></tr>";
+          dest = dest.concat(temp);
+          total+=bike.sellingPrice;
+        })
+        var temp = "</tobdy></table>";
+        dest = dest.concat(temp);
+
+        var temp ="<p>Valeur totale des vélos vendus depuis le début de l'année : <strong>" + Math.round(total) + " €</strong> en "+day+" jours soit "+Math.round(total/day*30)+"€/mois en moyenne</p>";
+        dest = dest.concat(temp);
+
+        $("#cashListing span[name=soldBikesListingSpan]").html(dest);
+        $("#cashListing span[name=totalSellingValue]").html(Math.round(total/day*30) + "€/mois");
+
 
 
         var dest = "";
@@ -365,7 +395,7 @@ function list_contracts_offers(company) {
             "</a></td><td>" +
             contractBike.boxesNumber + " bornes</td><td>" +
             Math.round(contractBike.amount) +
-            " €/mois</td></tr>";
+            "€/mois</td></tr>";
           dest = dest.concat(temp);
           total+=contractBike.amount;
         })
@@ -375,10 +405,12 @@ function list_contracts_offers(company) {
         var temp =
           "<p>Valeur actuelle des contrat en cours : <strong>" +
           Math.round(total) +
-          " €/mois</strong></p>";
+          "€/mois/mois</strong></p>";
         dest = dest.concat(temp);
 
-        document.getElementById("contractsBoxesListingSpan").innerHTML = dest;
+        $("#cashListing span[name=contractsBoxesListingSpan]").html(dest);
+        $("#cashListing span[name=totalBoxesValue]").html(Math.round(total) + "€/mois");
+
 
         var dest = "";
         var temp =
@@ -481,7 +513,8 @@ function list_contracts_offers(company) {
         });
         var temp = "</tbody></table>";
         dest = dest.concat(temp);
-        document.getElementById("cashListingSpan").innerHTML = dest;
+        $("#cashListing span[name=cashListingSpan]").html(dest);
+
       }
     });
     $.ajax({
@@ -543,7 +576,10 @@ function list_contracts_offers(company) {
         var temp = "</tbody></table>";
         dest = dest.concat(temp);
         dest = dest.concat("<p>Valeur totale des coûts : <strong>"+Math.round(total)+" €/mois</strong></p>");
-        document.getElementById("costsListingSpan").innerHTML = dest;
+
+        $("#cashListing span[name=costsListingSpan]").html(dest);
+        $("#cashListing span[name=totalCostsValue]").html(Math.round(total) + "€/mois");
+
 
     }
   });

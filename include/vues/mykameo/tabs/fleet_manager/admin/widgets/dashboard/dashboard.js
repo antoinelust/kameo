@@ -92,6 +92,12 @@ function list_errors() {
       if (response.response == "error") {
         console.log(response.message);
       } else {
+
+        var bikeErrors = response.bike.selling.length*1 + response.bike.sellingCompany.length*1 + response.bike.order.length*1+response.orders.length*1+response.maintenance.KAMEOBikes.length*1+response.maintenance.externalBikes.length*1+response.contract.length*1;
+        var companyErrors =  0;
+        var billErrors = response.bike.bill.length+response.box.bill.length;
+
+
         var i = 0;
         var j = 0;
         var dest ='<table class="table table-condensed"  data-order=\'[[ 0, "asc" ]]\'><thead><tr><th>ID</th><th scope="col">Référence</th><th>Description</th></thead><tbody>';
@@ -146,53 +152,82 @@ function list_errors() {
             bike.supplierDeliveryDate +
             " et est mentionné en livraison chez le client le "+
             bike.clientDeliveryDate +
-            "</td><td></tr>";
+            "</td></tr>";
             i++;
             dest = dest.concat(temp);
         })
 
-        if(typeof response.bike.sellingCompany != 'undefined'){
-          response.bike.sellingCompany.forEach(function(bike){
-            if (bike.frameNumber == null) {
-              var bikeDescription = "N/A - " + bike.bikeID;
-            } else {
-              var bikeDescription = bike.bikeID + " - " + bike.frameNumber;
-            }
-            var temp =
-              '<tr><td scope="row">' +
-              (i + 1) +
-              '</td><td><a class="updateBikeAdmin" data-target="#bikeManagement" name="' +
-              bike.bikeID +
-              '" data-toggle="modal" href="#">' +
-              bikeDescription +
-              "</a></td><td>Le vélo " +
-              bikeDescription +
-              " a été vendu, il ne peut pas être assigné à Kameo</td><td></tr>"; //onclick=\"set_required_image('false')\"
-            dest = dest.concat(temp);
+        response.orders.forEach(function(order){
+          var temp =
+            '<tr><td scope="row">' +
+            (i + 1) +
+            '</td><td>' + order.ID +
+            "</td><td>Le vélo "+order.BIKE_ID+" est livré mais la commande "+order.ID+" n'est pas clôturée</td></tr>";
             i++;
-          })
-        }
-        if(typeof response.bike.stock != 'undefined'){
-          response.bike.stock.forEach(function(bike){
-            var bike = response.bike.stock[j];
-            if (bike.frameNumber == null) {
-              var bikeDescription = "N/A - " + bike.bikeID;
-            }else{
-              var bikeDescription = bike.bikeID + " - " + bike.frameNumber;
-            }
-            var temp =
-              '<tr><td scope="row">' +
-              (i + 1) +
-              '</td><td><a class="updateBikeAdmin" data-target="#bikeManagement" name="' +
-              bike.bikeID +
-              '" data-toggle="modal" href="#">' +
-              bikeDescription +
-              "</a></td><td>Le vélo " +
-              bikeDescription +
-              " ne peut pas être défini comme vélo de stock en dehors de la société Kameo</td><td></tr>"; //onclick=\"set_required_image('false')\"
             dest = dest.concat(temp);
-          })
-        }
+        })
+
+        response.bike.sellingCompany.forEach(function(bike){
+          if (bike.frameNumber == null) {
+            var bikeDescription = "N/A - " + bike.bikeID;
+          } else {
+            var bikeDescription = bike.bikeID + " - " + bike.frameNumber;
+          }
+          var temp =
+            '<tr><td scope="row">' +
+            (i + 1) +
+            '</td><td><a class="updateBikeAdmin" data-target="#bikeManagement" name="' +
+            bike.bikeID +
+            '" data-toggle="modal" href="#">' +
+            bikeDescription +
+            "</a></td><td>Le vélo " +
+            bikeDescription +
+            " a été vendu, il ne peut pas être assigné à Kameo</td><td></tr>"; //onclick=\"set_required_image('false')\"
+          dest = dest.concat(temp);
+          i++;
+        })
+        response.bike.stock.forEach(function(bike){
+          var bike = response.bike.stock[j];
+          if (bike.frameNumber == null) {
+            var bikeDescription = "N/A - " + bike.bikeID;
+          }else{
+            var bikeDescription = bike.bikeID + " - " + bike.frameNumber;
+          }
+          var temp =
+            '<tr><td scope="row">' +
+            (i + 1) +
+            '</td><td><a class="updateBikeAdmin" data-target="#bikeManagement" name="' +
+            bike.bikeID +
+            '" data-toggle="modal" href="#">' +
+            bikeDescription +
+            "</a></td><td>Le vélo " +
+            bikeDescription +
+            " ne peut pas être défini comme vélo de stock en dehors de la société Kameo</td><td></tr>"; //onclick=\"set_required_image('false')\"
+          dest = dest.concat(temp);
+          i++;
+        })
+        response.maintenance.KAMEOBikes.forEach(function(entretien){
+          var temp =
+            '<tr><td scope="row">' +
+            (i + 1) +
+            '</td><td><a class="updateBikeAdmin" data-target="#bikeManagement" name="' +
+            entretien.bikeID + '" data-toggle="modal" href="#">'+entretien.bikeID+'</a></td><td>Le vélo ' +
+            entretien.bikeID +
+            " a subit l'entretien "+entretien.ID+" mais il n'y a pas de facture liée</td><td></tr>"; //onclick=\"set_required_image('false')\"
+          dest = dest.concat(temp);
+          i++;
+        })
+        response.maintenance.externalBikes.forEach(function(entretien){
+          var temp =
+            '<tr><td scope="row">' +
+            (i + 1) +
+            '</td><td><a class="updateBikeAdmin" data-target="#bikeManagement" name="' +
+            entretien.ID + '" data-toggle="modal" href="#">'+entretien.bikeID+'</a></td><td>Le vélo ' +
+            entretien.bikeID +
+            " a subit l'entretien "+entretien.ID+" mais il n'y a pas de facture liée</td><td></tr>"; //onclick=\"set_required_image('false')\"
+          dest = dest.concat(temp);
+          i++;
+        })
         dest = dest.concat("</tbody></table>");
         $("#dashboardBodyBikes").html(dest);
         var i = 0;
@@ -231,7 +266,6 @@ function list_errors() {
               "</td><td>" +
               bill.description +
               "</td><td></td></tr>";
-            //onclick=\"set_required_image('false')\"
             dest = dest.concat(temp);
             i++;
           })
@@ -241,98 +275,25 @@ function list_errors() {
         var i = 0;
         var dest =
           '<table class="table table-condensed"  data-order=\'[[ 0, "asc" ]]\'><thead><tr><th>ID</th><th scope="col"><span class="fr-inline">Référence</span><span class="en-inline">Bike Number</span><span class="nl-inline">Bike Number</span></th><th>Description</th></thead><tbody>';
-
-        if(typeof response.company.img != 'undefined'){
-          response.company.img.forEach(function(company){
-            var temp =
-              '<tr><td scope="row">' +
-              (i + 1) +
-              '</td><td><a class="updateBikeAdmin" data-target="#bikeManagement" name="' +
-              company.id +
-              '" data-toggle="modal" href="#">' +
-              company.name +
-              "</a></td><td>Image manquante pour la société " +
-              company.name +
-              "</td></tr>";
-            //onclick=\"set_required_image('false')\"
-            dest = dest.concat(temp);
-            i++;
-          })
-        }
-
-        if(typeof response.company.action != 'undefined'){
-          response.company.action.forEach(function(action){
-            var temp =
-              '<tr><td scope="row">' +
-              (i + 1) +
-              '</td><td><a href="#" class="updateAction" data-target="#updateAction" data-toggle="modal" name="' +
-              action.id +
-              '">' +
-              action.id +
-              "</a></td><td>" +
-              action.description +
-              "</td></tr>";
-            dest = dest.concat(temp);
-            i++;
-          })
-        }
         dest = dest.concat("</tbody></table>");
         $("#dashboardBodyCompanies").html(dest);
         $(".updateAction").click(function () {
           construct_form_for_action_update(this.name);
         });
         $(".dashboardBikes").html(
-          "Vélos (" +
-            (response.bike.selling.length +
-              response.bike.sellingCompany.length +
-              response.bike.order.length) +
-            ")"
+          "Vélos (" + bikeErrors + ")"
         );
-        $(".dashboardBills").html(
-          "Factures (" + (((typeof response.bike.bill != 'undefined') ? parseInt(response.bike.bill.length) : 0)+parseInt(response.box.bill.length)) + ")"
-        );
+        $(".dashboardBills").html("Factures (" + billErrors +")");
         $(".dashboardCompanies").html(
-          "Sociétés (" +
-            (((typeof response.company.img != 'undefined') ? response.company.img.length : 0) +
-              ((typeof response.company.action != 'undefined') ? response.company.action.length : 0)) +
-            ")"
+          "Sociétés (" + companyErrors + ")"
         );
-        if (
-          parseInt((typeof response.bike.selling != 'undefined') ? response.bike.selling.length : 0) +
-          parseInt((typeof response.bike.sellingCompany != 'undefined') ? response.bike.sellingCompany.length : 0) +
-          parseInt(response.contract.length) +
-          parseInt((typeof response.box.bill != 'undefined') ? response.box.bill.length : 0) +
-          parseInt((typeof response.bike.order != 'undefined') ? response.bike.order.length : 0) +
-          ((typeof response.bike.bill != 'undefined') ? parseInt(response.bike.bill.length) : 0)+
-          parseInt((typeof response.company.img != 'undefined') ? response.company.img.length : 0) +
-          parseInt((typeof response.company.action != 'undefined') ? response.company.action.length : 0)
-           ==
-          0
-        ) {
+        if ( (bikeErrors+companyErrors+billErrors) == 0 ) {
           document.getElementById("errorCounter").innerHTML =
             '<span data-speed="1" data-refresh-interval="4" data-to="0" data-from="0" data-seperator="true">0</span>';
           $("#errorCounter").css("color", "#3cb395");
         } else {
           document.getElementById("errorCounter").innerHTML =
-            '<span data-speed="1" data-refresh-interval="4" data-to="' +
-              (parseInt((typeof response.bike.selling != 'undefined') ? response.bike.selling.length : 0) +
-              parseInt((typeof response.bike.sellingCompany != 'undefined') ? response.bike.sellingCompany.length : 0) +
-              parseInt(response.contract.length) +
-              parseInt((typeof response.box.bill != 'undefined') ? response.box.bill.length : 0) +
-              parseInt((typeof response.bike.order != 'undefined') ? response.bike.order.length : 0) +
-              ((typeof response.bike.bill != 'undefined') ? parseInt(response.bike.bill.length) : 0)+
-              parseInt((typeof response.company.img != 'undefined') ? response.company.img.length : 0) +
-              parseInt((typeof response.company.action != 'undefined') ? response.company.action.length : 0)) +
-            '" data-from="0" data-seperator="true">' +
-              (parseInt((typeof response.bike.selling != 'undefined') ? response.bike.selling.length : 0) +
-              parseInt((typeof response.bike.sellingCompany != 'undefined') ? response.bike.sellingCompany.length : 0) +
-              parseInt(response.contract.length) +
-              parseInt((typeof response.box.bill != 'undefined') ? response.box.bill.length : 0) +
-              parseInt((typeof response.bike.order != 'undefined') ? response.bike.order.length : 0) +
-              ((typeof response.bike.bill != 'undefined') ? parseInt(response.bike.bill.length) : 0)+
-              parseInt((typeof response.company.img != 'undefined') ? response.company.img.length : 0) +
-              parseInt((typeof response.company.action != 'undefined') ? response.company.action.length : 0)) +
-            "</span>";
+            '<span data-speed="1" data-refresh-interval="4" data-seperator="true">' + (bikeErrors+companyErrors+billErrors) + "</span>";
           $("#errorCounter").css("color", "#d80000");
         }
         $(".updateBikeAdmin").off();
@@ -349,7 +310,7 @@ function list_errors() {
         $('.generateInvoice').click(function(){
           var DateParts = $(this).data('date').split("-");
           var dateTemp = new Date(DateParts[2], DateParts[1] - 1, DateParts[0]);
-          var url = "generate_invoices.php?forced=Y&company="+$(this).data('company')+"&dateStart="+get_date_string(new Date(dateTemp.getFullYear(), dateTemp.getMonth(), 1))+"&dateEnd="+get_date_string(new Date(dateTemp.getFullYear(), dateTemp.getMonth()+1, 0));
+          var url = "generate_invoices.php?forced=Y&company="+$(this).data('company')+"&dateStart="+get_date_string(new Date(dateTemp.getFullYear(), dateTemp.getMonth(), dateTemp.getDate()))+"&dateEnd="+get_date_string(new Date(dateTemp.getFullYear(), dateTemp.getMonth()+1, 0));
           $.ajax({
             url: url,
             method: "get",
@@ -445,7 +406,7 @@ function list_sales(owner, start, end) {
               '</td><td><strong>Type:</strong> Prise de contact pour entreprise <a href="#" class="internalReferenceCompany" data-target="#companyDetails" data-toggle="modal" name="' +
               contact.companyID +
               '">' +
-              contact.company +
+              contact.companyName +
               "</a><br/><strong>Description :</strong> " +
               contact.description.replace(/(\r\n|\n|\r)/g, "<br />") +
               "</td><td>5</td></tr>";
@@ -461,7 +422,7 @@ function list_sales(owner, start, end) {
               '</td><td><strong>Type:</strong> Relance pour entreprise <a href="#" class="internalReferenceCompany" data-target="#companyDetails" data-toggle="modal" name="' +
               contact.companyID +
               '">' +
-              contact.company +
+              contact.companyName +
               "</a><br/><strong>Description :</strong> " +
               contact.description.replace(/(\r\n|\n|\r)/g, "<br />") +
               "</td><td>1</td></tr>";
@@ -477,7 +438,7 @@ function list_sales(owner, start, end) {
               '</td><td><strong>Type:</strong> Planficiation de rdv pour entreprise <a href="#" class="internalReferenceCompany" data-target="#companyDetails" data-toggle="modal" name="' +
               contact.companyID +
               '">' +
-              contact.company +
+              contact.companyName +
               "</a><br/><strong>Description :</strong> " +
               contact.description.replace(/(\r\n|\n|\r)/g, "<br />") +
               "</td><td>10</td></tr>";
@@ -493,7 +454,7 @@ function list_sales(owner, start, end) {
               '</td><td><strong>Type:</strong> Type inconnu pour entreprise <a href="#" class="internalReferenceCompany" data-target="#companyDetails" data-toggle="modal" name="' +
               contact.companyID +
               '">' +
-              contact.company +
+              contact.companyName +
               "</a><br/><strong>Description :</strong> " +
               contact.description.replace(/(\r\n|\n|\r)/g, "<br />") +
               "</td><td>0</td></tr>";
