@@ -269,11 +269,11 @@ function list_maintenances() {
   $("#maintenanceListingSpan").dataTable({
     destroy: true,
     ajax: {
-      url: "apis/Kameo/maintenance_management.php",
+      url: "api/maintenances",
       contentType: "application/json",
       type: "get",
       data: {
-        action : 'list',
+        action : 'listAllMaintenances',
         dateStart: dateStartString,
         dateEnd: dateEndString
       },
@@ -438,8 +438,8 @@ function get_maintenance(ID){
                 $('#widget-maintenanceManagement-form input[name=address]').val(response);
               }
             }
-          }
-        });
+          })
+        };
 
         response.maintenance.services.forEach(function(service){
           $('#widget-maintenanceManagement-form .manualWorkload tbody').append('<tr><td>'+service.CATEGORY+'</td><td>'+service.DESCRIPTION+'</td><td>'+service.DURATION+'</td><td>'+service.AMOUNT+' €</td><td>'+Math.round(service.AMOUNT*1.21*100)/100+' €</td></tr>');
