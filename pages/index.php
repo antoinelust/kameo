@@ -152,6 +152,8 @@ include 'include/head.php';
 				<h1 class="text-green"><?= L::societes_title; ?></h1>
 				<ul class="grid grid-4-columns">
 					<!-- <li style="cursor: default;"><img draggable="false" src="images/clients/bpost.png" alt="Nos clients - BPost"></li> -->
+					<li style="cursor: default;"><img draggable="false" src="images/clients/VilleDeCharleroi.png" alt="Nos clients - Ville de Charleroi"></li>
+					<li style="cursor: default;"><img draggable="false" src="images/clients/CityDev.png" alt="Nos clients - city dev - brussels"></li>
 					<li style="cursor: default;"><img draggable="false" src="images/clients/actiris.png" alt="Nos clients - Actiris"></li>
 					<li style="cursor: default;"><img draggable="false" src="images/clients/infrabel.png" alt="Nos clients - Infrabel"></li>
 					<li style="cursor: default;"><img draggable="false" src="images/clients/afelio.png" alt="Nos clients - Afelio"></li>
@@ -159,10 +161,9 @@ include 'include/head.php';
 					<li style="cursor: default;"><img draggable="false" src="images/clients/galler.png" alt="Nos clients - Galler Chocolatiers"></li>
 					<li style="cursor: default;"><img draggable="false" src="images/clients/siapartners.png" alt="Nos clients - SiaPartners"></li>
 					<li style="cursor: default;"><img draggable="false" src="images/clients/spi.png" alt="Nos clients - SPI"></li>
+					<li style="cursor: default;"><img draggable="false" src="images/clients/Greisch.png" alt="Nos clients - Bureau Greisch"></li>
 					<li style="cursor: default;"><img draggable="false" src="images/clients/agc.png" alt="Nos clients - AGC"></li>
 					<li style="cursor: default;"><img draggable="false" src="images/clients/rayon9.png" alt="Nos clients - Rayon 9"></li>
-					<li style="cursor: default;"><img draggable="false" src="images/clients/chu.png" alt="Nos clients - CHU Liège"></li>
-					<li style="cursor: default;"><img draggable="false" src="images/clients/dedale.png" alt="Nos clients - Dedale Assurances"></li>
 					<li style="cursor: default;"><img draggable="false" src="images/clients/elegis.png" alt="Nos clients - Elegis"></li>
 					<li style="cursor: default;"><img draggable="false" src="images/clients/epsylon.png" alt="Nos clients - Epsylon"></li>
 					<li style="cursor: default;"><img draggable="false" src="images/clients/infine.png" alt="Nos clients - In Fine"></li>
