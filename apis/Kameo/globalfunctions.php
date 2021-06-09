@@ -73,7 +73,8 @@ function successMessage($MSGNUM) {
 function getAPIData($url1){
 	$curl_handle=curl_init();
 	curl_setopt($curl_handle, CURLOPT_URL,$url1);
-	curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 2);
+  curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 5);
+	curl_setopt($curl_handle, CURLOPT_TIMEOUT, 5);
 	curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
     if(constant('ENVIRONMENT')=="local"){
         curl_setopt($curl_handle, CURLOPT_SSL_VERIFYHOST, 0);
@@ -81,9 +82,9 @@ function getAPIData($url1){
     }
 
 	curl_setopt($curl_handle, CURLOPT_USERAGENT, 'Your application name');
-    curl_setopt($curl_handle, CURLOPT_VERBOSE, true);
-    $verbose = fopen('php://temp', 'w+');
-    curl_setopt($curl_handle, CURLOPT_STDERR, $verbose);
+  curl_setopt($curl_handle, CURLOPT_VERBOSE, true);
+  $verbose = fopen('php://temp', 'w+');
+  curl_setopt($curl_handle, CURLOPT_STDERR, $verbose);
 	$query = curl_exec($curl_handle);
     if(curl_errno($curl_handle)){
 		$response = array ('response'=>'error', 'message'=> curl_error($curl_handle));

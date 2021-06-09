@@ -8,7 +8,7 @@ $( ".fleetmanager" ).click(function() {
                 console.log(response.message);
             }
             if(response.response == 'success'){
-                document.getElementById('counterBike').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.bikeNumberClient+"\" data-from=\"0\" data-seperator=\"true\">"+response.bikeNumberClient+"</span>";
+                document.getElementById("counterBike").innerHTML = '<span style="margin-left:20px">'+response.bikeNumberClient+'</span>';
             }
         }
     })

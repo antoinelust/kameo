@@ -8,12 +8,7 @@ $(".fleetmanager").click(function () {
         console.log(response.message);
       }
       if (response.response == "success") {
-        document.getElementById("counterBoxesFleet").innerHTML =
-          '<span data-speed="1" data-refresh-interval="4" data-to="' +
-          response.boxesNumberTotal +
-          '" data-from="0" data-seperator="true">' +
-          response.boxesNumberTotal +
-          "</span>";
+        document.getElementById("counterBoxesFleet").innerHTML = '<span style="margin-left:20px">'+response.boxesNumberTotal+'</span>';
       }
     },
   });

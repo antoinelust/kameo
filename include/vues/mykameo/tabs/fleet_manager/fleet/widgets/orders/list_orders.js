@@ -9,10 +9,10 @@ $( ".fleetmanager" ).click(function() {
         data: { "email": email, "type": "ordersFleet"},
         success: function(response){
             if(response.response == 'error') {
-                console.log(response.message);
+              console.log(response.message);
             }
             if(response.response == 'success'){
-                document.getElementById('counterOrdersFleet').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.ordersNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.ordersNumber+"</span>";
+							document.getElementById("counterOrdersFleet").innerHTML = '<span style="margin-left:20px">'+response.ordersNumber+'</span>';
             }
         }
     })
@@ -35,7 +35,7 @@ function get_orders_fleet_listing() {
 
           while (i < response.ordersNumber){
 
-						if(response.order[i].status != 'closed'){
+						if(response.order[i].status != 'done'){
 
 	            if(response.order[i].status=="new"){
 	                var status="A confirmer";
@@ -135,7 +135,7 @@ function get_orders_fleet_listing() {
 							link.setAttribute("data-target", "#orderManagerFleet");
 							link.setAttribute("data-toggle", "modal");
 							link.setAttribute("href", "#");
-							link.setAttribute("name", response.order[i].groupID);
+							link.setAttribute("name", response.order[i].ID);
 							var newContent = document.createTextNode(response.order[i].ID);
 							link.appendChild(newContent);
 							column.appendChild(link);
@@ -238,8 +238,7 @@ function construct_form_for_command_validation(ID){
                     $('#widget-orderFleet-form input[name=brand]').val(response.brand);
                     $('#widget-orderFleet-form input[name=model]').val(response.model);
                     $('#widget-orderFleet-form select[name=frameType]').val(response.frameType);
-                    $('#widget-orderFleet-form .commandBike').attr('src', "images_bikes/"+response.order.img+".jpg");
-
+                    $('#widget-orderFleet-form .commandBike').attr('src', "images_bikes/"+response.order.portfolioID+".jpg");
                 }
           }
         });
@@ -337,7 +336,7 @@ function retrieve_command_fleet(ID){
 
 
           $('#widget-orderFleet-form input[name=emailUser]').val(response.order.email);
-          $('#widget-orderFleet-form .commandBike').attr('src', "images_bikes/"+response.order.img+".jpg");
+          $('#widget-orderFleet-form .commandBike').attr('src', "images_bikes/"+response.order.portfolioID+".jpg");
       }
     }
   })

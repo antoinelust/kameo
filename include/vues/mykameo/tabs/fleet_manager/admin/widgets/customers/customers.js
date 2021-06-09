@@ -9,12 +9,7 @@ $(".fleetmanager").click(function () {
         console.log(response.message);
       }
       if (response.response == "success") {
-        document.getElementById("counterClients").innerHTML =
-          '<span data-speed="1" data-refresh-interval="4" data-to="' +
-          response.companiesNumberClientOrProspect +
-          '" data-from="0" data-  seperator="true">' +
-          response.companiesNumberClientOrProspect +
-          "</span>";
+        document.getElementById("counterClients").innerHTML = '<span style="margin-left:20px">'+response.companiesNumberClientOrProspect+'</span>';
       }
     },
   });
@@ -1004,18 +999,20 @@ function update_company_users_list_admin(company){
           var temp =
             '<table class="table"><tbody><thead><tr><th scope="col">'+traduction.sidebar_last_name+'</th><th scope="col">'+traduction.sidebar_first_name+'</th><th scope="col">'+traduction.login_email+'</th><th>'+traduction.sidebar_phone+'</th><th></th><th></th></tr></thead>';
           dest = dest.concat(temp);
-          while (i < response.usersNumber) {
-            var temp =
-              '<tr><td scope="row">' +
-              response.users[i].name +
-              "</td><td>" +
-              response.users[i].firstName +
-              "</td><td>" +
-              response.users[i].email +
-              "</td><td>" +
-              response.users[i].phone +
-              "</td><td><a href='#' data-target='#updateUserAdmin' data-toggle='modal' data-email='"+response.users[i].email+"' class='text-green updateUserAdmin'>Update</a></td><td><a href='#' class='text-red deleteUserAdmin' data-email='"+response.users[i].email+"' data-company='"+company+"'>Delete</a></td></tr>";
-            dest = dest.concat(temp);
+          while (i < response.usersNumber){
+            if(response.users[i].staann != 'D'){
+              var temp =
+                '<tr><td scope="row">' +
+                response.users[i].name +
+                "</td><td>" +
+                response.users[i].firstName +
+                "</td><td>" +
+                response.users[i].email +
+                "</td><td>" +
+                response.users[i].phone +
+                "</td><td><a href='#' data-target='#updateUserAdmin' data-toggle='modal' data-email='"+response.users[i].email+"' class='text-green updateUserAdmin'>Update</a></td><td><a href='#' class='text-red deleteUserAdmin' data-email='"+response.users[i].email+"' data-company='"+company+"'>Delete</a></td></tr>";
+              dest = dest.concat(temp);
+            }
             i++;
           }
           dest = dest.concat("</tbody></table>");

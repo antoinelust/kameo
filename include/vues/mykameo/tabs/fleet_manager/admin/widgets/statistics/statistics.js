@@ -7,12 +7,11 @@ $(".fleetmanager").click(function () {
       if (response.response == "error") {
         console.log(response.message);
       }
-      document.getElementById("statisticsCounter").innerHTML ='<span style="color:#3cb395" data-speed="1" data-refresh-interval="4" data-seperator="false">' + Math.round(response.progressCA*100) + "%</span>";
-
       if (response.progressCA > 0) {
         $("#statisticsCounter").css("color", "#3cb395");
+        document.getElementById("statisticsCounter").innerHTML = '<span style="color: #3cb395; margin-left:20px">'+Math.round(response.progressCA*100)+'%</span>';
       }else {
-        $("#statisticsCounter").css("color", "#d80000");
+        document.getElementById("statisticsCounter").innerHTML = '<span style="color: #d80000; margin-left:20px">'+Math.round(response.progressCA*100)+'%</span>';
       }
     },
   });
@@ -226,7 +225,7 @@ $("#statisticsListing").on("show.bs.modal", function (event) {
                   let sum = 0;
                   let sumMargin = 0;
                   tooltipItems.forEach(function(tooltipItem) {
-                    if(tooltipItem.dataset.label == 'Ventes - Marge' || tooltipItem.dataset.label == 'Leasing - Marge'){
+                    if(tooltipItem.dataset.label == 'Ventes - Marge' || tooltipItem.dataset.label == 'Leasing - Marge' || tooltipItem.dataset.label == 'Bornes - Marge'){
                       sumMargin += tooltipItem.parsed.y;
                     }
                     sum += tooltipItem.parsed.y;

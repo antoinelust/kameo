@@ -28,14 +28,6 @@
 									</div>
 								</div>
 								<div class="separator"></div>
-								<h4 class="text-green">Informations sur les dates</h4>
-								<div class="col-md-12">
-									<div class="col-md-6">
-										<label for="widget-addDevis-form-date">Date de devis</label>
-										<input type="date" class="widget-addDevis-form-date form-control required" name="widget-addDevis-form-date">
-									</div>
-								</div>
-								<div class="separator"></div>
 								<div class="col-md-12 generateBillDetails">
 									<div class="row generateBillAccessoriesDevis">
 										<div class="col-md-12">
@@ -107,9 +99,8 @@
 										</div>
 										<table class="table table-condensed tableFixed otherCostsManualWorkloadTable hideAt0" style="display: none;">
 											<thead>
-												<th class="col-md-2">Catégorie</th>
-												<th class="col-md-2">Description</th>
-												<th class="col-md-2">Vélo</th>
+												<th class="col-md-3">Catégorie</th>
+												<th class="col-md-3">Description</th>
 												<th class="col-md-2">Durée (min)</th>
 												<th class="col-md-2">Total (€ HTVA)</th>
 												<th class="col-md-2">Total (€ TVAC)</th>
@@ -154,7 +145,7 @@
 						}, {
 							type: 'success'
 						});
-						
+
 						$('#addDevis').modal('toggle');
 						document.getElementById('widget-addDevis-form').reset();
 						$("#listDevisDone").dataTable().api().ajax.reload();

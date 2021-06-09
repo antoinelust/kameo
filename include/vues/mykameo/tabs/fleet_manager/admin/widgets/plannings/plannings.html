@@ -1,12 +1,20 @@
 
 <div class="modal fade" id="planningsListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important">
-  <div class="modal-dialog modal-lg" style="width: 85%">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" >×</button>
       </div>
       <h4 class="text-green" style="display: inline;">Feuilles de route:</h4><br>
       <br>
+      <div class='col-md-3'>
+        <label for='dateStart'>Date de début</label>
+        <input type="date" name='dateStart' class="form-control">
+      </div>
+      <div class='col-md-3'>
+        <label for='dateEnd'>Date de fin</label>
+        <input type="date" name='dateEnd' class='form-control'>
+      </div>
       <div data-example-id="contextual-table" class="bs-example">
         <table id="planningsListingTable" class="row-border" style="width:100%"></table>
       </div>
@@ -20,42 +28,51 @@
 
 
 <div class="modal fade" id="planningManagement" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important">
-  <div class="modal-dialog modal-lg" style="width: 85%">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" >×</button>
       </div>
       <div class="modal-body">
         <div class="row">
-          <div class="col-sm-12">
-            <h4 class="text-green" name='title'> Feuille de route du <span name='dateTitle'></span> </h4>
-            <div class="separator"></div>
-            <div class="col-md-4">
-              <label for='startHour'>Heure de départ:</label>
-              <input type='time' class="form-control required" name='startHour' value='08:30'>
+          <form id='widget-form-planning' action='api/plannings' role="form" method="post">
+            <div class="col-sm-12">
+              <h4 class="text-green" name='title'> Feuille de route du <span name='dateTitle'></span> </h4>
+              <div class="separator"></div>
+              <div class="row">
+                <div class="col-md-4">
+                  <label for='startHour'>Heure de départ:</label>
+                  <input type='time' class="form-control required" name='startHourTour' value='08:30'>
+                </div>
+                <div class='col-md-8'>
+                  <label for='startAddress'>Depuis l'adresse:</label>
+                  <input type='text' class="form-control required" name='startAddress' value='8 Rue de la brasserie, 4000 Liège'>
+                </div>
+              </div>
+              <a class="button small green button-3d rounded icon-right" href="#" name='addPlanningStep'><i class="fa fa-plus"></i>Ajouter une étape</a>
+              <div class="separator"></div>
+              <div class="col-md-12 planningDetails container" style='border: 2px solid black'>
+              </div>
+              <div class="separator"></div>
+              <div class='col-md-4'>
+                <label for='endAddress'>Jusqu'à l'adresse:</label>
+                <input type='text' class="form-control required" name='endAddress' value='8 Rue de la brasserie, 4000 Liège'>
+              </div>
+              <div class="col-md-4">
+                <br>Temps de déplacement : <span name="endPointDuration"></span> min
+                <input type='int' class="form-control required hidden" name='endPointDeplacement'>
+              </div>
+              <div class="col-md-4">
+                <label for='endHour'>Heure de Fin:</label>
+                <input type='time' class="form-control required" name='endHourTour' value='08:30'>
+              </div>
+              <div class="separator"></div>
+              <span class="text-green">Durée totale : <span name='totalTourLength'></span></span>
             </div>
-            <div class='col-md-8'>
-              <label for='startAddress'>Depuis l'adresse:</label>
-              <input type='text' class="form-control required" name='startAddress' value='8 Rue de la brasserie, 4000 Liège'>
-            </div>
-            <div class="separator"></div>
-            <div class="col-md-12 planningDetails container" style='border: 2px solid black'>
-            </div>
-            <div class="separator"></div>
-            <div class='col-md-4'>
-              <label for='endAddress'>Jusqu'à l'adresse:</label>
-              <input type='text' class="form-control required" name='endAddress' value='8 Rue de la brasserie, 4000 Liège'>
-            </div>
-            <div class="col-md-4">
-              <br>Temps de déplacement : <span name="endPointDuration">60</span> min
-            </div>
-            <div class="col-md-4">
-              <label for='endHour'>Heure de Fin:</label>
-              <input type='time' class="form-control required" name='endHour' value='08:30'>
-            </div>
-            <div class="separator"></div>
-            <span class="text-green">Durée totale : <span name='totalTourLength'></span></span>
-          </div>
+            <input type='date' class='hidden' name='date'>
+            <input type='text' class='hidden' name='action' value='add'>
+            <button class="button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i><?= L::generic_send; ?></button>
+          </form>
         </div>
       </div>
       <div class="modal-footer">
@@ -64,3 +81,35 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+  jQuery("#widget-form-planning").validate({
+    submitHandler: function (form) {
+      jQuery(form).ajaxSubmit({
+        success: function (response) {
+          if (response.response == "success") {
+            $.notify(
+              {
+                message: response.message,
+              },
+              {
+                type: "success",
+              }
+            );
+            $('#planningManagement').modal('toggle');
+            listPlannings();
+          } else {
+            $.notify(
+              {
+                message: response.message,
+              },
+              {
+                type: "danger",
+              }
+            );
+          }
+        },
+      });
+    },
+  });
+</script>

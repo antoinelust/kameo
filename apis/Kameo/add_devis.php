@@ -18,13 +18,11 @@ use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 
 $commentDevis=$_POST['commentDevis'];
 $company=addslashes($_POST['company']);
-$date=$_POST['widget-addDevis-form-date'];
 
+$accessoriesNumber=isset($_POST['accessoryID']) ? count($_POST['accessoryID']) : 0;
+$otherAccessoriesNumber=isset($_POST['otherAccessoryDescription']) ? count($_POST['otherAccessoryDescription']) : 0;
 
-$accessoriesNumber=isset($_POST['accessoriesNumber']) ? $_POST['accessoriesNumber'] : NULL;
-$otherAccessoriesNumber=isset($_POST['otherAccessoriesNumber']) ? $_POST['otherAccessoriesNumber'] : NULL;
-
-include 'connexion.php'; 
+include 'connexion.php';
   $i=0;
   $j=0;
   while($j<$accessoriesNumber){
@@ -46,7 +44,6 @@ include 'connexion.php';
   }
   if(isset($_POST['service'])){
     foreach ($_POST['service'] as $key=>$value) {
-      $data['ID'.$i] = $_POST['bikeMaintenance'][$key];
       $data['price'.$i] = $_POST['manualWorkloadTotal'][$key];
       $data['description'.$i] = $_POST['service'][$key];
       $data['minutes'.$i] = $_POST['manualWorkloadLength'][$key];
@@ -57,7 +54,7 @@ include 'connexion.php';
   }
   $data['itemNumber'] = $i;
   $data['company'] = $company;
-  $data['dateStart'] = $date;
+  $data['dateStart'] = date('Y').'-'.date('m').'-'.date('d');
   $data['commentDevis']=$commentDevis;
 
 $url='http://'.$_SERVER['HTTP_HOST'].'/scripts/generate_devis.php';
@@ -66,7 +63,8 @@ try {
   $html2pdf = new Html2Pdf('P', 'A4', 'fr', true, 'UTF-8', 3);
   $html2pdf->pdf->SetDisplayMode('fullpage');
   $html2pdf->writeHTML($test);
-  $path=$_SERVER['DOCUMENT_ROOT'].'/devisEntretien/'.date('Y').'.'.date('m').'.'.date('d').'_'.$company.'_devisEntretien.pdf';
+  $devisID=(execSQL("SELECT MAX(ID) as maxID FROM devis_entretien", array(), false)[0]['maxID']);
+  $path=$_SERVER['DOCUMENT_ROOT'].'/devisEntretien/'.date('Y').'-'.date('m').'-'.date('d').'_'.$company.'_'.$devisID.'.pdf';
   $html2pdf->Output($path, 'F');
 } catch (Html2PdfException $e) {
   $html2pdf->clean();

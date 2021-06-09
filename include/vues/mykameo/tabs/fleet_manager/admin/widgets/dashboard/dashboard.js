@@ -287,14 +287,10 @@ function list_errors() {
         $(".dashboardCompanies").html(
           "Sociétés (" + companyErrors + ")"
         );
-        if ( (bikeErrors+companyErrors+billErrors) == 0 ) {
-          document.getElementById("errorCounter").innerHTML =
-            '<span data-speed="1" data-refresh-interval="4" data-to="0" data-from="0" data-seperator="true">0</span>';
-          $("#errorCounter").css("color", "#3cb395");
-        } else {
-          document.getElementById("errorCounter").innerHTML =
-            '<span data-speed="1" data-refresh-interval="4" data-seperator="true">' + (bikeErrors+companyErrors+billErrors) + "</span>";
-          $("#errorCounter").css("color", "#d80000");
+        if((bikeErrors+companyErrors+billErrors)==0){
+          document.getElementById("errorCounter").innerHTML = '<span style="color: #3cb395; margin-left:20px">0</span>';
+        }else{
+          document.getElementById("errorCounter").innerHTML = '<span style="color: #d80000; margin-left:20px">'+(bikeErrors+companyErrors+billErrors)+'</span>';
         }
         $(".updateBikeAdmin").off();
         $(".updateBikeAdmin").click(function () {

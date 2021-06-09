@@ -6,8 +6,6 @@ use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 include_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/globalfunctions.php';
 
 $company=$_POST['company'];
-$date=$_POST['dateStart'];
-
 
 $itemNumber=$_POST['itemNumber'];
 $commentDevis=$_POST['commentDevis'];
@@ -15,15 +13,14 @@ $commentDevis=$_POST['commentDevis'];
 $totalTVA6=0;
 $totalTVA21=0;
 
-$dateStart=new DateTime($date);
+$dateStart=new DateTime();
 $date1monthAfter=new DateTime('now');
 $interval = new DateInterval('P30D');
 $date1monthAfter->add($interval);
 $date1monthAfterString=$date1monthAfter->format('Y-m-d');
+$date=$dateStart->format('Y-m-d');
 
 $simulation='N';
-
-
 
 include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
 
@@ -58,14 +55,6 @@ $street=$resultat['STREET'];
 $zip=$resultat['ZIP_CODE'];
 $town=$resultat['TOWN'];
 $vat=$resultat['VAT_NUMBER'];
-
-
-$base_modulo=date('d').date('m').$reference;
-$modulo_check=($base_modulo % 97);
-$reference=substr('0000'.$base_modulo.$modulo_check, -12);
-$reference=substr($reference, 0,3).'/'.substr($reference, 3,4).'/'.substr($reference, 7,5);
-
-
 
 $monthFR=array('Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre');
 
@@ -139,7 +128,6 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
         </td>
         <td>
-            <h4 style="color: #C72C28">Référence : +++'.$reference.'+++</h4>
 
         </td>
     </tr>
@@ -178,16 +166,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
                 if($type=="accessorySell"){
 
-                    include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
-                    $sql2="SELECT * from accessories_catalog where ID='$ID'";
-                    if ($conn->query($sql2) === FALSE) {
-                        echo $conn->error;
-                        die;
-                    }
-                    $result2 = mysqli_query($conn, $sql2);
-                    $resultat2 = mysqli_fetch_assoc($result2);
-                    $conn->close();
-
+                    $resultat2=execSQL("SELECT * from accessories_catalog where ID=?", array('i', $ID), false)[0];
                     $comment='Vente au '.$dateStart->format('d-m-Y');
 
                     $test2.='<tr>
@@ -203,8 +182,10 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     <tr>
                         <td></td>
                         <td></td>
-                        ';
-                    $test2=$test2."<td></td></tr>";
+                        <td>
+                          Vente<br><br>
+                        </td>
+                    </tr>';
                 }else if($type=="otherAccessorySell"){
 
                     $comment='Vente au '.$dateStart->format('d-m-Y');
@@ -222,10 +203,11 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     <tr>
                         <td></td>
                         <td></td>
-                        ';
-                    $test2=$test2."<td>Vente<br><br></td></tr>";
+                        <td>
+                          Vente<br><br>
+                        </td>
+                    </tr>';
                 }else if($type=="maintenance"){
-
 
                   $comment=$_POST['description'.$i].'/'.($_POST['minutes'.$i]);
                   $description=execSQL("SELECT DESCRIPTION FROM services_entretiens WHERE ID=?", array('i', $description), false)[0]['DESCRIPTION'];
@@ -240,12 +222,13 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                       <td style="color: grey">T.V.A. 6%</td>
                       <td></td>
                   </tr>
-
                   <tr>
                       <td></td>
                       <td></td>
-                      ';
-                  $test2=$test2."<td>Main d'oeuvre<br><br></td></tr>";
+                      <td>
+                        Main d\'oeuvre<br><br>
+                      </td>
+                  </tr>';
                 }
 
                 $i+=1;
@@ -256,7 +239,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                   $totalTVA6+=$price;
                 }
             }
-            $fileName=date('Y').'.'.date('m').'.'.date('d').'_'.$company.'_devisEntretien.pdf';
+            $fileName=date('Y').'.'.date('m').'.'.date('d').'_'.$company.'_'.$idDevis.'_devisEntretien.pdf';
 
             $tva6=($totalTVA6*0.06);
             $tva21=($totalTVA21*0.21);
@@ -335,12 +318,12 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
 
 include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
-        $sql= "INSERT INTO  devis_entretien (STATUS, DATE_DEVIS, COMPANY,COMMENT,AMOUNT_HTVA,AMOUNT_TVAC,FILE_NAME) VALUES ('NONE','$date','$company','$commentDevis',round($totalTVA6+$totalTVA21,2), round($totalTVAIncluded6+$totalTVAIncluded21,2),'$fileName')";
-    if ($conn->query($sql) === FALSE) {
-        $response = array ('response'=>'error', 'message'=> $conn->error);
-        echo json_encode($response);
-        die;
-    }
+  $sql= "INSERT INTO  devis_entretien (STATUS, DATE_DEVIS, COMPANY,COMMENT,AMOUNT_HTVA,AMOUNT_TVAC) VALUES ('NONE','$date','$company','$commentDevis',round($totalTVA6+$totalTVA21,2), round($totalTVAIncluded6+$totalTVAIncluded21,2))";
+  if ($conn->query($sql) === FALSE) {
+      $response = array ('response'=>'error', 'message'=> $conn->error);
+      echo json_encode($response);
+      die;
+  }
 
 echo $test1.$test2.$test3;
 

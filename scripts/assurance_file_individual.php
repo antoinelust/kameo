@@ -12,7 +12,7 @@ bike_catalog.BRAND, bike_catalog.MODEL, bike_catalog.UTILISATION, customer_bikes
 FROM (SELECT customer_bikes.ID as bikeID, IF( EXISTS( SELECT * FROM customer_bike_access WHERE customer_bike_access.TYPE='personnel' AND customer_bike_access.BIKE_ID=customer_bikes.ID), (SELECT EMAIL FROM customer_bike_access WHERE customer_bike_access.TYPE='personnel' AND customer_bike_access.BIKE_ID=customer_bikes.ID) , 'partage') as bikeOwner FROM customer_bikes) as tt, customer_bikes, bike_catalog
 
 WHERE tt.bikeID=customer_bikes.ID
-AND customer_bikes.TYPE=bike_catalog.ID AND (customer_bikes.INSURANCE_INDIVIDUAL='Y' OR CONTRACT_TYPE='leasing' OR CONTRACT_TYPE='renting') AND (CONTRACT_END >= ? OR CONTRACT_END is NULL)", array('s', $nowString), false);
+AND customer_bikes.TYPE=bike_catalog.ID AND (customer_bikes.INSURANCE_INDIVIDUAL=1) AND (CONTRACT_END >= ? OR CONTRACT_END is NULL)", array('s', $nowString), false);
 
 // Création de l'excel
 header('Content-Encoding: UTF-8');

@@ -8,12 +8,7 @@ $(".fleetmanager").click(function () {
         console.log(response.message);
       }
       if (response.response == "success") {
-        document.getElementById("counterStockAccessoriesCounter").innerHTML =
-        '<span style="color:#3cb395" data-speed="1" data-refresh-interval="4" data-to="' +
-        response.accessoriesNumber +
-        '" data-from="0" data-seperator="false">' +
-        response.accessoriesNumber +
-        "</span>";
+        document.getElementById("counterStockAccessoriesCounter").innerHTML = '<span style="margin-left:20px; color:#3cb395">'+response.accessoriesNumber+'</span>';
       }
     },
   });

@@ -9,17 +9,9 @@ $(".fleetmanager").click(function () {
       }
       if (response.response == "success") {
         if (response.sumContractsCurrent > 0) {
-          document.getElementById("cashFlowSpan").innerHTML =
-            '<span data-speed="1" data-refresh-interval="4"  data-seperator="true" size="-1">' +
-            Math.round(response.sumContractsCurrent) +
-            "</span>";
-          $("#cashFlowSpan").css("color", "#3cb395");
+          document.getElementById("cashFlowSpan").innerHTML = '<span style="color: #3cb395; margin-left:20px">'+Math.round(response.sumContractsCurrent)+'€</span>';
         } else {
-          document.getElementById("cashFlowSpan").innerHTML =
-            '<span data-speed="1" data-refresh-interval="4" data-seperator="true">' +
-            Math.round(response.sumContractsCurrent) +
-            "</span>";
-          $("#cashFlowSpan").css("color", "#d80000");
+          document.getElementById("cashFlowSpan").innerHTML = '<span style="color: #d80000; margin-left:20px">'+Math.round(response.sumContractsCurrent)+'€</span>';
         }
       }
     },

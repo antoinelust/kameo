@@ -8,7 +8,7 @@ $( ".fleetmanager" ).click(function() {
 				console.log(response.message);
 			}
 			if(response.response == 'success'){
-				document.getElementById('counterGroupedCommands').innerHTML = "<span class=\"text-green\" data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.ordersNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.ordersNumber+"</span>";
+				document.getElementById("counterGroupedCommands").innerHTML = '<span style="margin-left:20px; color:#3cb395">'+response.ordersNumber+'</span>';
 			}
 		}
 	})

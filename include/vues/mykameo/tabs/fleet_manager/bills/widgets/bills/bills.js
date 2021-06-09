@@ -177,7 +177,7 @@ function create_bill(){
   $('#widget-addBill-form textarea').val('');
 
   //Accessoires
-  get_all_accessories().done(function(response){
+  get_all_accessories_in_stock().done(function(response){
     //variables
     var accessories = response.accessories;
     if(accessories == undefined){
@@ -242,8 +242,8 @@ function create_bill(){
       //on change de la catégorie
       $('.generateBillAccessories').find('.selectCategory').off();
       $('.generateBillAccessories').find('.selectCategory').on("change",function(){
-        var that = '#' + $(this).attr('id');
-        var categoryId =$(that).val();
+        var categoryId =$(this).val();
+        var $row=$(this).closest('.accessoriesRow');
         var accessoriesOption = "<option hidden disabled selected value>Veuillez choisir un accesoire</option>";
 
         //ne garde que les accessoires de cette catégorie
@@ -262,27 +262,27 @@ function create_bill(){
           });
         }
         //place les accessoires dans le select
-        $(that).parents('tr').find('.selectAccessory').html(accessoriesOption);
+        $row.find('.selectAccessory').html(accessoriesOption);
 
         //retire l'affichage d'éventuels prix
-        $(that).parents('.accessoriesRow').find('.aBuyingPrice').html('');
-        $(that).parents('.accessoriesRow').find('.aPriceHTVA').html('');
+        $row.find('.aBuyingPrice').html('');
+        $row.find('.aPriceHTVA').html('');
       });
 
       $('.generateBillAccessories').find('.selectAccessory').on("change",function(){
-        var that = '#' + $(this).attr('id');
-        var accessoryId =$(that).val();
-        console.log(accessoryId);
+        var accessoryId =$(this).val();
+        var $row=$(this).closest('.accessoriesRow');
+
           //récupère le bon index même si le tableau est désordonné
           accessoryId = getIndex(accessories, accessoryId);
 
           var buyingPrice = accessories[accessoryId].buyingPriceCatalog + '€';
           var priceHTVA = accessories[accessoryId].sellingPriceCatalog + '€';
 
-          $(that).parents('.accessoriesRow').find('.aBuyingPrice').html(buyingPrice);
-          $(that).parents('.accessoriesRow').find('.aPriceHTVA').html(priceHTVA);
-          $(that).parents('.accessoriesRow').find('.aPriceHTVA').attr('data-orig',priceHTVA);
-          $(that).parents('.accessoriesRow').find('.accessoryFinalPrice').val(accessories[accessoryId].sellingPriceCatalog);
+          $row.find('.aBuyingPrice').html(buyingPrice);
+          $row.find('.aPriceHTVA').html(priceHTVA);
+          $row.find('.aPriceHTVA').attr('data-orig',priceHTVA);
+          $row.find('.accessoryFinalPrice').val(accessories[accessoryId].sellingPriceCatalog);
         });
 
       $('#widget-addBill-form .accessoriesRow .aPriceHTVA ').blur(function(){
@@ -883,7 +883,7 @@ function get_bills_listing() {
 }
 
 //liste des Accessoires
-function get_all_accessories() {
+function get_all_accessories_in_stock() {
   return  $.ajax({
     url: 'api/accessories',
     type: 'get',

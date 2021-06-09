@@ -127,19 +127,18 @@ if(isset($_POST['contractStart']) && isset($_POST['contractEnd'])){
     if(isset($_POST['contractType'])){
         if ($_POST['contractType'] == 'leasing'){
             $dates = plan_maintenances($_POST['contractStart'], $_POST['contractEnd']);
-
-            for ($i=0; $i < sizeof($dates); $i++) {
+            $address=execSQL("SELECT (CASE WHEN EXISTS (SELECT 1 FROM customer_bike_access WHERE customer_bike_access.BIKE_ID=customer_bikes.ID AND customer_bike_access.STAANN != 'D' AND customer_bike_access.TYPE='personnel') THEN (SELECT CONCAT(customer_referential.ADRESS, ' ', customer_referential.POSTAL_CODE, ' ', customer_referential.CITY) FROM customer_referential, customer_bike_access WHERE customer_referential.EMAIL=customer_bike_access.EMAIL AND customer_bike_access.BIKE_ID=customer_bikes.ID LIMIT 1) ELSE (SELECT CONCAT(companies.STREET, ' ', companies.ZIP_CODE, ' ', companies.TOWN) FROM companies WHERE companies.INTERNAL_REFERENCE=customer_bikes.COMPANY LIMIT 1) END) as ADDRESS FROM customer_bikes WHERE customer_BIKES.ID=?", array('i', $bikeID), false)[0]['ADDRESS'];
+            for ($i=0; $i < sizeof($dates); $i++){
                 $next_date = $dates[$i];
                 $num_m = array_search($next_date, $dates) + 1;
-
-                execSQL("INSERT INTO entretiens (HEU_MAJ, USR_MAJ, BIKE_ID, DATE, STATUS, NR_ENTR)
-                SELECT CURRENT_TIMESTAMP, '$token', '$bikeID', '$next_date', 'AUTOMATICALY_PLANNED', '$num_m'
+                execSQL("INSERT INTO entretiens (HEU_MAJ, USR_MAJ, BIKE_ID, DATE, STATUS, NR_ENTR, ADDRESS)
+                SELECT CURRENT_TIMESTAMP, '$token', '$bikeID', '$next_date', 'AUTOMATICALY_PLANNED', '$num_m', '$address'
                 FROM DUAL WHERE NOT EXISTS (SELECT * FROM entretiens WHERE BIKE_ID = '$bikeID' AND DATE(DATE + INTERVAL 3 MONTH) >= '$dates[$i]')", array(), true);
             }
         }
         if ($_POST['contractType'] == 'selling') {
             $date = date('Y-m-d', strtotime("+3 months", strtotime($_POST['contractStart'])));
-            execSQL("INSERT INTO entretiens (HEU_MAJ, USR_MAJ, BIKE_ID, DATE, STATUS, NR_ENTR) VALUES (CURRENT_TIMESTAMP, '$user', '$bikeID', '$date', 'AUTOMATICALY_PLANNED', 1)", array(), true);
+            execSQL("INSERT INTO entretiens (HEU_MAJ, USR_MAJ, BIKE_ID, DATE, STATUS, NR_ENTR, ADDRESS) VALUES (CURRENT_TIMESTAMP, '$user', '$bikeID', '$date', 'AUTOMATICALY_PLANNED', 1, '8 Rue de la brasserie, 4000 Liège')", array(), true);
         }
     }
 }

@@ -467,6 +467,30 @@ include 'include/vues/mykameo/widgets/support/contact_support.html';
 
   <!-- FLEET MANAGER WIDGETS -->
   <?php
+
+  if(get_user_permissions("dashboard", $token)){
+    //DASHBOARD
+    include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/dashboard/main.php';
+  }
+
+  if (get_user_permissions("bills", $token)) {
+    //BILLS
+    include 'include/vues/mykameo/tabs/fleet_manager/bills/widgets/bills/main.php';
+  }
+
+  if(get_user_permissions("cashflow", $token)){
+    //CASHFLOW
+    include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/cashflow/main.php';
+  }
+
+  /////////Ajout de stock
+  if (get_user_permissions("stock", $token)) {
+    //Stock
+    include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/stock/widgets/main.php';
+    include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/preOrderCSV/widgets/main.php';
+  }
+
+
   /** FLEET **/
 
   //BIKES
@@ -546,27 +570,7 @@ include 'include/vues/mykameo/widgets/support/contact_support.html';
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/statistics/main.php';
   }
 
-  if(get_user_permissions("cashflow", $token)){
-    //CASHFLOW
-    include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/cashflow/main.php';
-  }
 
-  if(get_user_permissions("dashboard", $token)){
-    //DASHBOARD
-    include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/dashboard/main.php';
-  }
-
-  if (get_user_permissions("bills", $token)) {
-    //BILLS
-    include 'include/vues/mykameo/tabs/fleet_manager/bills/widgets/bills/main.php';
-  }
-
-  /////////Ajout de stock
-  if (get_user_permissions("stock", $token)) {
-    //Stock
-    include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/stock/widgets/main.php';
-    include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/preOrderCSV/widgets/main.php';
-  }
   /////////////
 }
 ?>

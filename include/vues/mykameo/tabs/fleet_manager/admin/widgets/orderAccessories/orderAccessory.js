@@ -8,7 +8,7 @@ $( ".fleetmanager" ).click(function() {
 				console.log(response.message);
 			}
 			if(response.response == 'success'){
-				document.getElementById('counterOrderAccessoriesCounter').innerHTML = "<span class=\"text-green\" data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.ordersAccessoryNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.ordersAccessoryNumber+"</span>";
+				document.getElementById("counterOrderAccessoriesCounter").innerHTML = '<span style="margin-left:20px; color:#3cb395">'+response.ordersAccessoryNumber+'</span>';
 			}
 		}
 	})

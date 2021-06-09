@@ -63,9 +63,9 @@ switch($_SERVER["REQUEST_METHOD"])
 
 		if($action === 'deleteUserAdmin'){
 			if(get_user_permissions("admin", $token)){
-					execSQL("DELETE FROM customer_referential WHERE EMAIL = ?", array('s', $_POST['email']), true);
-					execSQL("DELETE FROM customer_bike_access WHERE EMAIL = ?", array('s', $_POST['email']), true);
-					execSQL("DELETE FROM customer_building_access WHERE EMAIL = ?", array('s', $_POST['email']), true);
+					execSQL("UPDATE customer_referential SET HEU_MAJ=CURRENT_TIME, USR_MAJ=?, STAANN = 'D' WHERE EMAIL = ?", array('ss', $token, $_POST['email']), true);
+					execSQL("UPDATE customer_bike_access SET TIMESTAMP=CURRENT_TIME, USR_MAJ=?, STAANN = 'D' WHERE EMAIL = ?", array('ss', $token, $_POST['email']), true);
+					execSQL("UPDATE customer_building_access SET TIMESTAMP=CURRENT_TIME, USR_MAJ=?, STAANN = 'D' WHERE EMAIL = ?", array('ss', $token, $_POST['email']), true);
 					successMessage("SM0030");
 			}else
 				error_message('403');

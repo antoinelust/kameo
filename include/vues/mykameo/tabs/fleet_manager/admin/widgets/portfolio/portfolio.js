@@ -8,12 +8,7 @@ $(".fleetmanager").click(function () {
         console.log(response.message);
       }
       if (response.response == "success") {
-        document.getElementById("counterBikePortfolio").innerHTML =
-          '<span data-speed="1" data-refresh-interval="4" data-to="' +
-          response.bikeNumberPortfolio +
-          '" data-from="0" data-seperator="true">' +
-          response.bikeNumberPortfolio +
-          "</span>";
+        document.getElementById("counterBikePortfolio").innerHTML = '<span style="color: #3cb395; margin-left:20px">'+response.bikeNumberPortfolio+'</span>';
       }
     },
   });

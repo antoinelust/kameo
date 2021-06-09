@@ -33,7 +33,7 @@ $billingSentDate=isset($_POST['widget-addBill-form-sendingDate']) ? date($_POST[
 $billingPaid=isset($_POST['widget-addBill-form-paid']) ? "1" : "0";
 $billingPaidDate=isset($_POST['widget-addBill-form-paymentDate']) ? date($_POST['widget-addBill-form-paymentDate']) : "0";
 $billingLimitPaidDate=isset($_POST['widget-addBill-form-datelimite']) ? date($_POST['widget-addBill-form-datelimite']) : "0";
-$communication=addslashes($_POST['communication']);
+$communication=isset($_POST['communication']) ? $_POST['communication'] : NULL;
 $commentBilling=isset($_POST['comment']) ? nl2br($_POST['comment']) : NULL;
 
 $scan=isset($_POST['scan']) ? addslashes($_POST['scan']) : NULL;

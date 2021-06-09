@@ -54,14 +54,6 @@ switch($_SERVER["REQUEST_METHOD"])
 			) as PHONE,
 
 			(CASE
-			 WHEN tt.type='personnel' THEN (SELECT CONCAT(customer_referential.ADRESS, ' ', customer_referential.POSTAL_CODE, ' ', customer_referential.CITY) FROM customer_referential, customer_bike_access WHERE customer_referential.EMAIL=customer_bike_access.EMAIL AND customer_bike_access.BIKE_ID=tt.BIKE_ID LIMIT 1)
-			 WHEN tt.type='partage' OR tt.type='vendu' THEN (SELECT CONCAT(companies.STREET, ' ', companies.ZIP_CODE, ' ', companies.TOWN) FROM customer_bikes, companies WHERE customer_bikes.ID=tt.BIKE_ID AND companies.INTERNAL_REFERENCE=customer_bikes.COMPANY LIMIT 1)
-			 WHEN tt.type='externe' THEN (SELECT CONCAT(companies.STREET, ' ', companies.ZIP_CODE, ' ', companies.TOWN) FROM external_bikes, companies WHERE external_bikes.ID=tt.BIKE_ID AND companies.ID=external_bikes.COMPANY_ID LIMIT 1)
-			 ELSE 'undefined'
-			 END
-			) as ADDRESS,
-
-			(CASE
 			 WHEN tt.type='personnel' OR tt.type='partage' OR tt.type='vendu' THEN (SELECT companies.COMPANY_NAME FROM companies, customer_bikes WHERE customer_bikes.COMPANY=companies.INTERNAL_REFERENCE AND customer_bikes.ID=tt.BIKE_ID LIMIT 1)
 			 WHEN tt.type='externe' THEN (SELECT companies.COMPANY_NAME FROM companies, external_bikes WHERE external_bikes.COMPANY_ID=companies.ID AND external_bikes.ID=tt.BIKE_ID LIMIT 1)
 			 ELSE 'undefined'
@@ -84,7 +76,7 @@ switch($_SERVER["REQUEST_METHOD"])
 			END) as 'paid'
 
 			FROM
-			(SELECT entretiens.ID, entretiens.BIKE_ID, entretiens.EXTERNAL_BIKE, entretiens.DATE, entretiens.STATUS, entretiens.OUT_DATE_PLANNED, entretiens.AVOID_BILLING,
+			(SELECT entretiens.ID, entretiens.BIKE_ID, entretiens.EXTERNAL_BIKE, entretiens.DATE, entretiens.STATUS, entretiens.OUT_DATE_PLANNED, entretiens.AVOID_BILLING, entretiens.ADDRESS,
 
 			(CASE
 			 WHEN entretiens.EXTERNAL_BIKE=0 THEN
@@ -147,15 +139,20 @@ switch($_SERVER["REQUEST_METHOD"])
 			$bike_id = isset($_POST["velo"]) ? $_POST["velo"] : NULL;
 			$external = isset($_POST["external"]) ? $_POST["external"] : NULL;
 			$outDatePlanned = isset($_POST["dateOutPlanned"]) ? $_POST["dateOutPlanned"] : NULL;
+			if(isset($_POST['maintenanceatKAMEO'])){
+				$address="8 Rue de la Brasserie, 4000 Liège";
+			}else{
+				$address=$_POST['address'];
+			}
 
 			if($status=='DONE'){
-				execSQL("INSERT INTO entretiens (HEU_MAJ,END_DATE_MAINTENANCE, USR_MAJ, BIKE_ID, EXTERNAL_BIKE, DATE, STATUS, COMMENT, INTERNAL_COMMENT, NR_ENTR,OUT_DATE_PLANNED ) VALUES (CURRENT_TIMESTAMP,CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, 1, ?)", array('siissssS', $user, $bike_id, $external, $date, $status, $comment, $internalComment,$outDatePlanned), true);
+				execSQL("INSERT INTO entretiens (HEU_MAJ,END_DATE_MAINTENANCE, USR_MAJ, BIKE_ID, EXTERNAL_BIKE, DATE, STATUS, COMMENT, INTERNAL_COMMENT, NR_ENTR,OUT_DATE_PLANNED, ADDRESS ) VALUES (CURRENT_TIMESTAMP,CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?)", array('siissssss', $user, $bike_id, $external, $date, $status, $comment, $internalComment,$outDatePlanned, $address), true);
 			}
 			else if($status=='DELIVERED_TO_CLIENT'){
-				execSQL("INSERT INTO entretiens (HEU_MAJ,OUT_DATE, USR_MAJ, BIKE_ID, EXTERNAL_BIKE, DATE, STATUS, COMMENT, INTERNAL_COMMENT, NR_ENTR, OUT_DATE_PLANNED ) VALUES (CURRENT_TIMESTAMP,CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, 1,? )", array('siisssss', $user, $bike_id, $external, $date, $status, $comment, $internalComment,$outDatePlanned), true);
+				execSQL("INSERT INTO entretiens (HEU_MAJ,OUT_DATE, USR_MAJ, BIKE_ID, EXTERNAL_BIKE, DATE, STATUS, COMMENT, INTERNAL_COMMENT, NR_ENTR, OUT_DATE_PLANNED ) VALUES (CURRENT_TIMESTAMP,CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?)", array('siissssss', $user, $bike_id, $external, $date, $status, $comment, $internalComment,$outDatePlanned, $address), true);
 			}
 			else{
-				execSQL("INSERT INTO entretiens (HEU_MAJ, USR_MAJ, BIKE_ID, EXTERNAL_BIKE, DATE, STATUS, COMMENT, INTERNAL_COMMENT, NR_ENTR, OUT_DATE_PLANNED ) VALUES (CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, 1, ?)", array('siisssss', $user, $bike_id, $external, $date, $status, $comment, $internalComment, $outDatePlanned), true);
+				execSQL("INSERT INTO entretiens (HEU_MAJ, USR_MAJ, BIKE_ID, EXTERNAL_BIKE, DATE, STATUS, COMMENT, INTERNAL_COMMENT, NR_ENTR, OUT_DATE_PLANNED, ADDRESS ) VALUES (CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?)", array('siissssss', $user, $bike_id, $external, $date, $status, $comment, $internalComment, $outDatePlanned, $address), true);
 			}
 			$response=array('response'=>"success", "message"=>"Entretien ajouté avec succès");
 			echo json_encode($response);
@@ -173,14 +170,20 @@ switch($_SERVER["REQUEST_METHOD"])
 			$outDatePlanned = isset($_POST["dateOutPlanned"]) ? $_POST["dateOutPlanned"] : NULL;
 			$clientWarned = isset($_POST['clientWarned']) ? 1 : 0;
 
+			if(isset($_POST['maintenanceatKAMEO'])){
+				$address="8 Rue de la Brasserie, 4000 Liège";
+			}else{
+				$address=$_POST['address'];
+			}
+
 			if($status=='DONE'){
-				$sql =execSQL("UPDATE entretiens SET USR_MAJ = ?, HEU_MAJ = CURRENT_TIMESTAMP, END_DATE_MAINTENANCE =CURRENT_TIMESTAMP , DATE = ?, STATUS = ?, COMMENT = ?, INTERNAL_COMMENT=?,OUT_DATE_PLANNED=?, CLIENT_WARNED=? WHERE ID = ?;", array('ssssssii', $token, $date, $status, $comment, $internalComment,$outDatePlanned, $clientWarned, $id), true);
+				$sql =execSQL("UPDATE entretiens SET USR_MAJ = ?, HEU_MAJ = CURRENT_TIMESTAMP, END_DATE_MAINTENANCE =CURRENT_TIMESTAMP , DATE = ?, STATUS = ?, COMMENT = ?, INTERNAL_COMMENT=?,OUT_DATE_PLANNED=?, CLIENT_WARNED=?, ADDRESS=? WHERE ID = ?;", array('ssssssisi', $token, $date, $status, $comment, $internalComment,$outDatePlanned, $clientWarned, $address, $id), true);
 			}
 			else if($status=='DELIVERED_TO_CLIENT'){
-				$sql =execSQL("UPDATE entretiens SET USR_MAJ = ?, HEU_MAJ = CURRENT_TIMESTAMP,OUT_DATE = CURRENT_TIMESTAMP, DATE = ?, STATUS = ?, COMMENT = ?, INTERNAL_COMMENT=?,OUT_DATE_PLANNED=?, CLIENT_WARNED=? WHERE ID = ?;", array('ssssssii', $token, $date, $status, $comment, $internalComment,$outDatePlanned, $clientWarned, $id), true);
+				$sql =execSQL("UPDATE entretiens SET USR_MAJ = ?, HEU_MAJ = CURRENT_TIMESTAMP,OUT_DATE = CURRENT_TIMESTAMP, DATE = ?, STATUS = ?, COMMENT = ?, INTERNAL_COMMENT=?,OUT_DATE_PLANNED=?, CLIENT_WARNED=?, ADDRESS=? WHERE ID = ?;", array('ssssssisi', $token, $date, $status, $comment, $internalComment,$outDatePlanned, $clientWarned, $address, $id), true);
 			}
 			else{
-				$sql =execSQL("UPDATE entretiens SET USR_MAJ = ?, HEU_MAJ = CURRENT_TIMESTAMP, DATE = ?, STATUS = ?, COMMENT = ?, INTERNAL_COMMENT=?,OUT_DATE_PLANNED=?, CLIENT_WARNED=? WHERE ID = ?;", array('ssssssii', $token, $date, $status, $comment, $internalComment, $outDatePlanned, $clientWarned, $id), true);
+				$sql =execSQL("UPDATE entretiens SET USR_MAJ = ?, HEU_MAJ = CURRENT_TIMESTAMP, DATE = ?, STATUS = ?, COMMENT = ?, INTERNAL_COMMENT=?,OUT_DATE_PLANNED=?, CLIENT_WARNED=?, ADDRESS=? WHERE ID = ?;", array('ssssssisi', $token, $date, $status, $comment, $internalComment, $outDatePlanned, $clientWarned, $address, $id), true);
 			}
 			if(isset($_POST['service'])){
 				$services['ID']=$_POST['service'];

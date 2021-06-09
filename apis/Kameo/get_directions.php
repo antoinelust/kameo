@@ -13,7 +13,7 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/include/api_keys.php';
 $response=array();
 $address_start=isset($_POST['address_start']) ? $_POST['address_start'] : NULL;
 $address_end=isset($_POST['address_end']) ? $_POST['address_end'] : NULL;
-$timestamp=isset($_POST['timestamp']) ? $_POST['timestamp'] : "now";
+$timestamp=isset($_POST['date']) ? $_POST['date'] : "now";
 
 $address_start = str_replace(', ', ',', $address_start);
 $address_start= str_replace(str_split(' \,'),"+",$address_start);
@@ -33,7 +33,16 @@ $longitude_start=$json_a['results']['0']['geometry']['location']['lng'];
 $url="https://maps.googleapis.com/maps/api/geocode/json?address=".$address_end."&key=".$google_token;
 
 $responseAPI=getAPIData($url);
+
 $json_a = json_decode($responseAPI, true);
+
+if($json_a['status']=="INVALID_REQUEST"){
+  $response['response']='error';
+  $response['url']=$url;
+  echo json_encode($response);
+  die;
+}
+
 $latitude_end=$json_a['results']['0']['geometry']['location']['lat'];
 $longitude_end=$json_a['results']['0']['geometry']['location']['lng'];
 
@@ -60,7 +69,11 @@ if($json_a['status']=="OK")
     $durationBike=$json_a['routes']['0']['legs']['0']['duration']['value'];
     $distanceBike=$json_a['routes']['0']['legs']['0']['distance']['value'];
 } else{
-    errorMessage("ES0009");
+  $response['response']='error';
+  $response['url']=$url;
+  $response['timestamp']=$timestamp;
+  echo json_encode($response);
+  die;
 }
 
 
@@ -74,7 +87,11 @@ if($json_a['status']=="OK")
 {
     $durationCar=$json_a['routes']['0']['legs']['0']['duration']['value'];
 } else{
-    errorMessage("ES0009");
+  $response['response']='error';
+  $response['url']=$url;
+  $response['timestamp']=$timestamp;
+  echo json_encode($response);
+  die;
 }
 
 $durationWalking=round($durationWalking/60);

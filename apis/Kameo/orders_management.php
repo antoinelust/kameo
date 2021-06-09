@@ -237,14 +237,26 @@ if(isset($_POST['action'])){
 		$ID=isset($_GET['ID']) ? $_GET['ID'] : NULL;
 
 		$response['response']="success";
-		$response['order']= execSQL("SELECT client_orders.ID, grouped_orders.EMAIL as email, client_orders.SIZE as size, client_orders.STATUS as status, client_orders.ESTIMATED_DELIVERY_DATE as estimatedDeliveryDate, client_orders.DELIVERY_ADDRESS as deliveryAddress,
+
+
+
+		$arrs = array();
+		$arrs[] = execSQL("SELECT client_orders.ID, grouped_orders.EMAIL as email, client_orders.SIZE as size, client_orders.STATUS as status, client_orders.ESTIMATED_DELIVERY_DATE as estimatedDeliveryDate, client_orders.DELIVERY_ADDRESS as deliveryAddress,
 		client_orders.TEST_BOOLEAN as testBoolean, client_orders.TEST_DATE as testDate, client_orders.TEST_ADDRESS as testAddress, client_orders.TEST_STATUS as testStatus, client_orders.TEST_RESULT as testResult, client_orders.LEASING_PRICE as price,
 		client_orders.TYPE as type, client_orders.REMARK as comment, client_orders.PORTFOLIO_ID as portfolioID, client_orders.COMMENTS_ADMIN as commentsAdmin, client_orders.BIKE_ID as stockBikeID, bike_catalog.BRAND as brand, bike_catalog.MODEL as model,
 		bike_catalog.FRAME_TYPE as frameType, bike_catalog.PRICE_HTVA as priceHTVA FROM client_orders, grouped_orders, bike_catalog WHERE client_orders.ID=? AND client_orders.GROUP_ID=grouped_orders.ID AND bike_catalog.ID=client_orders.PORTFOLIO_ID", array('i', $ID), false)[0];
+		$arrs[] = execSQL("SELECT NOM as name, PRENOM as firstname, PHONE as phone FROM customer_referential WHERE EMAIL=?", array('s', $response['order']['email']), false)[0];
+		$response['order']= array();
 
-		$resultat= execSQL("SELECT NOM as name, PRENOM as firstname, PHONE as phone FROM customer_referential WHERE TOKEN=?", array('s', $token), false)[0];
-		$response['order']=array_merge ($response['order'], $resultat);
-		$response['order']['accessories']=execSQL("SELECT order_accessories.BRAND as catalogID, order_accessories.PRICE_HTVA, accessories_categories.CATEGORY, accessories_catalog.BRAND, accessories_catalog.MODEL, order_accessories.TYPE, order_accessories.ORDER_ID as orderID
+		foreach($arrs as $arr) {
+		    if(is_array($arr)) {
+		        $response['order']=array_merge($response['order'], $arr);
+		    }
+		}
+
+
+
+		$response['order']['accessories']=execSQL("SELECT order_accessories.BRAND as catalogID, order_accessories.PRICE_HTVA, accessories_categories.CATEGORY, accessories_catalog.BRAND, accessories_catalog.BUYING_PRICE, accessories_catalog.MODEL, order_accessories.TYPE, order_accessories.ORDER_ID as orderID
 															FROM order_accessories, accessories_categories, accessories_catalog, client_orders
 															WHERE order_accessories.BRAND=accessories_catalog.ID
 															AND accessories_categories.ID=accessories_catalog.ACCESSORIES_CATEGORIES

@@ -30,7 +30,7 @@ switch($_SERVER["REQUEST_METHOD"])
 				ROUND(SUM(CASE WHEN TYPE='achat' THEN (bike_catalog.BUYING_PRICE) ELSE 0 END)) as sellingCost,
         ROUND(SUM(CASE WHEN TYPE='leasing' THEN ((client_orders.LEASING_PRICE*36)+0.16*bike_catalog.PRICE_HTVA-bike_catalog.BUYING_PRICE-3*84-4*100) ELSE 0 END)) as leasingMargin,
         ROUND(SUM(CASE WHEN TYPE='leasing' THEN (bike_catalog.BUYING_PRICE+3*84+4*100) ELSE 0 END)) as leasingCost,
-        (SELECT COALESCE(SUM(order_boxes.MONTHLY_PRICE*36+order_boxes.INSTALLATION_PRICE-700), 0) FROM order_boxes WHERE substr(order_boxes.CREATION_TIME, 1 ,7)=substr(client_orders.CREATION_TIME, 1 ,7)) as boxesMargin,
+        (SELECT COALESCE(ROUND(SUM(order_boxes.MONTHLY_PRICE*36+order_boxes.INSTALLATION_PRICE-700)), 0) FROM order_boxes WHERE substr(order_boxes.CREATION_TIME, 1 ,7)=substr(client_orders.CREATION_TIME, 1 ,7)) as boxesMargin,
         (SELECT COUNT(order_boxes.ID)*700 FROM order_boxes WHERE substr(order_boxes.CREATION_TIME, 1 ,7)=substr(client_orders.CREATION_TIME, 1 ,7)) as boxesCost
         FROM client_orders, bike_catalog WHERE client_orders.PORTFOLIO_ID = bike_catalog.ID GROUP BY substr(client_orders.CREATION_TIME, 1 ,7)", array(), false);
 				$response['leasingOrders']=array_column($resultat, 'leasingOrders');

@@ -79,12 +79,7 @@
           console.log(response.message);
         }
         if (response.response == "success") {
-          document.getElementById("counterChat").innerHTML =
-            '<span data-speed="1" data-refresh-interval="4" data-to="' +
-            response.messagesNumberUnread +
-            '" data-from="0" data-seperator="true">' +
-            response.messagesNumberUnread +
-            "</span>";
+          document.getElementById("counterChat").innerHTML = '<span style="margin-left:20px">'+response.messagesNumberUnread+'</span>';
         }
       },
     });

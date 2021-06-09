@@ -10,10 +10,7 @@ $(".fleetmanager").click(function () {
         console.log(response.message);
       }
       if (response.response == "success") {
-        var dest = '<span data-speed="1" data-refresh-interval="4" data-seperator="true">';
-        dest += response.maintenancesNumberGlobal + '/</span><span style="color: rgb(216, 0, 0); margin:0;" data-speed="1" data-refresh-interval="4" data-seperator="false">';
-        dest += response.maintenancesNumberAuto + '</span>';
-        document.getElementById("counterMaintenance").innerHTML = dest;
+        document.getElementById("counterMaintenance").innerHTML = '<span style="margin-left:20px">'+response.maintenancesNumberAuto+'</span>';
       }
     },
   });
@@ -426,20 +423,16 @@ function get_maintenance(ID){
           $('#widget-maintenanceManagement-form input[name=clientWarned]').prop('checked', false);
         }
 
-        if(response.maintenance.frame_number=="external"){
-          $.ajax({
-            url: "api/companies",
-            method: "get",
-            data: {action: "getAddress", company: $('#widget-maintenanceManagement-form select[name=company]').val() },
-            success: function (response){
-              if (response.response == "error") {
-                console.log(response.message);
-              }else{
-                $('#widget-maintenanceManagement-form input[name=address]').val(response);
-              }
-            }
-          })
-        };
+        if(response.maintenance.address=="8 Rue de la Brasserie, 4000 Liège"){
+          $('#widget-maintenanceManagement-form input[name=maintenanceatKAMEO]').prop('checked', true);
+          $('#widget-maintenanceManagement-form input[name=address]').fadeOut("slow");
+          $('#widget-maintenanceManagement-form label[for=address]').fadeOut("slow");
+        }else{
+          $('#widget-maintenanceManagement-form input[name=maintenanceatKAMEO]').prop('checked', false);
+          $('#widget-maintenanceManagement-form input[name=address]').fadeIn("slow");
+          $('#widget-maintenanceManagement-form label[for=address]').fadeIn("slow");
+        }
+        $('#widget-maintenanceManagement-form input[name=address]').val(response.maintenance.address)
 
         response.maintenance.services.forEach(function(service){
           $('#widget-maintenanceManagement-form .manualWorkload tbody').append('<tr><td>'+service.CATEGORY+'</td><td>'+service.DESCRIPTION+'</td><td>'+service.DURATION+'</td><td>'+service.AMOUNT+' €</td><td>'+Math.round(service.AMOUNT*1.21*100)/100+' €</td></tr>');
@@ -515,6 +508,16 @@ function get_maintenance(ID){
   });
 }
 
+$('#widget-maintenanceManagement-form input[name=maintenanceatKAMEO]').change(function(){
+  if($('#widget-maintenanceManagement-form input[name=maintenanceatKAMEO]').prop('checked')){
+    $('#widget-maintenanceManagement-form input[name=address]').fadeOut('slow');
+    $('#widget-maintenanceManagement-form label[for=address]').fadeOut('slow');
+  }else{
+    $('#widget-maintenanceManagement-form input[name=address]').fadeIn('slow');
+    $('#widget-maintenanceManagement-form label[for=address]').fadeIn('slow');
+  }
+})
+
 $('.maintenanceManagementDeleteButton').off();
 $('.maintenanceManagementDeleteButton').click(function(){
   $.ajax({
@@ -554,17 +557,18 @@ $('body').on('click', '.editMaintenance',function(){
   get_maintenance(this.name);
   $("#widget-maintenanceManagement-form input[name=action]").val("update");
   $("#widget-maintenanceManagement-form input").attr("readonly", true);
+  $("#widget-maintenanceManagement-form input[name=address]").attr("readonly", false);
   $("#widget-maintenanceManagement-form input[name=dateMaintenance]").attr("readonly", false);
   $("#widget-maintenanceManagement-form input[name=dateOutPlanned]").attr("readonly", false);
   $("#widget-maintenanceManagement-form select").attr("disabled", false);
   $("#widget-maintenanceManagement-form textarea").attr("readonly", false);
   $(".maintenanceManagementTitle").html("Éditer un entretien");
-  $("#widget-maintenanceManagement-form button").show();
-  $("#widget-maintenanceManagement-form div[name=file]").show();
-  $("#widget-maintenanceManagement-form div[name=internalFile]").show();
-  $("#widget-maintenanceManagement-form button[name=delete]").show();
-  $("#widget-maintenanceManagement-form div[name=status]").show();
-  $("#widget-maintenanceManagement-form div[name=id]").show();
+  $("#widget-maintenanceManagement-form button").fadeIn("slow");
+  $("#widget-maintenanceManagement-form div[name=file]").fadeIn("slow");
+  $("#widget-maintenanceManagement-form div[name=internalFile]").fadeIn("slow");
+  $("#widget-maintenanceManagement-form button[name=delete]").fadeIn("slow");
+  $("#widget-maintenanceManagement-form div[name=status]").fadeIn("slow");
+  $("#widget-maintenanceManagement-form div[name=id]").fadeIn("slow");
 });
 
 $('body').on('click', '.showMaintenance',function(){
@@ -573,11 +577,11 @@ $('body').on('click', '.showMaintenance',function(){
   $("#widget-maintenanceManagement-form select").attr("disabled", true);
   $("#widget-maintenanceManagement-form textarea").attr("readonly", true);
   $(".maintenanceManagementTitle").html("Vu sur un entretien");
-  $("#widget-maintenanceManagement-form div[name=status]").show();
+  $("#widget-maintenanceManagement-form div[name=status]").fadeIn("slow");
   $("#widget-maintenanceManagement-form button").hide();
   $("#widget-maintenanceManagement-form div[name=file]").hide();
   $("#widget-maintenanceManagement-form button[name=delete]").hide();
-  $("#widget-maintenanceManagement-form div[name=id]").show();
+  $("#widget-maintenanceManagement-form div[name=id]").fadeIn("slow");
 });
 
 $('body').on('click', '.addMaintenance',function(){
@@ -598,11 +602,14 @@ $('body').on('click', '.addMaintenance',function(){
   $("#widget-maintenanceManagement-form input[name=dateMaintenance]").attr("readonly", false);
   $("#widget-maintenanceManagement-form input[name=dateOutPlanned]").attr("readonly", false);
   $(".maintenanceManagementTitle").html("Ajouter un entretien");
-  $("#widget-maintenanceManagement-form button").show();
-  $("#widget-maintenanceManagement-form div[name=id]").hide();
-  $("#widget-maintenanceManagement-form div[name=file]").hide();
-  $("#widget-maintenanceManagement-form div[name=internalFile]").hide();
-  $("#widget-maintenanceManagement-form button[name=delete]").hide();
+  $("#widget-maintenanceManagement-form button").fadeIn("slow");
+  $("#widget-maintenanceManagement-form div[name=id]").fadeOut('slow');
+  $("#widget-maintenanceManagement-form div[name=file]").fadeOut('slow');
+  $("#widget-maintenanceManagement-form div[name=internalFile]").fadeOut('slow');
+  $("#widget-maintenanceManagement-form button[name=delete]").fadeOut('slow');
+  $("#widget-maintenanceManagement-form input[name=maintenanceatKAMEO]").prop("checked", true);
+  $("#widget-maintenanceManagement-form label[for=address]").fadeOut("slow");
+  $("#widget-maintenanceManagement-form input[name=address]").fadeOut("slow");
 });
 
 $('body').on('change', '.form_date_start_maintenance',function(){
@@ -623,7 +630,7 @@ $('body').on('change', '.form_date_end_maintenance',function(){
 
 $('#widget-maintenanceManagement-form select[name=company]').change(function(){
   getBikesToMaintenance();
-  $('#widget-maintenanceManagement-form div[name=addExternalBikesDiv]').show();
+  $('#widget-maintenanceManagement-form div[name=addExternalBikesDiv]').fadeIn("slow");
 
  $('#widget-maintenanceManagement-form a .addExternalBikes').data('idCompany',$(this).val());
 
@@ -816,19 +823,38 @@ $("#maintenanceDevis").on("show.bs.modal", function (event) {
     },
     sAjaxDataProp: "",
     columns: [
-    {
-      title: "ID",
-      data: "ID",
-      fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-        $(nTd).html('<a name="'+sData+'" class="showDevis" href="#">'+sData+'</a>');
+      {
+        title: "ID",
+        data: "ID",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html('<a target="_blank" href="devisEntretien/'+oData.DATE_DEVIS.substr(0,10)+'_'+oData.COMPANY+'_'+sData+'.pdf">'+sData+'</a>');
+        },
       },
-    },
-    { title: "Statut", data: "STATUS" },
-    { title: "Date", data: "DATE_DEVIS" },
-    { title: "Société", data: "COMPANY" },
-    { title: "Validité", data: "VALID" },
-    { title: "Prix TVAC", data: "AMOUNT_TVAC" },
-    { title: "Prix HTVA", data: "AMOUNT_HTVA" },
+      { title: "Statut", data: "STATUS" },
+      {
+        title: "Date",
+        data: "DATE_DEVIS",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html(sData.substr(0,10).shortDate());
+        },
+      },
+
+      { title: "Société", data: "COMPANY" },
+      { title: "Validité", data: "VALID" },
+      {
+        title: "Prix HTVA",
+        data: "AMOUNT_HTVA",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html(sData+" €");
+        },
+      },
+      {
+        title: "Prix TVAC",
+        data: "AMOUNT_TVAC",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html(sData+" €");
+        },
+      }
     ],
     order: [[0, "asc"]],
     paging : false
@@ -1123,185 +1149,196 @@ $.ajax({
 
 
 
+$.ajax({
+  url: 'api/maintenances',
+  type: 'get',
+  data: {
+    action: 'listCategories'
+  },
+  success: function(response){
+    var categories = [];
+    response.forEach(function(service){
+      categories.push('<option value="'+service.CATEGORY+'">'+service.CATEGORY+'</option>');
+    });
 
 
-$('.generateBillManualWorkloadDevis .glyphicon-plus').unbind();
-$('.generateBillManualWorkloadDevis .glyphicon-plus').click(function(){
-  console.log('ca passe');
-        //gestion travail manuel
-        manualWorkloadNumber = $("#addDevis").find('.manualWorkloadNumber').html()*1+1;
-        $('#addDevis').find('.manualWorkloadNumber').html(manualWorkloadNumber);
-        $('#manualWorkloadNumber').val(manualWorkloadNumber);
+    $('.generateBillManualWorkloadDevis .glyphicon-plus').unbind();
+    $('.generateBillManualWorkloadDevis .glyphicon-plus').click(function(){
+      //gestion travail manuel
+      manualWorkloadNumber = $("#addDevis").find('.manualWorkloadNumber').html()*1+1;
+      $('#addDevis').find('.manualWorkloadNumber').html(manualWorkloadNumber);
+      $('#manualWorkloadNumber').val(manualWorkloadNumber);
 
-        //ajout d'une ligne au tableau de la main d'oeuvre
-        $('#addDevis').find('.otherCostsManualWorkloadTable tbody')
-        .append(`<tr class="otherCostsManualWorkloadTable`+(manualWorkloadNumber)+` manualWorkloadRow form-group">
-          <td class="category"><select name="category[]" class="form-control required" value="">`+categories+`</select></td>
-          <td class="service"><select name="service[]" class="form-control required"></select></td>
-          <td class="bikeMaintenance"><select name="bikeMaintenance[]" class="form-control required" value=""></select></td>
-          <td class="manualWorkloadLength"><input type="number" step='5' class="form-control required" name="manualWorkloadLength[]" value="" /></td>
-          <td class="manualWorkloadTotal"><input type="number" step='0.01' class="form-control required" name="manualWorkloadTotal[]" value="" /></td>
-          <td class="manualWorkloadTotalTVAC"><input type="number" step='0.01' class="form-control required" name="manualWorkloadTotalTVAC[]" value="" /></td>
-          </tr>`);
-        $('.otherCostsManualWorkloadTable'+(manualWorkloadNumber)+' .category select').val('');
+      //ajout d'une ligne au tableau de la main d'oeuvre
+      $('#addDevis').find('.otherCostsManualWorkloadTable tbody')
+      .append(`<tr class="otherCostsManualWorkloadTable`+(manualWorkloadNumber)+` manualWorkloadRow form-group">
+        <td class="category"><select name="category[]" class="form-control required" value="">`+categories+`</select></td>
+        <td class="service"><select name="service[]" class="form-control required"></select></td>
+        <td class="manualWorkloadLength"><input type="number" step='5' class="form-control required" name="manualWorkloadLength[]" value="" /></td>
+        <td class="manualWorkloadTotal"><input type="number" step='0.01' class="form-control required" name="manualWorkloadTotal[]" value="" /></td>
+        <td class="manualWorkloadTotalTVAC"><input type="number" step='0.01' class="form-control required" name="manualWorkloadTotalTVAC[]" value="" /></td>
+        </tr>`);
+      $('.otherCostsManualWorkloadTable'+(manualWorkloadNumber)+' .category select').val('');
 
-        //label selon la langue
-        checkMinus('.generateBillManualWorkloadDevis','.manualWorkloadNumber');
-        $('.category select').off();
-        $('.category select').change(function(){
-          var $select = $(this);
-          $select.closest('tr').find('.service select').find('option')
-          .remove();
-          $.ajax({
-            url: 'api/maintenances',
-            type: 'get',
-            data: {
-              action: 'listServices',
-              category: $(this).val()
-            },
-            success: function(response){
-              response.forEach(function(service){
-                $select.closest('tr').find('.service select').append('<option value="'+service.ID+'" data-minutes="'+service.MINUTES+'" data-htva="'+Math.round(service.PRICE_TVAC/1.06*100)/100+'" data-tvac="'+service.PRICE_TVAC+'">'+service.DESCRIPTION+'</option>');
-              });
-              $select.closest('tr').find('.service select').val("");
-            }
-          })
-
-          $.ajax({
-            url: 'api/maintenances',
-            type: 'get',
-            data: {
-              action: 'list',
-              company : $('#widget-addDevis-form select[name=company]').val()
-            },
-            success: function(response){
-              var maintenances = [];
-              response.internalMaintenances.forEach(function(maintenance){
-                $select.closest('tr').find('.bikeMaintenance select').append('<option value="'+maintenance.ID+'">'+maintenance.ID+' - '+maintenance.DATE.shortDate()+' - '+maintenance.BRAND+' '+maintenance.MODEL+'</option>');
-              })
-              response.externalMaintenances.forEach(function(maintenance){
-                $select.closest('tr').find('.bikeMaintenance select').append('<option value="'+maintenance.ID+'">'+maintenance.ID+' - '+maintenance.DATE.shortDate()+' - '+maintenance.BRAND+' '+maintenance.MODEL+'</option>');
-              })
-              $select.closest('tr').find('.bikeMaintenance select').val("");
-            }
-          })
-        });
-
-        $('.service select').off()
-        $('.service select').change(function(){
-          $(this).closest('tr').find('.manualWorkloadLength input').val($(this).find(':selected').data('minutes'));
-          $(this).closest('tr').find('.manualWorkloadTotal input').val($(this).find(':selected').data('htva'));
-          $(this).closest('tr').find('.manualWorkloadTotalTVAC input').val($(this).find(':selected').data('tvac'));
-        });
-
-        $('.manualWorkloadTotal input').off()
-        $('.manualWorkloadTotal input').change(function(){
-          $(this).closest('tr').find('.manualWorkloadTotalTVAC input').val(Math.round($(this).val()*1.06*100)/100);
-        });
-        $('.manualWorkloadTotalTVAC input').off()
-        $('.manualWorkloadTotalTVAC input').change(function(){
-          $(this).closest('tr').find('.manualWorkloadTotal input').val(Math.round($(this).val()/1.06*100)/100);
-        });
-
+      //label selon la langue
+      checkMinus('.generateBillManualWorkloadDevis','.manualWorkloadNumber');
+      $('.category select').off();
+      $('.category select').change(function(){
+        var $select = $(this);
+        $select.closest('tr').find('.service select').find('option')
+        .remove();
+        $.ajax({
+          url: 'api/maintenances',
+          type: 'get',
+          data: {
+            action: 'listServices',
+            category: $(this).val()
+          },
+          success: function(response){
+            response.forEach(function(service){
+              $select.closest('tr').find('.service select').append('<option value="'+service.ID+'" data-minutes="'+service.MINUTES+'" data-htva="'+Math.round(service.PRICE_TVAC/1.06*100)/100+'" data-tvac="'+service.PRICE_TVAC+'">'+service.DESCRIPTION+'</option>');
+            });
+            $select.closest('tr').find('.service select').val("");
+          }
+        })
       });
+
+      $('.service select').off()
+      $('.service select').change(function(){
+        $(this).closest('tr').find('.manualWorkloadLength input').val($(this).find(':selected').data('minutes'));
+        $(this).closest('tr').find('.manualWorkloadTotal input').val($(this).find(':selected').data('htva'));
+        $(this).closest('tr').find('.manualWorkloadTotalTVAC input').val($(this).find(':selected').data('tvac'));
+      });
+
+      $('.manualWorkloadTotal input').off()
+      $('.manualWorkloadTotal input').change(function(){
+        $(this).closest('tr').find('.manualWorkloadTotalTVAC input').val(Math.round($(this).val()*1.06*100)/100);
+      });
+      $('.manualWorkloadTotalTVAC input').off()
+      $('.manualWorkloadTotalTVAC input').change(function(){
+        $(this).closest('tr').find('.manualWorkloadTotal input').val(Math.round($(this).val()/1.06*100)/100);
+      });
+
+    });
+  }
+});
 
 /////////////////////////////////////////////////////////////////////////
 //////////////::ACCESSOIRES
 
 
-$('.generateBillAccessoriesDevis .glyphicon-plus').unbind();
-$('.generateBillAccessoriesDevis .glyphicon-plus').click(function(){
-  console.log("test");
-      //gestion accessoriesNumber
-      accessoriesNumber = $("#addDevis").find('.accessoriesNumber').html()*1+1;
-      $('#addDevis').find('.accessoriesNumber').html(accessoriesNumber);
-      $('#accessoriesNumber').val(accessoriesNumber);
+//Accessoires
+get_all_accessories().done(function(response){
+  //variables
+  var accessories = response.accessories;
+  if(accessories == undefined){
+    accessories =[];
+    console.log('accessories => table vide');
+  }
+  var categories = [];
 
-      //ajout des options du select pour les catégories
-      var categoriesOption = "<option hidden disabled selected value></option>";
-      categories.forEach((category) => {
-        categoriesOption += '<option value="'+category.id+'">'+category.name+'</option>';
-      });
-
-      //ajout d'une ligne au tableau des accessoires
-      $('#addDevis').find('.otherCostsAccesoiresTable tbody')
-      .append(`<tr class="otherCostsAccesoiresTable`+(accessoriesNumber)+` accessoriesRow form-group">
-        <td class="aLabel"></td>
-        <td class="aCategory"></td>
-        <td class="aAccessory"></td>
-        <td class="aBuyingPrice"></td>
-        <td contenteditable='true' class="aPriceHTVA"></td>
-        <td><input type="number" class="accessoryFinalPrice hidden" name="accessoryFinalPrice[]" /></td>
-        </tr>`);
-      //label selon la langue
-      $('#addDevis').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aLabel')
-      .append('<label>Accessoire '+ accessoriesNumber +'</label>');
-
-      //select catégorie
-      $('#addDevis').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aCategory')
-      .append(`<select name="accessoryCategory`+accessoriesNumber+`" id="selectCategory`+accessoriesNumber+`" class="selectCategory form-control required">`+
-        categoriesOption+`
-        </select>`);
-      //select Accessoire
-      $('#addDevis').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aAccessory')
-      .append('<select name="accessoryID[]" id="selectAccessory'+
-        accessoriesNumber+
-        '"class="selectAccessory form-control required"></select>');
-
-      checkMinus('.generateBillAccessoriesDevis','.accessoriesNumber');
-
-      //on change de la catégorie
-      $('.generateBillAccessoriesDevis').find('.selectCategory').on("change",function(){
-        var that = '#' + $(this).attr('id');
-        var categoryId =$(that).val();
-        var accessoriesOption = "<option hidden disabled selected value>Veuillez choisir un accesoire</option>";
-
-        //ne garde que les accessoires de cette catégorie
-        accessories.forEach((accessory) => {
-          if (categoryId == accessory.categoryId) {
-            accessoriesOption += '<option value="'+accessory.id+'">'+accessory.model+'</option>';
-          }
-        });
-        //place les accessoires dans le select
-        $(that).parents('tr').find('.selectAccessory').html(accessoriesOption);
-
-        //retire l'affichage d'éventuels prix
-        $(that).parents('.accessoriesRow').find('.aBuyingPrice').html('');
-        $(that).parents('.accessoriesRow').find('.aPriceHTVA').html('');
-      });
-
-      $('.generateBillAccessoriesDevis').find('.selectAccessory').on("change",function(){
-        var that = '#' + $(this).attr('id');
-        var accessoryId =$(that).val();
-
-          //récupère le bon index même si le tableau est désordonné
-          accessoryId = getIndex(accessories, accessoryId);
-
-          var buyingPrice = accessories[accessoryId].buyingPrice + '€';
-          var priceHTVA = accessories[accessoryId].priceHTVA + '€';
-
-          $(that).parents('.accessoriesRow').find('.aBuyingPrice').html(buyingPrice);
-          $(that).parents('.accessoriesRow').find('.aPriceHTVA').html(priceHTVA);
-          $(that).parents('.accessoriesRow').find('.aPriceHTVA').attr('data-orig',priceHTVA);
-          $(that).parents('.accessoriesRow').find('.accessoryFinalPrice').val(accessories[accessoryId].priceHTVA);
-        });
-
-      $('#widget-addDevis-form .accessoriesRow .aPriceHTVA ').blur(function(){
-        var initialPrice=this.getAttribute('data-orig',this.innerHTML).split('€')[0];
-        var newPrice=this.innerHTML.split('€')[0];
-        if(initialPrice==newPrice){
-          $(this).parents('.accessoriesRow').find('.aPriceHTVA').html(newPrice + '€ ' + " <span class=\"text-green\">(+)</span>");
-        }else{
-          var reduction=Math.round((newPrice*1-initialPrice*1)/(initialPrice*1)*100);
-          $(this).parents('.accessoriesRow').find('.aPriceHTVA').html(newPrice + '€ ' + " <span class=\"text-green\">(+)</span> <br/><span class=\"text-red\">("+reduction+"%)</span> ");
-        }
-        var buyingPrice=$(this).parents('.accessoriesRow').find('.aBuyingPrice').html().split('€')[0];
-        var marge = (newPrice*1 - buyingPrice).toFixed(0) + '€ (' + ((newPrice*1 - buyingPrice)/(buyingPrice*1)*100).toFixed(0) + '%)';
-        $(this).parents('.accessoriesRow').find('.accessoryMarge').html(marge);
-        $(this).parents('.accessoriesRow').find('.accessoryFinalPrice').val(newPrice);
-      });
-
+  //generation du tableau de catégories
+  accessories.forEach((accessory) => {
+    var newCategory = true;
+    categories.forEach((category) => {
+      if (category.name === accessory.category) {
+        newCategory = false;
+      }
     });
+    if (newCategory === true) {
+      categories.push({'id' : accessory.categoryId, 'name' : accessory.category});
+    }
+  });
+
+  $('.generateBillAccessoriesDevis .glyphicon-plus').unbind();
+  $('.generateBillAccessoriesDevis .glyphicon-plus').click(function(){
+    //gestion accessoriesNumber
+    accessoriesNumber = $("#addDevis").find('.accessoriesNumber').html()*1+1;
+    $('#addDevis').find('.accessoriesNumber').html(accessoriesNumber);
+    $('#accessoriesNumber').val(accessoriesNumber);
+
+    //ajout d'une ligne au tableau des accessoires
+    $('#addDevis').find('.otherCostsAccesoiresTable tbody')
+    .append(`<tr class="otherCostsAccesoiresTable`+(accessoriesNumber)+` accessoriesRow form-group">
+      <td class="aLabel"></td>
+      <td class="aCategory"><select name="accessoryCategory[]" class="selectCategory form-control required"></select></td>
+      <td class="aAccessory"></td>
+      <td class="aBuyingPrice"></td>
+      <td contenteditable='true' class="aPriceHTVA"></td>
+      <td><input type="number" class="accessoryFinalPrice hidden" name="accessoryFinalPrice[]" /></td>
+      </tr>`);
+
+
+    categories.forEach(function(category){
+      $('#addDevis .otherCostsAccesoiresTable .accessoriesRow:last-child .aCategory select').append(
+        new Option(category.name, category.id)
+      )
+    });
+    $('#addDevis .otherCostsAccesoiresTable .accessoriesRow:last-child .aCategory select').val('');
+
+    //label selon la langue
+    $('#addDevis').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aLabel')
+    .append('<label>Accessoire '+ accessoriesNumber +'</label>');
+
+    //select Accessoire
+    $('#addDevis').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aAccessory')
+    .append('<select name="accessoryID[]" id="selectAccessory'+
+      accessoriesNumber+
+      '"class="selectAccessory form-control required"></select>');
+
+    checkMinus('.generateBillAccessoriesDevis','.accessoriesNumber');
+
+    //on change de la catégorie
+    $('.generateBillAccessoriesDevis').find('.selectCategory').on("change",function(){
+      var $row = $(this).closest('.accessoriesRow');
+      var categoryId = $(this).val();
+      var accessoriesOption = "<option hidden disabled selected value>Veuillez choisir un accesoire</option>";
+
+      //ne garde que les accessoires de cette catégorie
+      accessories.forEach((accessory) => {
+        if (categoryId == accessory.categoryId) {
+          accessoriesOption += '<option value="'+accessory.id+'">'+accessory.model+'</option>';
+        }
+      });
+      //place les accessoires dans le select
+      $row.find('.selectAccessory').html(accessoriesOption);
+      //retire l'affichage d'éventuels prix
+      $row.find('.aBuyingPrice').html('');
+      $row.find('.aPriceHTVA').html('');
+    });
+
+    $('.generateBillAccessoriesDevis').find('.selectAccessory').on("change",function(){
+      var that = '#' + $(this).attr('id');
+      var accessoryId =$(that).val();
+
+        //récupère le bon index même si le tableau est désordonné
+        accessoryId = getIndex(accessories, accessoryId);
+
+        var buyingPrice = accessories[accessoryId].buyingPrice + '€';
+        var priceHTVA = accessories[accessoryId].priceHTVA + '€';
+
+        $(that).parents('.accessoriesRow').find('.aBuyingPrice').html(buyingPrice);
+        $(that).parents('.accessoriesRow').find('.aPriceHTVA').html(priceHTVA);
+        $(that).parents('.accessoriesRow').find('.aPriceHTVA').attr('data-orig',priceHTVA);
+        $(that).parents('.accessoriesRow').find('.accessoryFinalPrice').val(accessories[accessoryId].priceHTVA);
+      });
+
+    $('#widget-addDevis-form .accessoriesRow .aPriceHTVA ').blur(function(){
+      var initialPrice=this.getAttribute('data-orig',this.innerHTML).split('€')[0];
+      var newPrice=this.innerHTML.split('€')[0];
+      if(initialPrice==newPrice){
+        $(this).parents('.accessoriesRow').find('.aPriceHTVA').html(newPrice + '€ ' + " <span class=\"text-green\">(+)</span>");
+      }else{
+        var reduction=Math.round((newPrice*1-initialPrice*1)/(initialPrice*1)*100);
+        $(this).parents('.accessoriesRow').find('.aPriceHTVA').html(newPrice + '€ ' + " <span class=\"text-green\">(+)</span> <br/><span class=\"text-red\">("+reduction+"%)</span> ");
+      }
+      var buyingPrice=$(this).parents('.accessoriesRow').find('.aBuyingPrice').html().split('€')[0];
+      var marge = (newPrice*1 - buyingPrice).toFixed(0) + '€ (' + ((newPrice*1 - buyingPrice)/(buyingPrice*1)*100).toFixed(0) + '%)';
+      $(this).parents('.accessoriesRow').find('.accessoryMarge').html(marge);
+      $(this).parents('.accessoriesRow').find('.accessoryFinalPrice').val(newPrice);
+    });
+  });
+});
 
 
 
