@@ -48,19 +48,19 @@
 
 										<div class="post-item">
 				                <div class="post-image">
-				                    <a href="blog_Choisir-son-velo-electrique.html">
+				                    <a href="blog_Choisir-son-velo.html">
 				                        <img alt="" src="images/blog/ChoixVelo_Cover.jpg">
 				                    </a>
 				                </div>
 				                <div class="post-content-details">
 				                    <div class="post-title">
-				                        <h3><a href="blog_Choisir-son-velo-electrique.html">Comment choisir son nouveau vélo électrique</a></h3>
+				                        <h3><a href="blog_Choisir-son-velo.html">Comment choisir son nouveau vélo ?</a></h3>
 				                    </div>
 				                    <div class="post-description">
 				                        <p>Suivez notre guide pour faire votre meilleur choix.</p>
 
 				                        <div class="post-info">
-				                            <a class="read-more" href="blog_Choisir-son-velo-electrique.html">Lire plus <i class="fa fa-long-arrow-right"></i></a>
+				                            <a class="read-more" href="blog_Choisir-son-velo.html">Lire plus <i class="fa fa-long-arrow-right"></i></a>
 				                        </div>
 				                    </div>
 				                </div>

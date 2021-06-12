@@ -10,7 +10,7 @@ include 'include/head.php';
 		<?php include 'include/topbar.php'; ?>
 		<?php include 'include/header.php'; ?>
 		<br>
-				<h1 class="fr text-green col-md-10 center text-center">Comment choisir son nouveau vélo électrique?<br>par KAMEO Bikes</h1>
+				<h1 class="fr text-green col-md-10 center text-center">Comment choisir son nouveau vélo ?<br>par KAMEO Bikes</h1>
 
             	<!-- Post item-->
                 <div class="post-item">
@@ -26,7 +26,7 @@ include 'include/head.php';
 
                         <p class="text-justify text-dark">Les ventes et leasing de vélos sont en pleine croissance. Chez KAMEO Bikes, on constate également une demande de plus en plus forte. Que cela soit pour des vélos de loisir ou comme nouveau moyen de transport, tout le monde veut un nouveau vélo !</P>
 
-						<p class="text-justify text-dark">Cependant, si beaucoup souhaitent s’équiper d’un vélo électrique, peu savent comment par où commencer. De multiples gammes -<strong> urbain, trekking, VTC, VTT, speed pédélec, pliable, route, gravel, cargo</strong> - s’offrent à vous avec des terminologies parfois obscures pour les non-initiés. On fait le point ensemble sur les critères essentiels afin de définir vos besoins et que vous puissiez ainsi choisir, en toute connaissance de cause, votre futur vélo préféré !</p>
+						<p class="text-justify text-dark">Cependant, si beaucoup souhaitent s’équiper d’un vélo, peu savent comment par où commencer. De multiples gammes -<strong> urbain, trekking, VTC, VTT, speed pédélec, pliable, route, gravel, cargo</strong> - s’offrent à vous avec des terminologies parfois obscures pour les non-initiés. On fait le point ensemble sur les critères essentiels afin de définir vos besoins et que vous puissiez ainsi choisir, en toute connaissance de cause, votre futur vélo préféré !</p>
 
 						<h3 class="fr text-green text-center">On commence par une question simple :<br> Sur quel type de parcours comptez-vous rouler ?</h3>
 
@@ -82,7 +82,7 @@ include 'include/head.php';
 
 						<p class="text-justify text-dark">Le genre ne définit pas le type de cadre. Les dames comme les hommes peuvent préférer un modèle droit ou un col de cygne, ce qui importe encore une fois, c’est votre confort !</p>
 
-						<p class="text-justify text-dark">Outre la capacité d’enjambement, la posture a de l’importance. Vous préférez une position plus sportive et penchée sur le vélo ou plus droite ? Prêtez-y attention, la géométrie du cadre joue énormément. N’hésitez pas à demander un conseil à votre vendeur. Un vélo avec une potence (la pièce reliant le guidon à votre fourche ) réglable en inclinaison vous permettra certainement de trouver l’ ajustement optimal. Cela aura néanmoins une limite liée au cadre, d’où l’importance de se faire conseiller.</p>
+						<p class="text-justify text-dark">Outre la capacité d’enjambement, la posture a de l’importance. Vous préférez une position plus sportive et penchée sur le vélo ou plus droite ? Prêtez-y attention, la géométrie du cadre joue énormément. N’hésitez pas à demander un conseil à votre vendeur. Un vélo avec une potence ( la pièce reliant le guidon à votre fourche ) réglable en inclinaison vous permettra certainement de trouver l’ ajustement optimal. Cela aura néanmoins une limite liée au cadre, d’où l’importance de se faire conseiller.</p>
 
 						<p class="text-justify text-dark">Quant à la taille du vélo, elle est comparable à celle des vêtements. On retrouve des cadres de S à XL. Comme pour les vêtements, les tailles changent d’une marque à l’autre. Demandez donc le conseil de votre vendeur qui connait bien sa marque. En moyenne, vous pouvez considérer les valeurs suivantes : </p>
 						<ul>
@@ -95,8 +95,12 @@ include 'include/head.php';
 
 						<h3 class="fr text-green text-center">Choix final</h3>
 
-                        <p class="text-justify text-dark">Maintenant que vous savez le type de vélo que vous voulez acquérir, vous devez faire votre choix entre les différents modèles au sein d’une même gamme. Pour cela, il faudra prendre en considération votre fréquence d’utilisation du vélo, les kms que vous comptez parcourir, votre budget et naturellement, vos goûts et couleurs pour le look ! Pour l’assistance électrique, deux pièces complémentaires sont à spécifier : le moteur et la batterie. La partie qui suit est assez technique mais elle vous permettra de maitrisez tout ce qu’il faut pour choisir ! </p>
+                        <p class="text-justify text-dark">Maintenant que vous savez le type de vélo que vous voulez acquérir, vous devez faire votre choix entre les différents modèles au sein d’une même gamme. Pour cela, il faudra prendre en considération votre fréquence d’utilisation du vélo, les kms que vous comptez parcourir, votre budget et naturellement, vos goûts et couleurs pour le look !</p>
 
+						<h2 class="text-center text-green">Et si c'est un électrique ?</h2>
+						
+						 <p class="text-justify text-dark">Pour l’assistance électrique, deux pièces complémentaires sont à spécifier : le moteur et la batterie. La partie qui suit est assez technique mais elle vous permettra de maitrisez tout ce qu’il faut pour choisir !</p>
+						
 						<p class="text-justify text-dark">Nous prenons pour exemple les moteurs Bosch car ce sont les leaders du marché.</p>
 
 						<h3 class="fr text-green text-center">Comment comparer différents moteurs électriques entre eux ?</h3>
