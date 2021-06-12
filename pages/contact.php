@@ -178,7 +178,7 @@
 					-->
 				<div class="row">
 					<div class="col-md-3">
-						<div class="image-box circle-image small"> <img class="" src="images/Jams.jpg" alt="Julien - Responsable Technique vélo entretien mobilité"> </div>
+						<div class="image-box circle-image small"> <img class="" src="images/Julien.jpg" alt="Julien - Responsable Technique vélo entretien mobilité"> </div>
 						<div class="image-box-description text-center">
 							<h4><?=L::contact_team_julien;?></h4>
 							<p class="subtitle"><?=L::contact_team_manager;?></p>
@@ -206,7 +206,7 @@
 						</div>
 					</div>
 					<div class="col-md-3">
-						<div class="image-box circle-image small"> <img class="" src="images/Lust.jpg" alt="Antoine - Responsable Financier vélo entretien mobilité"> </div>
+						<div class="image-box circle-image small"> <img class="" src="images/Antoine.jpg" alt="Antoine - Responsable Financier vélo entretien mobilité"> </div>
 						<div class="image-box-description text-center">
 							<h4><?=L::contact_team_antoine;?></h4>
 							<p class="subtitle"><?=L::contact_team_itmanager;?></p>
@@ -220,7 +220,7 @@
 						</div>
 					</div>
 					<div class="col-md-3">
-						<div class="image-box circle-image small"> <img class="" src="images/Thib.jpg" alt="Thibaut - Responsable marketing vélo entretien mobilité"> </div>
+						<div class="image-box circle-image small"> <img class="" src="images/Thibaut.jpg" alt="Thibaut - Responsable marketing vélo entretien mobilité"> </div>
 						<div class="image-box-description text-center">
 							<h4><?=L::contact_team_thibaut;?></h4>
 							<p class="subtitle"><?=L::contact_team_marketingmanager;?></p>
@@ -234,7 +234,6 @@
 
 						</div>
 					</div>
-					<div class="col-md-3 hidden-sm"></div>
 					<div class="col-md-3">
 						<div class="image-box circle-image small"> <img class="" src="images/Justine.jpg" alt=""> </div>
 							<div class="image-box-description text-center">
@@ -245,6 +244,15 @@
 					</div>
 					
 					<div class="col-md-3">
+						<div class="image-box circle-image small"> <img class="" src="images/Simon.jpg" alt=""> </div>
+							<div class="image-box-description text-center">
+								<h4><?=L::contact_team_simon;?></h4>
+								<hr class="line">
+								<div><?=L::contact_team_responsablemecanique;?></div>
+							</div>
+					</div>
+					
+					<div class="col-md-6">
 						<div class="image-box circle-image small"> <img class="" src="images/you.jpg" alt=""> </div>
 							<div class="image-box-description text-center">
 								<h4><?=L::contact_team_you;?></h4>
@@ -253,7 +261,6 @@
 								<p class="text-green">Nous sommes à la recherche d'un mécanicien vélo<br><a class="button small green rounded" href="https://www.kameobikes.com/docs/Offre_Mecanicien_Liege.pdf" target="_blank"><span>voir l'offre</span></a></p></div>
 							</div>
 					</div>
-					<div class="col-md-3 hidden-sm"></div>
 
 				</div>
 			</div>
