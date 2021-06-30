@@ -1,19 +1,3 @@
-$( ".fleetmanager" ).click(function() {
-    $.ajax({
-        url: 'apis/Kameo/initialize_counters.php',
-        type: 'post',
-        data: { "email": email, "type": "bikes"},
-        success: function(response){
-            if(response.response == 'error') {
-                console.log(response.message);
-            }
-            if(response.response == 'success'){
-                document.getElementById("counterBike").innerHTML = '<span style="margin-left:20px">'+response.bikeNumberClient+'</span>';
-            }
-        }
-    })
-})
-
 $(".clientBikesManagerClick").click(function () {
  $("#bikeDetails").dataTable({
    destroy: true,

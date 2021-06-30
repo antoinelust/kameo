@@ -1,40 +1,12 @@
-<div
-  class="modal fade"
-  id="template"
-  tabindex="-1"
-  role="modal"
-  aria-labelledby="modal-label"
-  aria-hidden="true"
-  style="display: none; overflow-y: auto !important; z-index: 2000;"
->
+<div class="modal fade" id="template" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important; z-index: 2000;">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <button
-          aria-hidden="true"
-          data-dismiss="modal"
-          class="close"
-          type="button"
-        >
-          ×
-        </button>
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
       </div>
       <div class="modal-body">
-        <form
-          class="isLeasing"
-          id="templateForm"
-          action="apis/Kameo/offer_template.php"
-          method="post"
-          role="form"
-          novalidate="novalidate"
-        >
-          <input
-            type="hidden"
-            name="companyIdTemplate"
-            id="companyIdTemplate"
-            value=""
-            aria-required="true"
-          />
+        <form class="isLeasing" id="templateForm" action="apis/Kameo/offer_template.php" method="post" role="form" novalidate="novalidate">
+          <input type="hidden" name="companyIdTemplate" id="companyIdTemplate" value="" aria-required="true">
           <div class="row buyOrLeasing">
             <div class="col-sm-4">
               <h4 class="text-green">Général :</h4>
@@ -42,12 +14,7 @@
             <div class="col-sm-12">
               <div class="col-sm-3 form-group">
                 <label for="leasingCheck">Type</label>
-                <select
-                  name="buyOrLeasing"
-                  id="buyOrLeasingSelect"
-                  class="form-control required"
-                  aria-required="true"
-                >
+                <select name="buyOrLeasing" id="buyOrLeasingSelect" class="form-control required" aria-required="true">
                   <option value="leasing" selected>Location</option>
                   <option value="achat">Achat</option>
                 </select>
@@ -321,18 +288,9 @@
               <h4 class="text-green">Tableau récapitulatif :</h4>
             </div>
             <div class="col-sm-12">
-              <button
-                type="button"
-                id="generateTableRecap"
-                class="button small green button-3d rounded icon-left"
-              >
-                Générer / Actualiser
-              </button>
+              <button type="button" id="generateTableRecap" class="button small green button-3d rounded icon-left">Générer / Actualiser</button>
             </div>
-            <table
-              class="table table-condensed tableFixed summaryTable"
-              style="display: none"
-            >
+            <table class="table table-condensed tableFixed summaryTable" style="display: none">
               <thead>
                 <th><label for="recapLabel">Item</label></th>
                 <th><label for="recapPrice">Prix de vente</label></th>
@@ -356,13 +314,7 @@
             <div class="separator"></div>
             <h4 class="text-green">Validité de l'offre</h4>
             <div class="col-md-4">
-              <input
-                type="date"
-                name="offerValidity"
-                id="offerValidity"
-                class="form-control required"
-                required
-              />
+              <input type="date" name="offerValidity" id="offerValidity" class="form-control required" required>
             </div>
             <div class="separator"></div>
           </div>
@@ -385,34 +337,12 @@
               <label for="probability">Chance de réussite</label>
               <div class="col-md-3 input-group">
                 <span class="input-group-addon">%</span>
-                <input
-                  type="number"
-                  min="0"
-                  max="100"
-                  name="probability"
-                  class="form-control required"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="row form-group" style="margin-bottom: 20px">
-            <div class="col-md-12">
-              <div class="col-md-4">
-                <label for="dateSignature">Date de signature</label>
-                <input type="date" name="dateSignature" class="form-control" />
-              </div>
-              <div class="col-md-4">
-                <label for="dateStart">Date de début</label>
-                <input type="date" name="dateStart" class="form-control" />
-              </div>
-              <div class="col-md-4">
-                <label for="dateEnd">Date de fin</label>
-                <input type="date" name="dateEnd" class="form-control" />
+                <input type="number" min="0" max="100" name="probability" class="form-control required">
               </div>
             </div>
           </div>
           <input type="text" name="email" class="form-control required hidden" value="<?php echo $user_data['EMAIL']; ?>">
-          <br />
+          <br/>
           <button type="submit" class="button small green button-3d rounded icon-left generatePDF"> Générer PDF </button>
         </form>
       </div>

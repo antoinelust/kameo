@@ -1,25 +1,3 @@
-$(".fleetmanager").click(function () {
-  $.ajax({
-    url: "apis/Kameo/initialize_counters.php",
-    type: "post",
-    data: { email: email, type: "statistics" },
-    success: function (response) {
-      if (response.response == "error") {
-        console.log(response.message);
-      }
-      if (response.progressCA > 0) {
-        $("#statisticsCounter").css("color", "#3cb395");
-        document.getElementById("statisticsCounter").innerHTML = '<span style="color: #3cb395; margin-left:20px">'+Math.round(response.progressCA*100)+'%</span>';
-      }else {
-        document.getElementById("statisticsCounter").innerHTML = '<span style="color: #d80000; margin-left:20px">'+Math.round(response.progressCA*100)+'%</span>';
-      }
-    },
-  });
-});
-
-
-
-
 $("#statisticsListing").on("show.bs.modal", function (event) {
   $.ajax({
     url: "api/statistics",

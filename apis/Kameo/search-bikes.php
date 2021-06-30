@@ -25,26 +25,6 @@ $time = new DateTime('NOW', new DateTimeZone('Europe/Brussels'));
 $time->sub(new DateInterval('PT' . $minutesToAdd . 'M'));
 $stamp = $time->format('Y-m-d H:i');
 
-if($user_data['LOCKING'] == "Y"){
-  $sql="SELECT aa.ID, bb.MODEL from reservations aa, customer_bikes bb WHERE aa.DATE_START_2 < '$stamp' AND aa.BIKE_ID=bb.ID AND aa.STAANN != 'D' AND aa.STATUS='Open' AND bb.COMPANY = (select COMPANY from customer_referential WHERE TOKEN='$token') AND NOT EXISTS (select 1 FROM locking_bikes WHERE RESERVATION_ID=aa.ID AND PLACE_IN_BUILDING='-1')";
-  if ($conn->query($sql) === FALSE) {
-    $response = array ('response'=>'error', 'message'=> $conn->error);
-    echo json_encode($response);
-    die;
-  }
-  $resultSendMail=mysqli_query($conn, $sql);
-  while($row = mysqli_fetch_array($resultSendMail)){
-    $ID=$row['ID'];
-    $customName = $row['MODEL'];
-    $sql="UPDATE reservations SET HEU_MAJ=CURRENT_TIMESTAMP, STAANN = 'D', USR_MAJ='script' WHERE ID='$ID'";
-    if ($conn->query($sql) === FALSE) {
-      $response = array ('response'=>'error', 'message'=> $conn->error);
-      echo json_encode($response);
-      die;
-    }
-    include 'sendMailCancellation.php';
-  }
-}
 if($user_data['LOCKING'] == 'Y'){
   $sql = "SELECT COUNT(1) as SOMME from boxes aa, customer_referential bb WHERE aa.COMPANY=bb.COMPANY and bb.TOKEN='$token'";
   if ($conn->query($sql) === FALSE) {

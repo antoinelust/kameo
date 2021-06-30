@@ -1,21 +1,3 @@
-$( ".fleetmanager" ).click(function() {
-
-  $.ajax({
-    url: 'apis/Kameo/initialize_counters.php',
-    type: 'post',
-    data: { "email": email, "type": "tasks"},
-    success: function(response){
-      if(response.response == 'error') {
-          console.log(response.message);
-      }
-      if(response.response == 'success'){
-          document.getElementById('counterTasks').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.actionNumberNotDone+"\" data-from=\"0\" data-seperator=\"true\">"+response.actionNumberNotDone+"</span>";
-      }
-    }
-  })
-});
-
-
 $('.tasksManagerClick').click(function(){
     list_tasks('*', $('.taskOwnerSelection').val(), "<?php echo $user_data['EMAIL'] ?>");
     generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val());
@@ -244,7 +226,7 @@ $('#taskManagement').off();
 $('#taskManagement').on('shown.bs.modal', function(event){
   var action=$(event.relatedTarget).data('action');
   var ID=$(event.relatedTarget).attr('name');
-
+  console.log("test1");
   $("#widget-taskManagement-form select[name=company]")
     .find("option")
     .remove()

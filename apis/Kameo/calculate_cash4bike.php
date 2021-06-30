@@ -23,6 +23,7 @@ if($connected){
     $bike=isset($_GET['model']) ? $_GET['model'] : NULL;
     $leasingAmount=isset($_GET['leasingAmount']) ? $_GET['leasingAmount'] : NULL;
     $frequenceBikePerWeek=isset($_GET['frequence']) ? $_GET['frequence'] : NULL;
+    $sector=isset($_GET['sector']) ? htmlentities($_GET['sector'], ENT_QUOTES) : NULL;
 
     if($bike=="selection"){
         errorMessage("ES0057");
@@ -113,37 +114,42 @@ if($connected){
     $response['distance_car']=$distanceCar;
     $response['distance_bike']=$distanceBike;
 
+    if($sector=='private'){
+      if($type=='ouvrier'){
+          $impactOnGrossSalary=($leasingAmount*12/17.58);
+      }else if($type=="employe"){
+          $impactOnGrossSalary=($leasingAmount*12/18.08);
+      }else{
+          errorMessage("ES0012");
+      }
 
+      $socialCotisation=$impactOnGrossSalary*0.1307;
+      $basisForTaxes=$impactOnGrossSalary-$socialCotisation;
 
-    if($type=='ouvrier'){
-        $impactOnGrossSalary=($leasingAmount*12/17.58);
-    }else if($type=="employe"){
-        $impactOnGrossSalary=($leasingAmount*12/18.08);
+      if($revenuEmployee<636.49){
+          $taxRate=0;
+      }
+      else if($revenuEmployee>=636.49 && $revenuEmployee < 951.87){
+          $taxeRate=(($revenuEmployee-636.49)*0.25)/$revenuEmployee;
+      }else if($revenuEmployee >= 951.87 && $revenuEmployee < 1680.32){
+          $taxRate=(($revenuEmployee-951.87)*0.4)/$revenuEmployee;
+      }else if($revenuEmployee >= 1680.32 && $revenuEmployee < 2908.05){
+          $taxRate=(($revenuEmployee-1949.17)*0.45 + (1680.32-951.87)*0.4)/$revenuEmployee;
+      }else if($revenuEmployee >= 2908.05 ){
+          $taxRate=(($revenuEmployee-2908.05)*0.5 + (2908.05-1680.32)*0.44 + (1680.32-951.87)*0.4+ (951.87-636.49)*0.4)/$revenuEmployee;
+      }else{
+          errorMessage("ES0012");
+      }
+
+      $taxes=$basisForTaxes*$taxRate;
+
+      $impactOnNetSalary=($basisForTaxes-$taxes);
+
     }else{
-        errorMessage("ES0012");
+      $impactOnGrossSalary=$leasingAmount*1.21*0.865;
+      $impactOnNetSalary=$impactOnGrossSalary*(1-0.1307)*(1-0.3);
     }
 
-    $socialCotisation=$impactOnGrossSalary*0.1307;
-    $basisForTaxes=$impactOnGrossSalary-$socialCotisation;
-
-    if($revenuEmployee<636.49){
-        $taxRate=0;
-    }
-    else if($revenuEmployee>=636.49 && $revenuEmployee < 951.87){
-        $taxeRate=(($revenuEmployee-636.49)*0.25)/$revenuEmployee;
-    }else if($revenuEmployee >= 951.87 && $revenuEmployee < 1680.32){
-        $taxRate=(($revenuEmployee-951.87)*0.4)/$revenuEmployee;
-    }else if($revenuEmployee >= 1680.32 && $revenuEmployee < 2908.05){
-        $taxRate=(($revenuEmployee-1949.17)*0.45 + (1680.32-951.87)*0.4)/$revenuEmployee;
-    }else if($revenuEmployee >= 2908.05 ){
-        $taxRate=(($revenuEmployee-2908.05)*0.5 + (2908.05-1680.32)*0.44 + (1680.32-951.87)*0.4+ (951.87-636.49)*0.4)/$revenuEmployee;
-    }else{
-        errorMessage("ES0012");
-    }
-
-    $taxes=$basisForTaxes*$taxRate;
-
-    $impactOnNetSalary=($basisForTaxes-$taxes);
 
     if($prime=='0'){
         $impactBikeAllowance=0;

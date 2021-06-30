@@ -51,18 +51,10 @@ if(is_null($response['externalBikes'])){
 
 ///////////////////
 
-$sql="SELECT CONTRACT_START, CONTRACT_END, SUM(LEASING_PRICE) as 'PRICE', COUNT(1) as 'BIKE_NUMBER' FROM `customer_bikes` WHERE COMPANY = '$company' AND AUTOMATIC_BILLING='Y' GROUP BY CONTRACT_START, CONTRACT_END";
-
-if ($conn->query($sql) === FALSE) {
-    $response = array ('response'=>'error', 'message'=> $conn->error);
-    echo json_encode($response);
-    die;
-}
-
-$result = mysqli_query($conn, $sql);
-$response['bikeContracts']=$result->num_rows;
+$result=execSQL("SELECT CONTRACT_START, CONTRACT_END, SUM(LEASING_PRICE) as 'PRICE', COUNT(1) as 'BIKE_NUMBER' FROM `customer_bikes` WHERE COMPANY = ? AND AUTOMATIC_BILLING='Y' GROUP BY CONTRACT_START, CONTRACT_END", array('s', $company), false);
+$response['bikeContracts']=count($result);
 $i=0;
-while($row = mysqli_fetch_array($result)){
+foreach($result as $row){
     $response['offer'][$i]['id']="N/A";
     $response['offer'][$i]['description']=$row['BIKE_NUMBER']." vélos en leasing";
     $response['offer'][$i]['probability']="signé";
@@ -77,17 +69,10 @@ while($row = mysqli_fetch_array($result)){
 
 ///////////////////
 
-$sql="SELECT * FROM offers dd where COMPANY='$company' AND STAANN != 'D'";
+$result=execSQL("SELECT * FROM offers dd where COMPANY=? AND STAANN != 'D'", array('s', $company), false);
 
-if ($conn->query($sql) === FALSE) {
-    $response = array ('response'=>'error', 'message'=> $conn->error);
-    echo json_encode($response);
-    die;
-}
-
-$result = mysqli_query($conn, $sql);
-$response['offerNumber']=$result->num_rows;
-while($row = mysqli_fetch_array($result)){
+$response['offerNumber']=count($result);
+foreach($result as $row){
     $response['offer'][$i]['id']=$row['ID'];
     $response['offer'][$i]['title']=$row['TITRE'];
     $response['offer'][$i]['description']=$row['DESCRIPTION'];
@@ -95,7 +80,7 @@ while($row = mysqli_fetch_array($result)){
     $response['offer'][$i]['type']=$row['TYPE'];
     $response['offer'][$i]['amount']=$row['AMOUNT'];
     $response['offer'][$i]['margin']=$row['MARGIN'];
-    $response['offer'][$i]['date']=$row['DATE'];
+    $response['offer'][$i]['validityDate']=$row['VALIDITY_DATE'];
     $response['offer'][$i]['start']=$row['START'];
     $response['offer'][$i]['end']=$row['START'];
     $response['offer'][$i]['status']=$row['STATUS'];
@@ -103,43 +88,22 @@ while($row = mysqli_fetch_array($result)){
     $i++;
 }
 
-$sql="SELECT * FROM customer_referential dd where COMPANY='$company' AND STAANN != 'D'";
+$result=execSQL("SELECT * FROM customer_referential dd where COMPANY=? AND STAANN != 'D'", array('s', $company), false);
 
-if ($conn->query($sql) === FALSE) {
-    $response = array ('response'=>'error', 'message'=> $conn->error);
-    echo json_encode($response);
-    die;
-}
-
-$result = mysqli_query($conn, $sql);
+$response['userNumber']=count($result);
 $i=0;
-while($row = mysqli_fetch_array($result)){
+foreach($result as $row){
     $response['user'][$i]['name']=$row['NOM'];
     $response['user'][$i]['firstName']=$row['PRENOM'];
     $response['user'][$i]['email']=$row['EMAIL'];
     $response['user'][$i]['phone']=$row['PHONE'];
     $i++;
-
-}
-$response['userNumber']=$i;
-
-$sql="SELECT * FROM factures dd where COMPANY='$company'";
-
-if ($conn->query($sql) === FALSE) {
-    $response = array ('response'=>'error', 'message'=> $conn->error);
-    echo json_encode($response);
-    die;
 }
 
-$result = mysqli_query($conn, $sql);
-$length = $result->num_rows;
-
-$response['billNumber']=$length;
-$conn->close();
-
+$result=execSQL("SELECT * FROM factures dd where COMPANY=?", array('s', $company), false);
+$response['billNumber']=count($result);
 $i=0;
-while($row = mysqli_fetch_array($result))
-{
+foreach($result as $row){
     $response['bill'][$i]['company']=$row['COMPANY'];
     $response['bill'][$i]['beneficiaryCompany']=$row['BENEFICIARY_COMPANY'];
     $response['bill'][$i]['ID']=$row['ID'];
@@ -156,8 +120,6 @@ while($row = mysqli_fetch_array($result))
     $response['bill'][$i]['communicationSentAccounting']=$row['FACTURE_SENT_ACCOUNTING'];
     $i++;
 }
-
-
 echo json_encode($response);
 die;
 ?>

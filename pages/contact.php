@@ -3,6 +3,8 @@
 <?php
 	include 'include/head.php';
 ?>
+<script defer src='https://www.google.com/recaptcha/api.js'></script>
+
 <body class="wide">
 
 	<?
@@ -242,7 +244,7 @@
 								<div><?=L::contact_team_responsableadmin;?></div>
 							</div>
 					</div>
-					
+
 					<div class="col-md-3">
 						<div class="image-box circle-image small"> <img class="" src="images/Simon.jpg" alt=""> </div>
 							<div class="image-box-description text-center">
@@ -251,7 +253,7 @@
 								<div><?=L::contact_team_responsablemecanique;?></div>
 							</div>
 					</div>
-					
+
 					<div class="col-md-6">
 						<div class="image-box circle-image small"> <img class="" src="images/you.jpg" alt=""> </div>
 							<div class="image-box-description text-center">

@@ -2,16 +2,6 @@ $(".fleetmanager").click(function () {
   var dateStart = new Date();
   var dateEnd = new Date();
   dateEnd.setMonth(dateEnd.getMonth()+1);
-
-  $.ajax({
-    url: "apis/Kameo/initialize_counters.php",
-    type: "post",
-    data: { email: email, type: "plannings", dateStart:get_date_string(dateStart), dateEnd:get_date_string(dateEnd) },
-    success: function (response) {
-      document.getElementById("counterPlannings").innerHTML = '<span style="color: orange; margin-left:20px">'+response.stillToDo+'</span>';
-    }
-  });
-
   var dateStart = new Date();
   $("#planningsListing input[name=dateStart]").val(get_date_string(dateStart));
   var dateEnd = new Date();
@@ -81,12 +71,15 @@ $('#planningManagement').on('shown.bs.modal', function(event){
         $('#planningManagement .planningDetails').html("");
 
         if(response.status=='new'){
+          $('#planningManagement a[name=cancel_tour]').fadeOut();
           $('#planningManagement input[name=startHourTour]').attr('readonly', false);
           $('#planningManagement input[name=startAddress]').attr('readonly', false);
           $('#planningManagement input[name=endHourTour]').attr('readonly', false);
           $('#planningManagement input[name=endAddress]').attr('readonly', false);
           var i=1;
           response.internalEntretiens.forEach(function(entretien){
+            var externalComment = (entretien.COMMENT != null && entretien.COMMENT != '') ? entretien.COMMENT : "N/A";
+            var internalComment = (entretien.INTERNAL_COMMENT != null && entretien.INTERNAL_COMMENT != '') ? entretien.INTERNAL_COMMENT : "N/A";
             $('#planningManagement .planningDetails').append("<div class='col-md-12 newRow d-flex' style='border: 1px solid grey; margin-top: 10px; margin-bottom: 10px; cursor: pointer'>"+
               '<div class="col-md-1" style="margin:0px; padding:0px">'+
                 '<input type="number" name="order[]" class="form-control required order" value="'+i+'" disabled><br>'+
@@ -103,7 +96,7 @@ $('#planningManagement').on('shown.bs.modal', function(event){
                     "<strong>E-mail : </strong>"+entretien.EMAIL+"<br>"+
                     "<strong>Numéro de téléphone : </strong>"+entretien.PHONE+"<br>"+
                     "<strong>Numéro de cadre : </strong> "+entretien.FRAME_REFERENCE+"</div>"+
-                  "<div class='col-md-6'><strong>Adresse : </strong><input type='text' class='form-control address' name='address[]' value='"+entretien.ADDRESS+"'<br>"+
+                  "<div class='col-md-6'><strong>Adresse : </strong><input type='text' class='form-control address required' name='address[]' value='"+entretien.ADDRESS+"'<br>"+
                     "<strong>Temps de déplacement : </strong> <span class='travelTime'></span> min<br><input type='number' name='deplacement[]' class='form-control required hidden'>"+
                     "<strong>Temps d'exécution : </strong><input type='number' name='execution[]' class='form-control execution' value='20'>"+
                   "</div>"+
@@ -113,12 +106,15 @@ $('#planningManagement').on('shown.bs.modal', function(event){
                 "Heure de fin : <input type='time' name='endHour[]' class='form-control required endHour' readonly>"+
                 "</div>"+
                 "<div class='separator'></div>"+
-                "<div class='col-md-12'><strong>Commentaire pour le client :</strong> "+entretien.COMMENT+"<br><br><strong>Commentaire interne :</strong> "+entretien.INTERNAL_COMMENT+"</div>"+
+                "<div class='col-md-12'><strong>Commentaire pour le client :</strong> "+externalComment+"<br><br><strong>Commentaire interne :</strong> "+internalComment+"</div>"+
                 "<input type='text' class='hidden' value='internalMaintenance' name='type[]'><input type='text' class='hidden' name='id[]' value='"+entretien.ID+"'>"+
               "</div>");
             i++;
           });
           response.externalEntretiens.forEach(function(entretien){
+            var externalComment = (entretien.COMMENT != null && entretien.COMMENT != '') ? entretien.COMMENT : "N/A";
+            var internalComment = (entretien.INTERNAL_COMMENT != null && entretien.INTERNAL_COMMENT != '') ? entretien.INTERNAL_COMMENT : "N/A";
+
             $('#planningManagement .planningDetails').append("<div class='col-md-12 newRow d-flex' style='border: 1px solid grey; margin-top: 10px; margin-bottom: 10px; cursor: pointer'>"+
               '<div class="col-md-1" style="margin:0px; padding:0px">'+
                 '<input type="number" name="order[]" class="form-control required order" value="'+i+'" disabled><br>'+
@@ -134,7 +130,7 @@ $('#planningManagement').on('shown.bs.modal', function(event){
                     "<strong>Société : </strong>"+entretien.COMPANY_NAME+"<br>"+
                     "<strong>Numéro de téléphone : </strong>"+entretien.PHONE+"<br>"+
                     "<strong>Numéro de cadre : </strong> "+entretien.FRAME_REFERENCE+"</div>"+
-                  "<div class='col-md-6'><strong>Adresse : </strong><input type='text' class='form-control address' name='address[]' value='"+entretien.ADDRESS+"'<br>"+
+                  "<div class='col-md-6'><strong>Adresse : </strong><input type='text' class='form-control address required' name='address[]' value='"+entretien.ADDRESS+"'<br>"+
                     "<strong>Temps de déplacement : </strong> <span class='travelTime'></span> min<br><input type='number' name='deplacement[]' class='form-control required hidden'>"+
                     "<strong>Temps d'exécution : </strong><input type='number' name='execution[]' class='form-control execution' value='20'>"+
                   "</div>"+
@@ -144,7 +140,7 @@ $('#planningManagement').on('shown.bs.modal', function(event){
                 "Heure de fin : <input type='time' name='endHour[]' class='form-control required endHour' readonly>"+
                 "</div>"+
                 "<div class='separator'></div>"+
-                "<div class='col-md-12'><strong>Commentaire pour le client :</strong> "+entretien.COMMENT+"<br><br><strong>Commentaire interne :</strong> "+entretien.INTERNAL_COMMENT+"</div>"+
+                "<div class='col-md-12'><strong>Commentaire pour le client :</strong> "+externalComment+"<br><br><strong>Commentaire interne :</strong> "+internalComment+"</div>"+
                 "<input type='text' class='hidden' value='externalMaintenance' name='type[]'><input type='text' class='hidden' name='id[]' value='"+entretien.ID+"'>"+
               "</div>");
             i++;
@@ -166,7 +162,7 @@ $('#planningManagement').on('shown.bs.modal', function(event){
                     "<strong>E-mail : </strong>"+order.EMAIL+"<br>"+
                     "<strong>Numéro de téléphone : </strong>"+order.PHONE+"<br>"+
                     "<strong>Numéro de cadre : </strong> "+order.FRAME_REFERENCE+"</div>"+
-                  "<div class='col-md-6'><strong>Adresse : </strong><input type='text' class='form-control address' name='address[]' value='"+order.ADDRESS+"'<br>"+
+                  "<div class='col-md-6'><strong>Adresse : </strong><input type='text' class='form-control address required' name='address[]' value='"+order.ADDRESS+"'<br>"+
                     "<strong>Temps de déplacement : </strong> <span class='travelTime'></span> min<br><input type='number' name='deplacement[]' class='form-control  required hidden'>"+
                     "<strong>Temps d'exécution : </strong><input type='number' name='execution[]' class='form-control execution' value='20'>"+
                   "</div>"+
@@ -179,8 +175,8 @@ $('#planningManagement').on('shown.bs.modal', function(event){
               "</div>");
               i++;
           });
-          get_tour_travel_time();
         }else{
+          $('#planningManagement a[name=cancel_tour]').fadeIn();
           $($("#planningManagement input[name='startHourTour']")).val(response.steps[0].PLANNED_START_HOUR);
           $('#planningManagement input[name=startHourTour]').attr('readonly', true);
           $('#planningManagement input[name=startAddress]').attr('readonly', true);
@@ -191,12 +187,15 @@ $('#planningManagement').on('shown.bs.modal', function(event){
           var i=1;
           response.steps.forEach(function(item){
             if(item.ITEM_TYPE=='internalMaintenance'){
+              var externalComment = (item.COMMENT != null && item.COMMENT != '') ? item.COMMENT : "N/A";
+              var internalComment = (item.INTERNAL_COMMENT != null && item.INTERNAL_COMMENT != '') ? item.INTERNAL_COMMENT : "N/A";
+
               $('#planningManagement .planningDetails').append(
               "<div class='col-md-12 newRow d-flex' style='border: 1px solid grey; margin-top: 10px; margin-bottom: 10px; cursor: pointer'>"+
                 '<div class="col-md-1" style="margin:0px; padding:0px">'+
                   '<input type="number" name="order[]" class="form-control required order" value="'+(item.STEP)+'" disabled><br>'+
                 "</div>"+
-                "<div class='col-md-11'>"+
+                "<div class='col-md-8'>"+
                   "<strong class='text-green'>Entretien n°"+item.ITEM_ID+"</strong><br><br>"+
                   "<strong class='text-green'>Informations</strong><br>"+
                   "<strong>Société : </strong>"+item.COMPANY_NAME+"<br>"+
@@ -212,18 +211,28 @@ $('#planningManagement').on('shown.bs.modal', function(event){
                   "<div class='col-md-4'>Heure d'arrivée : <input type='time' name='startHour[]' class='form-control required' value='"+item.PLANNED_START_HOUR+"' readonly></div>"+
                   "<div class='col-md-4'>Heure de fin : <input type='time' name='endHour[]' class='form-control required' value='"+item.PLANNED_END_HOUR+"' readonly></div>"+
                 "</div>"+
+                "<div class='col-md-3'>"+
+                "<strong class='text-green'>Execution</strong><br><br>"+
+                "<label for='validate_task_arrival'>Je suis arrivé à : </label>"+
+                "<input type='time' class='form-control validate_task_arrival' name='validate_task_arrival[]' value='"+item.REAL_START_HOUR+"'>"+
+                "<label for='validate_task_departure'>Je suis parti à : </label>"+
+                "<input type='time' class='form-control validate_task_departure' name='validate_task_departure[]' value='"+item.REAL_END_HOUR+"'>"+
+                "<a href='#' class='validate_task button small green button-3d rounded icon-right' data-id='"+item.ID+"'>Valider</a>"+
+                "</div>"+
                 "<div class='separator'></div>"+
                 "<strong class='text-green'>Informations spécifiques entretien</strong><br><br>"+
-                "<div class='col-md-12'><strong>Commentaire pour le client :</strong> "+item.COMMENT+"<br><br><strong>Commentaire interne :</strong> "+item.INTERNAL_COMMENT+"<br><br></div>"+
+                "<div class='col-md-12'><strong>Commentaire pour le client :</strong> "+externalComment+"<br><br><strong>Commentaire interne :</strong> "+internalComment+"<br><br></div>"+
                 "</div>");
             };
             if(item.ITEM_TYPE=='externalMaintenance'){
+              var externalComment = (item.COMMENT != null && item.COMMENT != '') ? item.COMMENT : "N/A";
+              var internalComment = (item.INTERNAL_COMMENT != null && item.INTERNAL_COMMENT != '') ? item.INTERNAL_COMMENT : "N/A";
               $('#planningManagement .planningDetails').append(
               "<div class='col-md-12 newRow d-flex' style='border: 1px solid grey; margin-top: 10px; margin-bottom: 10px; cursor: pointer'>"+
                   '<div class="col-md-1" style="margin:0px; padding:0px">'+
                     '<input type="number" name="order[]" class="form-control required order" value="'+(item.STEP)+'" disabled><br>'+
                   "</div>"+
-                  "<div class='col-md-11'>"+
+                  "<div class='col-md-8'>"+
                     "<strong class='text-green'>Entretien sur vélo externe n°"+item.ITEM_ID+"</strong><br><br>"+
                     "<strong class='text-green'>Informations</strong><br>"+
                     "<strong>Société : </strong>"+item.COMPANY_NAME+"<br>"+
@@ -239,9 +248,17 @@ $('#planningManagement').on('shown.bs.modal', function(event){
                     "<div class='col-md-4'>Heure d'arrivée : <input type='time' name='startHour[]' class='form-control required' value='"+item.PLANNED_START_HOUR+"' readonly></div>"+
                     "<div class='col-md-4'>Heure de fin : <input type='time' name='endHour[]' class='form-control required' value='"+item.PLANNED_END_HOUR+"' readonly></div>"+
                   "</div>"+
+                  "<div class='col-md-3'>"+
+                  "<strong class='text-green'>Execution</strong><br><br>"+
+                  "<label for='validate_task_arrival'>Je suis arrivé à : </label>"+
+                  "<input type='time' class='form-control validate_task_arrival' name='validate_task_arrival[]' value='"+item.REAL_START_HOUR+"'>"+
+                  "<label for='validate_task_departure'>Je suis parti à : </label>"+
+                  "<input type='time' class='form-control validate_task_departure' name='validate_task_departure[]' value='"+item.REAL_END_HOUR+"'>"+
+                  "<a href='#' class='validate_task button small green button-3d rounded icon-right' data-id='"+item.ID+"'>Valider</a>"+
+                  "</div>"+
                   "<div class='separator'></div>"+
                   "<strong class='text-green'>Informations spécifiques entretien</strong><br><br>"+
-                  "<div class='col-md-12'><strong>Commentaire pour le client :</strong> "+item.COMMENT+"<br><br><strong>Commentaire interne :</strong> "+item.INTERNAL_COMMENT+"<br><br></div>"+
+                  "<div class='col-md-12'><strong>Commentaire pour le client :</strong> "+externalComment+"<br><br><strong>Commentaire interne :</strong> "+internalComment+"<br><br></div>"+
                 "</div>");
             };
             if(item.ITEM_TYPE=='order'){
@@ -249,8 +266,9 @@ $('#planningManagement').on('shown.bs.modal', function(event){
                 "<div class='col-md-12 newRow d-flex' style='border: 1px solid grey; margin-top: 10px; margin-bottom: 10px; cursor: pointer'>"+
                   '<div class="col-md-1" style="margin:0px; padding:0px">'+
                     '<input type="number" name="order[]" class="form-control required order" value="'+(item.STEP)+'" disabled><br>'+
+                    '<input type="text" class="form-control required stepType hidden" value="'+(item.ITEM_TYPE)+'">'+
                   "</div>"+
-                  "<div class='col-md-11'>"+
+                  "<div class='col-md-8'>"+
                     "<strong class='text-green'>Commande n°"+item.ITEM_ID+"</strong><br><br>"+
                     "<strong class='text-green'>Informations</strong><br>"+
                     "<strong>Société : </strong>"+item.COMPANY_NAME+"<br>"+
@@ -266,6 +284,14 @@ $('#planningManagement').on('shown.bs.modal', function(event){
                     "<div class='col-md-4'>Heure d'arrivée : <input type='time' name='startHour[]' class='form-control required' value='"+item.PLANNED_START_HOUR+"' readonly></div>"+
                     "<div class='col-md-4'>Heure de fin : <input type='time' name='endHour[]' class='form-control required' value='"+item.PLANNED_END_HOUR+"' readonly></div>"+
                   "</div>"+
+                  "<div class='col-md-3'>"+
+                  "<strong class='text-green'>Execution</strong><br><br>"+
+                  "<label for='validate_task_arrival'>Je suis arrivé à : </label>"+
+                  "<input type='time' class='form-control validate_task_arrival' name='validate_task_arrival[]' value='"+item.REAL_START_HOUR+"'>"+
+                  "<label for='validate_task_departure'>Je suis parti à : </label>"+
+                  "<input type='time' class='form-control validate_task_departure' name='validate_task_departure[]' value='"+item.REAL_END_HOUR+"'>"+
+                  "<a href='#' class='validate_task button small green button-3d rounded icon-right' data-id='"+item.ID+"'>Valider</a>"+
+                  "</div>"+
                 "</div>");
             };
             if(item.ITEM_TYPE=='additionalStep'){
@@ -273,7 +299,7 @@ $('#planningManagement').on('shown.bs.modal', function(event){
                 '<div class="col-md-1" style="margin:0px; padding:0px">'+
                   '<input type="number" name="order[]" class="form-control required order" value="'+(item.STEP)+'" disabled><br>'+
                 "</div>"+
-                "<div class='col-md-11'>"+
+                "<div class='col-md-8'>"+
                   "<strong class='text-green'>Etape manuelle</strong><br><br>"+
                   "<strong class='text-green'>Informations</strong><br>"+
                   "<strong>Description : </strong>"+item.DESCRIPTION+"<br>"+
@@ -284,16 +310,41 @@ $('#planningManagement').on('shown.bs.modal', function(event){
                   "<strong class='text-green'>Heures de passage</strong><br><br>"+
                   "<div class='col-md-4'>Heure d'arrivée : <input type='time' name='startHour[]' class='form-control required' value='"+item.PLANNED_START_HOUR+"' readonly></div>"+
                   "<div class='col-md-4'>Heure de fin : <input type='time' name='endHour[]' class='form-control required' value='"+item.PLANNED_END_HOUR+"' readonly></div>"+
+                "</div>"+
+                "<div class='col-md-3'>"+
+                "<strong class='text-green'>Execution</strong><br><br>"+
+                "<label for='validate_task_arrival'>Je suis arrivé à : </label>"+
+                "<input type='time' class='form-control validate_task_arrival' name='validate_task_arrival[]' value='"+item.REAL_START_HOUR+"'>"+
+                "<label for='validate_task_departure'>Je suis parti à : </label>"+
+                "<input type='time' class='form-control validate_task_departure' name='validate_task_departure[]' value='"+item.REAL_END_HOUR+"'>"+
+                "<a href='#' class='validate_task button small green button-3d rounded icon-right' data-id='"+item.ID+"'>Valider</a>"+
                 "</div>");
             };
-
             $($("#planningManagement input[name='endAddress']")).val(response.steps[response.steps.length-1].ADDRESS);
             $($("#planningManagement input[name='endHourTour']")).val(response.steps[response.steps.length-1].PLANNED_START_HOUR);
             $($("#planningManagement span[name='endPointDuration']")).val(response.steps[response.steps.length-1].MOVING_TIME);
 
           });
-        }
 
+        }
+        $('#planningManagement .validate_task').off();
+        $('#planningManagement .validate_task').click(function(){
+          $.ajax({
+            url: "api/plannings",
+            type: "post",
+            data: {action: "confirmTask", id: $(this).data('id'), arrival: $(this).parent().find('.validate_task_arrival').val(), departure: $(this).parent().find('.validate_task_departure').val()},
+            success: function (response) {
+              $.notify(
+                {
+                  message: response.message,
+                },
+                {
+                  type: "success",
+                }
+              );
+            }
+          });
+        })
 
 
         $("#planningManagement .moveUp").click(function(){
@@ -302,7 +353,6 @@ $('#planningManagement').on('shown.bs.modal', function(event){
           if(selected>0)
           {
             jQuery($(itemlist).eq(selected-1)).before(jQuery($(itemlist).eq(selected)));
-            get_tour_travel_time();
           }
         });
 
@@ -312,18 +362,28 @@ $('#planningManagement').on('shown.bs.modal', function(event){
           if(selected<($('#planningManagement .newRow').length - 1))
           {
              jQuery($(itemlist).eq(selected+1)).after(jQuery($(itemlist).eq(selected)));
-             get_tour_travel_time();
           }
         });
-
-        $('#planningManagement .address, #planningManagement .execution, #planningManagement input[name=startAddress], #planningManagement input[name=endAddress], #planningManagement input[name=startHourTour]').change(function(){
-          get_tour_travel_time();
-        })
       }
     }
   });
 });
 
+$('a[name=get_tour_travel_time]').click(function(){
+  get_tour_travel_time();
+})
+
+$('a[name=cancel_tour]').click(function(){
+  $.ajax({
+    url: "api/plannings",
+    type: "post",
+    data: {action: "delete", date:$('#widget-form-planning span[name=dateTitle]').html()},
+    success: function (response) {
+      $('#planningManagement').modal('toggle');
+      listPlannings();
+    }
+  });
+})
 
 var get_tour_travel_time = function(num){
   var i= num || 0; // uses i if it's set, otherwise uses 0
@@ -448,6 +508,7 @@ function getTotalTourLength(){
   $('#planningManagement .travelTime').each(function(){
     total=total*1+(this.innerHTML)*1;
   })
+  total=total*1+($('span[name=endPointDuration]').html())*1;
   var m = total % 60;
   var h = (total-m)/60;
 
@@ -472,7 +533,7 @@ $('#planningManagement a[name=addPlanningStep]').click(function(){
           "<strong class='text-green'>Etape manuelle</strong><br>"+
           "<label for='description'>Description</label><input type='text' name='description[]' class='form-control'>"+
           "</div>"+
-        "<div class='col-md-6'><strong>Adresse : </strong><input type='text' class='form-control address' name='address[]' value=''><br>"+
+        "<div class='col-md-6'><strong>Adresse : </strong><input type='text' class='form-control address required' name='address[]' value=''><br>"+
           "<strong>Temps de déplacement : </strong> <span class='travelTime'></span> min<br><input type='number' name='deplacement[]' class='form-control required hidden'>"+
           "<strong>Temps d'exécution : </strong><input type='number' name='execution[]' class='form-control execution' value='30'>"+
         "</div>"+

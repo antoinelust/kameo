@@ -1,89 +1,62 @@
-<div
-  class="modal fade"
-  id="addClient"
-  tabindex="-1"
-  role="modal"
-  aria-labelledby="modal-label"
-  aria-hidden="true"
-  style="display: none;"
->
+<div class="modal fade" id="addClient" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-hidden="true"
-        >
-          ×
-        </button>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
       </div>
       <div class="modal-body">
         <div class="row">
           <div class="col-md-12">
             <h4 class="text-green">Ajouter un client</h4>
-            <form
-              id="widget-addClient-form"
-              action="api/companies"
-              role="form"
-              method="post"
-            >
+            <form id="widget-addClient-form" action="api/companies" role="form" method="post">
               <div class="form-group">
                 <h4 class="text-green">Description</h4>
                 <div class="col-md-4">
-                  <label for="internalReference">Référence interne</label>
-                  <input
-                    type="text"
-                    class="form-control required"
-                    name="internalReference"
-                  />
-                </div>
-                <div class="col-md-4">
-                  <label for="description">Nom de la société</label>
-                  <input
-                    type="text"
-                    class="form-control required"
-                    name="description"
-                  />
-                </div>
-                <div class="col-md-4">
-                  <label for="VAT">Numéro de TVA</label>
-                  <input
-                    type="text"
-                    class="form-control "
-                    name="VAT"
-                  />
+                  <label for="type">Audience</label>
+                  <select title="Audience" class="form-control required" name="audience">
+                    <option value="B2B">Entreprise</option>
+                    <option value="B2C" selected>Particulier</option>
+                  </select>
                 </div>
                 <div class="col-md-4">
                   <label for="type">Type</label>
-                  <select
-                    title="Type"
-                    class="form-control required"
-                    name="type"
-                  >
-                    <option value="CLIENT">Client</option>
-                    <option value="PROSPECT" selected>Prospect</option>
+                  <select title="Type" class="form-control required" name="type">
+                    <option value="CLIENT" selected>Client</option>
+                    <option value="PROSPECT">Prospect</option>
                     <option value="ANCIEN PROSPECT">Ancien prospect</option>
                     <option value="ANCIEN CLIENT">Ancien client</option>
                     <option value="NOT INTERESTED">Pas intéressé</option>
                   </select>
                 </div>
-                <div class="col-md-4">
-                  <label for="type">Audience</label>
-                  <select
-                    title="Audience"
-                    class="form-control required"
-                    name="audience"
-                  >
-                    <option value="B2B">Entreprise</option>
-                    <option value="B2C">Particulier</option>
-                  </select>
+                <div class="row"></div>
+                <div class="col-md-4" style='display:none'>
+                  <label for="internalReference">Référence interne</label>
+                  <input type="text" class="form-control required" name="internalReference">
                 </div>
-                <div class="col-sm-6">
-                  <label for="picture">Logo de la société (.jpg)</label>
-                  <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
-                  <input type="file" size="40" class="form-control" name="picture">
+                <div class="col-md-4" style='display:none'>
+                  <label for="description">Nom de la société</label>
+                  <input type="text" class="form-control required" name="description">
+                </div>
+                <div class="col-md-4" style='display:none'>
+                  <label for="VAT">Numéro de TVA</label>
+                  <input type="text" class="form-control" name="VAT">
+                </div>
+                <div class="row"></div>
+                <div class="col-md-4">
+                  <label for="name">Nom</label>
+                  <input type="text" class="form-control required" name="name">
+                </div>
+                <div class="col-md-4">
+                  <label for="firstName">Prénom</label>
+                  <input type="text" class="form-control required" name="firstName">
+                </div>
+                <div class="col-md-4">
+                  <label for="email">E-mail</label>
+                  <input type="text" class="form-control required" name="email">
+                </div>
+                <div class="col-md-4">
+                  <label for="phone">Numéro</label>
+                  <input type="text" class="form-control required" name="phone">
                 </div>
                 <div class="separator"></div>
                 <h4 class="text-green">Adresse</h4>
@@ -107,9 +80,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-b" data-dismiss="modal">
-          Fermer
-        </button>
+        <button type="button" class="btn btn-b" data-dismiss="modal"><?= L::generic_close; ?></button>
       </div>
     </div>
   </div>
@@ -117,6 +88,28 @@
 <!--<script type="text/javascript" src="js/addons/tweetnacl/nacl-fast.min.js"></script>
 <script type="text/javascript" src="js/addons/tweetnacl-util/nacl-util.min.js"></script>-->
 <script type="text/javascript">
+
+  $('#addClient select[name=audience]').change(function(){
+    if($(this).val()=="B2C"){
+      $('#addClient input[name=name]').parent().fadeIn();
+      $('#addClient input[name=firstName]').parent().fadeIn();
+      $('#addClient input[name=email]').parent().fadeIn();
+      $('#addClient input[name=phone]').parent().fadeIn();
+      $('#addClient input[name=internalReference]').parent().fadeOut();
+      $('#addClient input[name=description]').parent().fadeOut();
+      $('#addClient input[name=TVA]').parent().fadeOut();
+    }else{
+      $('#addClient input[name=name]').parent().fadeOut();
+      $('#addClient input[name=firstName]').parent().fadeOut();
+      $('#addClient input[name=email]').parent().fadeOut();
+      $('#addClient input[name=phone]').parent().fadeOut();
+      $('#addClient input[name=internalReference]').parent().fadeIn();
+      $('#addClient input[name=description]').parent().fadeIn();
+      $('#addClient input[name=TVA]').parent().fadeIn();
+    }
+  })
+
+
   jQuery("#widget-addClient-form").validate({
     submitHandler: function (form) {
       jQuery(form).ajaxSubmit({
@@ -134,6 +127,7 @@
             $("#addClient").modal("toggle");
             getCompaniesInMaintenances(response.companyName);
             //$("#companyListingTable").dataTable().api().ajax.reload();
+            console.log("test");
             $("#widget-externalBikeManagement-form select[name=company]")
               .find("option")
               .remove()

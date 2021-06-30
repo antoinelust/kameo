@@ -1,49 +1,7 @@
-$( ".fleetmanager" ).click(function() {
-	$.ajax({
-		url: 'apis/Kameo/initialize_counters.php',
-		type: 'post',
-		data: { "email": email, "type": "ordersAccessoryAdmin"},
-		success: function(response){
-			if(response.response == 'error') {
-				console.log(response.message);
-			}
-			if(response.response == 'success'){
-				document.getElementById("counterOrderAccessoriesCounter").innerHTML = '<span style="margin-left:20px; color:#3cb395">'+response.ordersAccessoryNumber+'</span>';
-			}
-		}
-	})
-})
-
-
-$( ".orderAccessoriesClick" ).click(function() {
-
-	$("#widget-orderAcessory-form select[name=company]")
-    .find("option")
-    .remove()
-    .end();
-		$.ajax({
-	    url: "api/companies",
-	    type: "get",
-	    data: { type: "*", action: 'listMinimal' },
-	    success: function (response) {
-	      if (response.response == "success") {
-	        for (var i = 0; i < response.company.length; i++) {
-						$("#widget-orderAcessory-form select[name=company]").append(
-							'<option value="' +
-								response.company[i].ID +
-								'">' +
-								response.company[i].companyName +
-								"</option>"
-						);
-					}
-				}
-			}
-		})
-
-
+$( ".orderAccessoriesClick" ).click(function(){
 
 	$("#displayorderAcessory").dataTable({
-		"scrollXInner": true,
+		scrollX: true,
 		destroy: true,
 		ajax: {
 			url: "apis/Kameo/accessories/accessories.php",
@@ -93,6 +51,7 @@ $( ".orderAccessoriesClick" ).click(function() {
 });
 
 $("#accessoryOrderManagement").on("show.bs.modal", function (event) {
+
 	var ID = $(event.relatedTarget).data("id");
 	var action = $(event.relatedTarget).data("action");
 	if(action == 'retrieve'){
@@ -123,7 +82,60 @@ function getOrderDetailAcessory(ID){
 		type: 'get',
 		data: {"action": "getOrderDetailAcessory", "ID":ID},
 		success: function(response){
-			$("#widget-orderAcessory-form [name=company]").val(response.COMPANY_ID);
+			console.log("test2");
+			if($("#widget-orderAcessory-form select[name=company] option").length == 0){
+				$("#widget-orderAcessory-form select[name=company]")
+					.find("option")
+					.remove()
+					.end();
+				$.ajax({
+					url: "api/companies",
+					type: "get",
+					data: { type: "*", action: 'listMinimal' },
+					success: function (companies) {
+						if (companies.response == "success") {
+							for (var i = 0; i < companies.company.length; i++) {
+								$("#widget-orderAcessory-form select[name=company]").append(
+									'<option value="' +
+										companies.company[i].ID +
+										'">' +
+										companies.company[i].companyName +
+										"</option>"
+								);
+							}
+							$("#widget-orderAcessory-form [name=company]").val(response.COMPANY_ID);
+						}
+					}
+				})
+			}else{
+				$("#widget-orderAcessory-form [name=company]").val(response.COMPANY_ID);
+			}
+
+			if(response.ACCESSORY_ID==null){
+				$("#widget-orderAcessory-form p[name=linkOrderAccessoryToStock]").addClass("hidden");
+				$("#widget-orderAcessory-form select[name=linkOrderAccessoryToStock]").parent().removeClass("hidden");
+
+				$.ajax({
+					url: 'api/accessories',
+					type: 'get',
+					data: {action: "getStockAccessoryNotLinkedToOrder", catalogID:response.catalogID},
+					success: function(accessories){
+						$("#widget-orderAcessory-form select[name=linkOrderAccessoryToStock]")
+						.find("option")
+						.remove()
+						.end();
+						accessories.forEach(function(accessory){
+							$("#widget-orderAcessory-form select[name=linkOrderAccessoryToStock]").append("<option value='"+accessory.ID+"'>"+accessory.ID+" - "+accessory.CONTRACT_TYPE+"</option>");
+						})
+						$("#widget-orderAcessory-form select[name=linkOrderAccessoryToStock]").val("");
+					}
+				})
+			}else{
+				$("#widget-orderAcessory-form p[name=linkOrderAccessoryToStock]").removeClass("hidden");
+				$("#widget-orderAcessory-form p[name=linkOrderAccessoryToStock] span").html(response.ACCESSORY_ID);
+				$("#widget-orderAcessory-form select[name=linkOrderAccessoryToStock]").parent().addClass("hidden");
+			}
+
 			$("#widget-orderAcessory-form [name=emailUser]").val(response.EMAIL);
 			$("#widget-orderAcessory-form [name=contractType]").val(response.TYPE);
 			$("#widget-orderAcessory-form [name=priceHTVA]").val(response.PRICE_HTVA);

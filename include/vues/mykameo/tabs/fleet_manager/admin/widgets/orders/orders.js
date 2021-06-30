@@ -1,20 +1,3 @@
-$( ".fleetmanager" ).click(function() {
-  $.ajax({
-    url: 'apis/Kameo/initialize_counters.php',
-    type: 'post',
-    data: { "email": email, "type": "ordersAdmin"},
-    success: function(response){
-      if(response.response == 'error') {
-        console.log(response.message);
-      }
-      if(response.response == 'success'){
-        document.getElementById("counterOrdersAdmin").innerHTML = '<span style="margin-left:20px">'+response.ordersNumber+'</span>';
-      }
-    }
-  })
-})
-
-
 $("#ordersListing").on("show.bs.modal", function (event) {
   list_bikes();
 });
@@ -110,6 +93,7 @@ function get_orders_listing() {
       });
 
       var table=$('#ordersListingTable').DataTable({
+        scrollX: true,
         "aaSorting": []
       });
 
@@ -225,9 +209,9 @@ function retrieve_command(ID){
   $('.accessoriesNumber').html('');
   $("#ExistingAccessory tbody").html("");
     $.ajax({
-      url: 'apis/Kameo/orders_management.php',
+      url: 'api/orders',
       type: 'get',
-      data: {"action": "retrieve", "ID": ID, "email": email},
+      data: {"action": "retrieve", "ID": ID},
       success: function(response){
       if(response.response == 'error') {
         console.log(response.message);
@@ -276,9 +260,11 @@ function retrieve_command(ID){
 
         if(response.order.stockBikeID != null){
           $('#orderManager p[name=assignation]').html("Commande assignée au vélo "+response.order.stockBikeID);
-          $('#orderManager select[name=linkOfferToBike]').parent().fadeOut()
+          $('#orderManager select[name=linkOrderToBike]').parent().fadeOut()
+          $('#orderManager select[name=linkOrderToBike]').val("");
           $('.testAssignation').fadeOut();
         }else{
+          $('#orderManager select[name=linkOrderToBike]').parent().fadeIn()
           $('#orderManager p[name=assignation]').html("");
           $.ajax({
             url: 'api/bikes',
@@ -288,11 +274,11 @@ function retrieve_command(ID){
                catalogID: response.order.portfolioID
              },
             success: function(bikes){
-              $('#orderManager select[name=linkOfferToBike]').find('option').remove();
+              $('#orderManager select[name=linkOrderToBike]').find('option').remove();
               bikes.forEach(function(bike){
-                $('#orderManager select[name=linkOfferToBike]').append('<option value="'+bike.ID+'">'+bike.ID+' - '+bike.CONTRACT_TYPE+' - '+bike.COMPANY+' - '+bike.BRAND+' '+bike.MODEL+'</option>');
+                $('#orderManager select[name=linkOrderToBike]').append('<option value="'+bike.ID+'">'+bike.ID+' - '+bike.CONTRACT_TYPE+' - '+bike.COMPANY+' - '+bike.BRAND+' '+bike.MODEL+'</option>');
               })
-              $('#orderManager select[name=linkOfferToBike]').val('');
+              $('#orderManager select[name=linkOrderToBike]').val('');
             }
           })
           $('#orderManager select[name=linkOfferToBike]').parent().fadeIn()

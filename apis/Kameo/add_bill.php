@@ -19,7 +19,6 @@ use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 $email=$_POST['widget-addBill-form-email'];
 $company=addslashes($_POST['company']);
 $beneficiaryCompany=addslashes($_POST['beneficiaryCompany']);
-$companyOther=$_POST['widget-addBill-form-companyOther'];
 $date=$_POST['widget-addBill-form-date'];
 $type=$_POST['type'];
 $billType=isset($_POST['billType']) ? $_POST['billType'] : NULL;
@@ -106,46 +105,38 @@ if($type=="autre" && !isset($typeOther)){
 
 
 if($billType == "manual"){
+  if(isset($_FILES['widget-addBill-form-file']))
+  {
+    $dossier = $_SERVER['DOCUMENT_ROOT'].'/factures/';
 
+    $extensions = array('.pdf', '.PDF');
+    $extension = strrchr($_FILES['widget-addBill-form-file']['name'], '.');
 
-    if(isset($_FILES['widget-addBill-form-file']))
+    if($amountHTVA<0){
+        $fileName=substr($date, 0, 10)."_".$beneficiaryCompany."_".$ID;
+    }else{
+        $fileName=substr($date, 0, 10)."_".$company."_".$ID;
+    }
+
+    if($ID && $beneficiaryCompany=='KAMEO'){
+        $fileName=$fileName."_facture_".$ID_OUT;
+    }
+
+    if(!in_array($extension, $extensions))
     {
-        $dossier = $_SERVER['DOCUMENT_ROOT'].'/factures/';
-
-        $extensions = array('.pdf', '.PDF');
-        $extension = strrchr($_FILES['widget-addBill-form-file']['name'], '.');
-
-        if($amountHTVA<0){
-            $fileName=substr($date, 0, 10)."_".$beneficiaryCompany."_".$ID;
-        }else{
-            $fileName=substr($date, 0, 10)."_".$company."_".$ID;
-        }
-
-        if($ID && $beneficiaryCompany=='KAMEO'){
-            $fileName=$fileName."_facture_".$ID_OUT;
-        }
-
-        if(!in_array($extension, $extensions))
-        {
-          errorMessage("ES0034");
-      }
-
-
-      $taille_maxi = 6291456;
-      $taille = filesize($_FILES['widget-addBill-form-file']['tmp_name']);
-      if($taille>$taille_maxi)
-      {
-          errorMessage("ES0023");
-      }
-
-      $today = getdate();
-
-
-
-      $fichier = $fileName.".pdf";
-      if(!move_uploaded_file($_FILES['widget-addBill-form-file']['tmp_name'], $dossier . $fichier)){
-          errorMessage("ES0024");
-      }
+      errorMessage("ES0034");
+  }
+  $taille_maxi = 6291456;
+  $taille = filesize($_FILES['widget-addBill-form-file']['tmp_name']);
+  if($taille>$taille_maxi)
+  {
+      errorMessage("ES0023");
+  }
+  $today = getdate();
+  $fichier = $fileName.".pdf";
+  if(!move_uploaded_file($_FILES['widget-addBill-form-file']['tmp_name'], $dossier . $fichier)){
+      errorMessage("ES0024");
+  }
 
 
   }else{
@@ -189,22 +180,27 @@ else{
    $data['dateStart'] = $dateNow;
    $data['billingGroup'] = "1";
   }else if($scan=="billsGeneral"){
-    $i=0;
-    while ($i<$lengthArray) {
-      $data['ID'.$i] = $bikeArrayId[$i][0];
-      $data['price'.$i] =$bikeArrayId[$i][1];
-      $data['type'.$i] =$bikeArrayId[$i][2];
-      $data['TVA'.$i] = "21";
-      $i++;
-  }
-  $data['itemNumber'] = $lengthArray;
-  $data['company'] = $company;
-  $data['dateStart'] = $dateNow;
-  $data['billingGroup'] = "1";
+      $i=0;
+      while ($i<$lengthArray) {
+        $data['ID'.$i] = $bikeArrayId[$i][0];
+        $data['price'.$i] =$bikeArrayId[$i][1];
+        $data['type'.$i] =$bikeArrayId[$i][2];
+        $data['TVA'.$i] = "21";
+        $i++;
+    }
+    $data['itemNumber'] = $lengthArray;
+    $data['company'] = $company;
+    $data['dateStart'] = $dateNow;
+    $data['billingGroup'] = "1";
   }else{
     $bikesNumber=isset($_POST['bikesNumber']) ? $_POST['bikesNumber'] : NULL;
     $accessoriesNumber=isset($_POST['accessoriesNumber']) ? $_POST['accessoriesNumber'] : NULL;
     $otherAccessoriesNumber=isset($_POST['otherAccessoriesNumber']) ? $_POST['otherAccessoriesNumber'] : NULL;
+    if(isset($_POST['individualBilling'])){
+      $data['user'] = $_POST['individualBillingName'];
+    }else{
+      $data['user'] = NULL;
+    }
     $i=0;
     while($i<$bikesNumber){
         $data['ID'.$i] = $_POST['bikeID'][$i];
@@ -248,7 +244,9 @@ else{
     $data['commentBilling']=$commentBilling;
     $data['billingGroup'] = "1";
   }
-  $url='http://'.$_SERVER['HTTP_HOST'].'/scripts/generate_bill.php';
+  error_log("Data :".json_encode($data)."\n", 3, "../../scripts/generate_invoices.log");
+  $url='https://'.$_SERVER['HTTP_HOST'].'/scripts/generate_bill.php';
+  error_log("URL :".$url."\n", 3, "../../scripts/generate_invoices.log");
   $test=CallAPI('POST', $url, $data);
   try {
     $html2pdf = new Html2Pdf('P', 'A4', 'fr', true, 'UTF-8', 3);
@@ -265,12 +263,6 @@ else{
   }
   $fichier = date('Y').'.'.date('m').'.'.date('d').'_'.$company.'_'.$newID.'_facture_'.$newIDOUT.'.pdf';
 }
-
-
-if($company=="other"){
-    $company=$companyOther;
-}
-
 
 if($billingSentDate!=NULL){
     $billingSentDate="'".$billingSentDate."'";

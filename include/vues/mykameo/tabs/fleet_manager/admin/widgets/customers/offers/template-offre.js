@@ -101,20 +101,20 @@ $( document ).ready(function() {
         }
 
         if ($("#widget-offerManagement-form select[name=type]").val() == "achat") {
-          if (response.DATE) {
-            $("#widget-offerManagement-form input[name=date]").val(response.DATE.substring(0, 10));
+          if (response.VALIDITY_DATE) {
+            $("#widget-offerManagement-form input[name=validityDate]").val(response.VALIDITY_DATE.substring(0, 10));
           } else {
-            $("#widget-offerManagement-form input[name=date]").val("");
+            $("#widget-offerManagement-form input[name=validityDate]").val("");
           }
           $("#widget-offerManagement-form input[name=start]").attr("readonly",true);
           $("#widget-offerManagement-form input[name=end]").attr("readonly",true);
           $("#widget-offerManagement-form input[name=start]").val("");
           $("#widget-offerManagement-form input[name=end]").val("");
         } else {
-          if (response.DATE) {
-            $("#widget-offerManagement-form input[name=date]").val(response.DATE.substring(0, 10));
+          if (response.VALIDITY_DATE) {
+            $("#widget-offerManagement-form input[name=validityDate]").val(response.VALIDITY_DATE.substring(0, 10));
           } else {
-            $("#widget-offerManagement-form input[name=date]").val("");
+            $("#widget-offerManagement-form input[name=validityDate]").val("");
           }
           if (response.START) {
             $("#widget-offerManagement-form input[name=start]").val(response.START.substring(0, 10));

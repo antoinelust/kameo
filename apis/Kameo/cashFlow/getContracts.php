@@ -7,20 +7,4 @@ $response['contracts']['boxes']=execSQL("SELECT COMPANY as company, (SELECT bb.I
 $response['offers']=execSQL("SELECT * FROM offers WHERE STATUS='ongoing' AND STAANN != 'D'", array(), false);
 echo json_encode($response);
 die;
-/*
-$response['response']="success";
-$response['offer'][$i]['id']=$row['ID'];
-$response['offer'][$i]['company']=$row['COMPANY'];
-$response['offer'][$i]['type']=$row['TYPE'];
-$response['offer'][$i]['title']=$row['TITRE'];
-$response['offer'][$i]['amount']=$row['AMOUNT'];
-$response['offer'][$i]['probability']=$row['PROBABILITY'];
-$response['offer'][$i]['start']=$row['START'];
-$response['offer'][$i]['end']=$row['END'];
-$response['offer'][$i]['margin']=$row['MARGIN'];
-$response['offer'][$i]['status']=$row['STATUS'];
-$response['offer'][$i]['file']=$row['FILE_NAME'];
-*/
-
-
 ?>

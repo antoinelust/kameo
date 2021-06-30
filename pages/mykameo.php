@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="fr">
 <?php
-ob_start();
-if (!isset($_SESSION))
-  session_start();
+if(!isset($_SESSION))
+    session_start();
+if(!isset($_SESSION['langue']))
+    $_SESSION['langue']="fr";
 
 
 echo '
@@ -81,17 +82,13 @@ if ($token == NULL) { //Not connected
   const user_data = JSON.parse(`' . json_encode($user_data) . '`);
   var email=user_data["EMAIL"];
   </script>
+  <script type="text/javascript" src="js/addons/chart.js/dist/Chart.min.js" charset="UTF-8" async></script>';
+  //<script src="js/addons/openlayers/OpenLayers.js"></script>
+  echo '<script type="text/javascript" src="js/global_functions.js"></script>
   <script type="text/javascript" src="js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
-  <!-- <script type="text/javascript" src="./js/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script> -->
-  <script type="text/javascript" src="js/addons/chart.js/dist/Chart.min.js" charset="UTF-8"></script>
-  <script src="js/addons/openlayers/OpenLayers.js"></script>
-  <script type="text/javascript" src="js/global_functions.js"></script>
   <script type="text/javascript" src="js/addons/datatables/datatables.min.js"></script>
   <script type="text/javascript" src="js/load_client_conditions.js"></script>
-  <script type="text/javascript" src="js/notifications.js"></script>
-  <script type="text/javascript" src="js/addresses.js"></script>
-  <script type="text/javascript" src="js/weather.js"></script>
-  <script type="text/javascript" src="js/cafetaria.js"></script>
+  <script type="text/javascript" src="js/notifications.js" async></script>
   <script type="text/javascript">
 
   window.addEventListener("DOMContentLoaded", (event) => {';
@@ -117,18 +114,12 @@ if ($token == NULL) { //Not connected
 
   if (get_user_permissions("admin", $token)) {
    echo 'initializeFields();';
- }
+  }
 
 
- echo '});
- </script>';
+  echo '});
+  </script>';
 
-
- $sql = "select * from customer_referential aa, customer_bike_access bb where aa.EMAIL='" . $user_data['EMAIL'] . "' and aa.EMAIL=bb.EMAIL and bb.TYPE='personnel' LIMIT 1";
- $result = mysqli_query($conn, $sql);
-  $company = ($result->num_rows == 0); //Used by: mykameo/main.php
-  /** TEST VARIABLE @TODO: REMOVE **/
-  //$company = '';
   ?>
 
 
@@ -149,10 +140,6 @@ if ($token == NULL) { //Not connected
               <br />
               <div class="col-md-12">
                 <span id="assistanceSpan"></span>
-                <?php if (!$company)
-                /** CALENDAR **/
-                include 'include/vues/mykameo/calendar.html';
-                include 'include/vues/mykameo/widgets/calendar/main.php'; ?>
               </div>
               <br />
               <div class="col-md-12">
@@ -532,7 +519,7 @@ include 'include/vues/mykameo/widgets/support/contact_support.html';
   if (get_user_permissions("admin", $token)) {
     //MAINTENANCES
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/maintenances/main.php';
-    //MAINTENANCES
+    //PLANNING
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/plannings/main.php';
     //CUSTOMERS
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/customers/main.php';
@@ -589,6 +576,14 @@ include 'include/vues/mykameo/widgets/support/contact_support.html';
 
 </body>
 <?php
+
+
+if (get_user_permissions(["order"], $token)) {
+  echo '<script type="text/javascript" src="js/cafetaria.js"></script>';
+}
+
+
+
 $conn->close();
 ob_end_flush();
 ?>

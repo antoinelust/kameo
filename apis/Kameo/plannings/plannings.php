@@ -194,8 +194,22 @@ switch($_SERVER["REQUEST_METHOD"])
 			}
 			echo json_encode($response);
 			die;
-		}
-		error_message('405');
+		}else if($action=="delete"){
+			if(get_user_permissions("admin", $token)){
+				execSQL("DELETE FROM plannings WHERE DATE=?", array('s', $_POST['date']), true);
+				echo json_encode("success");
+				die;
+			}else {
+				error_message('403');
+			}
+		}else if($action=="confirmTask"){
+
+			execSQL("UPDATE plannings SET status='done', REAL_START_HOUR=?, REAL_END_HOUR=? WHERE ID=?", array('ssi', ($_POST['arrival'] != '') ? $_POST['arrival'] : NULL, ($_POST['departure'] != '') ? $_POST['departure'] : NULL, $_POST['id']), true);
+			$response['message']="Etape validée";
+			echo json_encode($response);
+			die;
+		}else
+			error_message('405');
 	break;
 	default:
 	error_message('405');

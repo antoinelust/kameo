@@ -27,8 +27,6 @@ if($modelID != '' && $contractType != '') {
     $leasingAmount = null;
   }
 
-  include '../connexion.php';
-/// voir coment ajouyter les id de velo ou bike
   if($action=="addStockAccessory"){
     $i=0;
     while($i<$numberToOrder){

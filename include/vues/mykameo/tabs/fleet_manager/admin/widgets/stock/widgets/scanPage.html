@@ -9,7 +9,7 @@
 				</div>
 
 				<h4 class="text-green" id="scanTitle">Scannez Votre Produit pour ajouter la référence</h4>
-				
+
 				<div>
 					<button  onclick="changeDisplay('scan')" class="button small green button-3d rounded icon-left" id="decodeBt">Scanner nouveau produit</button>
 
@@ -28,7 +28,7 @@
 					<video id="video" width="70%" height="20%" style="border: 1px solid gray"></video>
 				</div>
 
-				<div class="col-sm-12" name="typeDiv" style="display:block;">			
+				<div class="col-sm-12" name="typeDiv" style="display:block;">
 					<label id="resultName" for="resultDisplay">Etat du scan :</label>
 					<div class="col-sm-4">
 						<label for="resultDisplay">Code-Barre : </label>
@@ -167,8 +167,8 @@
 					</div>
 
 				</div>
-				<div class="col-sm-12" id ="bindArticleTooOrder" name ="bindArticleTooOrder">
-					<a class="button small green button-3d rounded icon-right addFrameReference" data-target="#addFrameReferenceModal" id = "addFrameReferenceClick" data-toggle="modal" href="#">
+				<div class="col-sm-12" id="bindArticleTooOrder" name ="bindArticleTooOrder">
+					<a class="button small green button-3d rounded icon-right addFrameReference" data-target="#addFrameReferenceModal" id="addFrameReferenceClick" data-toggle="modal" href="#">
 						Ajouter une réference de cadre
 					</a>
 					<button onclick="bindArticle()" type="button" class="button small green button-3d rounded icon-left">Lier</button>
@@ -227,7 +227,7 @@
 							<input readonly="readonly" name="clientPending" class="form-control">
 						</div>
 					</div>
-					<br/>	
+					<br/>
 					<button
 					class="button small green button-3d rounded icon-left"
 					type="submit"
@@ -246,7 +246,7 @@
 						<div class="col-sm-4" name="bikeBillsDiv">
 							<label>Article Disponibles : </label>
 							<select name="bikeBills" id="bikeBills" class="form-control">
-							</select>	
+							</select>
 						</div>
 						<label name="listArticleBills"></label>
 					</div>
@@ -354,9 +354,9 @@ style="display: none;"
 						}
 						);
 						if(response.type=='leasing'){
-							
+
 							document.getElementById("widget-stockScanRemove-form").reset();
-							hideAllFromRemove(); 
+							hideAllFromRemove();
 						}
 						else if (response.type=='selling'){
 							create_Facture();

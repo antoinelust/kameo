@@ -189,15 +189,15 @@ function list_errors() {
         response.bike.stock.forEach(function(bike){
           var bike = response.bike.stock[j];
           if (bike.frameNumber == null) {
-            var bikeDescription = "N/A - " + bike.bikeID;
+            var bikeDescription = "N/A - " + bike.id;
           }else{
-            var bikeDescription = bike.bikeID + " - " + bike.frameNumber;
+            var bikeDescription = bike.id + " - " + bike.frameNumber;
           }
           var temp =
             '<tr><td scope="row">' +
             (i + 1) +
             '</td><td><a class="updateBikeAdmin" data-target="#bikeManagement" name="' +
-            bike.bikeID +
+            bike.id +
             '" data-toggle="modal" href="#">' +
             bikeDescription +
             "</a></td><td>Le vélo " +

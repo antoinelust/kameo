@@ -23,6 +23,17 @@ if(isset($_POST['action'])){
         $order_amount = isset($_POST['order_amount']) ? $_POST['order_amount'] : NULL;
         $leasing_type = isset($_POST['leasing_type']) ? $_POST['leasing_type'] : "leasing";
 
+        $tvaIncluded="N";
+        $resultat=execSQL("SELECT TVA_INCLUDED FROM conditions WHERE COMPANY = (SELECT COMPANY FROM customer_referential WHERE EMAIL=?)", array('s', $email), false);
+        if(count($resultat)==1){
+          if($resultat[0]['TVA_INCLUDED']=='Y'){
+            $tvaIncluded='Y';
+          }
+        }
+        if($tvaIncluded=='Y'){
+          $order_amount=round($order_amount/1.21,2);
+        }
+
         $resultat=execSQL("SELECT PRENOM, NOM, bb.ID FROM customer_referential aa, companies bb WHERE TOKEN=? and aa.COMPANY=bb.INTERNAL_REFERENCE", array('s', $token), false)[0];
         $firstName=$resultat['PRENOM'];
         $name=$resultat['NOM'];

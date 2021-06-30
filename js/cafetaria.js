@@ -69,7 +69,6 @@ function load_cafetaria(size='*'){
                             if(responseOrderable.remainingPriceIncludedInLeasing == "Y"){
                               price = price + (0.16*response.bike[i].price/36);
                             }
-
                             if(responseOrderable.company == "City Dev"){
                                 price = (price + (response.bike[i].price - 2000)/(4312-2000)*(142-135));
                             }
@@ -271,7 +270,8 @@ function load_cafetaria_accessories(){
                 url: 'apis/Kameo/load_portfolio_accessories.php',
                 type: 'get',
                 data: {
-                    "action": "list"
+                    "action": "list",
+                    "category" : '*'
                 },
                 success: function(response){
                   if(responseOrderable.response == 'error'){

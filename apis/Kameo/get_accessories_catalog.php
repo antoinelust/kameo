@@ -1,6 +1,6 @@
 <?php
 session_cache_limiter('nocache');
-header('Expires: ' . gmdate('r', 0));
+header('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', time() + (60 * 60))); // 1 hour
 header('Content-type: application/json');
 
 session_start();

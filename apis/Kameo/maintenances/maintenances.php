@@ -1,7 +1,7 @@
 <?php
 header('Content-type: application/json');
 header('WWW-Authenticate: Bearer');
-header('Expires: ' . gmdate('r', 0));
+header('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', time() + (60 * 60))); // 1 hour
 header('HTTP/1.0 200 Ok');
 header_remove("Set-Cookie");
 header_remove("X-Powered-By");
@@ -70,6 +70,7 @@ switch($_SERVER["REQUEST_METHOD"])
 
 			(CASE
 			WHEN EXISTS (SELECT 1 FROM factures_details WHERE factures_details.ITEM_TYPE='maintenance' AND factures_details.ITEM_ID=tt.ID) THEN 'OK'
+			WHEN tt.AVOID_BILLING=1 THEN 'OK'
 			WHEN tt.type IN ('vendu', 'externe') AND tt.AVOID_BILLING=0 AND NOT EXISTS (SELECT 1 FROM factures_details WHERE factures_details.ITEM_TYPE='maintenance' AND factures_details.ITEM_ID=tt.ID) THEN 'KO'
 			WHEN tt.TYPE IN ('partage', 'personnel') THEN 'OK'
 			ELSE 'undefined'
@@ -198,6 +199,13 @@ switch($_SERVER["REQUEST_METHOD"])
 				$accessory['amount']=$_POST['accessoryAmount'];
 				for ($i = 0; $i < count($accessory['portfolioID']); $i++) {
 					execSQL("INSERT INTO entretiens_details (USR_MAJ, TYPE, MAINTENANCE_ID, SERVICE, AMOUNT) VALUES (?, 'accessory', ?, ?, ?)", array('siid', $token, $id, $accessory['portfolioID'][$i], $accessory['amount'][$i]), true);
+				}
+			}
+			if(isset($_POST['otherAccessoryDescription'])){
+				$accessory['description']=$_POST['otherAccessoryDescription'];
+				$accessory['amount']=$_POST['otherAccessoryAmount'];
+				for ($i = 0; $i < count($accessory['description']); $i++) {
+					execSQL("INSERT INTO entretiens_details (USR_MAJ, TYPE, MAINTENANCE_ID, DESCRIPTION, AMOUNT) VALUES (?, 'otherAccessory', ?, ?, ?)", array('sisd', $token, $id, $accessory['description'][$i], $accessory['amount'][$i]), true);
 				}
 			}
 			$response = array ('response'=>'success', 'message' => 'la modification a bien été effectuée');

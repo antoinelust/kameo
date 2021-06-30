@@ -1,20 +1,3 @@
-
-$(".fleetmanager").click(function () {
-  $.ajax({
-    url: "apis/Kameo/initialize_counters.php",
-    type: "post",
-    data: { email: email, type: "customers" },
-    success: function (response) {
-      if (response.response == "error") {
-        console.log(response.message);
-      }
-      if (response.response == "success") {
-        document.getElementById("counterClients").innerHTML = '<span style="margin-left:20px">'+response.companiesNumberClientOrProspect+'</span>';
-      }
-    },
-  });
-});
-
 $(".clientManagerClick").click(function (){
   get_company_listing();
   generateCompaniesGraphic(
@@ -234,6 +217,7 @@ function get_company_listing() {
   $("#companyListingTable").dataTable({
     destroy: true,
     paging : false,
+    scrollX: true,
     ajax: {
       url: "api/companies",
       contentType: "application/json",
@@ -622,17 +606,17 @@ function get_company_details(ID) {
         if (response.offerNumber + response.bikeContracts > 0) {
           var i = 0;
           var temp =
-            '<h5 class="text-green">Contrats</h5><table class="table"><tbody><thead><tr><th scope="col">ID</th><th scope="col">PDF</th><th scope="col">Date</th><th scope="col">Titre</th><th scope="col">Chance</th><th>Montant</th><th>Debut</th><th>Fin</th><th>Statut</th><th></th></tr></thead>';
+            '<h5 class="text-green">Contrats</h5><table class="table"><tbody><thead><tr><th scope="col">ID</th><th scope="col">PDF</th><th scope="col">Date validité</th><th scope="col">Titre</th><th scope="col">Chance</th><th>Montant</th><th>Debut</th><th>Fin</th><th>Statut</th><th></th></tr></thead>';
           dest = dest.concat(temp);
           while (i < response.bikeContracts) {
             if (response.offer[i].description) {
               var description = response.offer[i].description;
-            } else {
+            }else{
               var description = "N/A";
             }
-            if (response.offer[i].probability) {
+            if(response.offer[i].probability) {
               var probability = response.offer[i].probability;
-            } else {
+            }else{
               var probability = "N/A";
             }
             if (response.offer[i].amount) {
@@ -677,10 +661,10 @@ function get_company_details(ID) {
           }
 
           while (i < response.offerNumber + response.bikeContracts) {
-            if (!response.offer[i].date) {
+            if (!response.offer[i].validityDate) {
               var date = "?";
             } else {
-              var date = response.offer[i].date.shortDate();
+              var date = response.offer[i].validityDate.shortDate();
             }
             if (!response.offer[i].start) {
               var start = "?";
@@ -984,9 +968,9 @@ function get_company_details(ID) {
 
 function update_company_users_list_admin(company){
   $.ajax({
-    url: "apis/Kameo/get_users_listing.php",
+    url: "api/users",
     type: "get",
-    data: { company: company },
+    data: { company: company, action: 'list'},
     success: function (response) {
       if (response.response == "error") {
         console.log(response.message);
@@ -1247,9 +1231,9 @@ function add_building(company){
     },
   });
   $.ajax({
-    url: "apis/Kameo/get_users_listing.php",
+    url: "api/users",
     type: "post",
-    data: { company: company },
+    data: { company: company, action: 'list' },
     success: function (response) {
       if (response.response == "error") {
         console.log(response.message);

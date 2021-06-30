@@ -25,8 +25,9 @@ if (isset($_GET['ID'])) {
   $response['maintenance']['type']=$resultat['TYPE_V'];
   $response['maintenance']['frame_reference']=$resultat['FRAME_REFERENCE'];
 
-  $response['maintenance']['services']=execSQL("SELECT entretiens_details.*, DESCRIPTION, CATEGORY FROM entretiens_details, services_entretiens WHERE entretiens_details.SERVICE=services_entretiens.ID AND MAINTENANCE_ID=? AND entretiens_details.TYPE='service'", array('i',$ID), false);
+  $response['maintenance']['services']=execSQL("SELECT entretiens_details.*, services_entretiens.DESCRIPTION, CATEGORY FROM entretiens_details, services_entretiens WHERE entretiens_details.SERVICE=services_entretiens.ID AND MAINTENANCE_ID=? AND entretiens_details.TYPE='service'", array('i',$ID), false);
   $response['maintenance']['accessories']=execSQL("SELECT accessories_catalog.BRAND, accessories_catalog.MODEL, accessories_catalog.BUYING_PRICE, accessories_stock.ID, entretiens_details.AMOUNT, accessories_categories.CATEGORY FROM entretiens_details, accessories_catalog, accessories_stock, accessories_categories WHERE entretiens_details.SERVICE=accessories_stock.ID AND accessories_stock.CATALOG_ID=accessories_catalog.ID AND accessories_categories.ID=accessories_catalog.ACCESSORIES_CATEGORIES AND MAINTENANCE_ID=? AND entretiens_details.TYPE='accessory'", array('i',$ID), false);
+  $response['maintenance']['otherAccessories']=execSQL("SELECT DESCRIPTION as description, AMOUNT as amount FROM entretiens_details WHERE TYPE='otherAccessory' AND MAINTENANCE_ID=?", array('i',$ID), false);
 
   $dossier = $_SERVER['DOCUMENT_ROOT'].'/images_entretiens/'.$ID.'/publicFile/';
   $files = glob($dossier.'*.{jpg,jpeg,png,gif,pdf,jfif}', GLOB_BRACE);

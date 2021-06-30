@@ -616,9 +616,9 @@ $('#widget-stockScanRemove-form select[name=orderCompany]').change(function(){
 
 function changeCompanyAndClient(){
 	$.ajax({
-		url: 'apis/Kameo/get_users_listing.php',
+		url: 'api/users',
 		type: 'post',
-		data: { "companyID": $('#widget-stockScanRemove-form select[name=orderCompany]').val()},
+		data: { "companyID": $('#widget-stockScanRemove-form select[name=orderCompany]').val(), action: "list"},
 		success: function(response){
 			if(response.response == 'error') {
 				console.log(response.message);
@@ -730,6 +730,7 @@ function checkPresent(){
 				console.log('error')
 			}
 			if(response.response == 'success') {
+				console.log(roleButton);
 				if(roleButton=='scan'){
 					resultChanged()
 				}
@@ -814,7 +815,7 @@ window.addEventListener('load', function () {
 		})
 		document.getElementById('stopButton').addEventListener('click', () => {
 			codeReader.reset()
-			document.getElementById('resultName').innerHTML = 'Etat du scan : Recherche de code Barre en cours';
+			document.getElementById('resultName').innerHTML = 'Etat du scan : Recherche de code Barre stoppée';
 			hideAllFromRemove();
 		})
 		$("#scanBarcodeModal").on("hidden.bs.modal", function () {
@@ -1187,5 +1188,3 @@ function decodeContiniouslyToFrame(codeReader, selectedDeviceId){
 		}
 	})
 }
-
-

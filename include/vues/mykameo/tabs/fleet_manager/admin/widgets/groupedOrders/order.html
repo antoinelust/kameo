@@ -21,7 +21,7 @@
 
 
 
-<div class="modal fade" id="groupedOrderManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none">
+<div class="modal fade" id="groupedOrderManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -31,25 +31,28 @@
         <div class="row">
           <h4 class="text-green title"></h4>
           <form id="widget_groupedOrderManagement-form" action="api/orders" role="form" method="post">
-						<div class="col-md-4">
+						<div class="col-md-3">
 							<label for='company'>ID</label>
 							<input name="ID" class="form-control required">
 						</div>
-						<div class="col-md-4">
+						<div class="col-md-3">
 							<label for='company'>Société</label>
 							<select name="company" class="form-control required"></select>
 						</div>
-						<div class="col-md-4">
+						<div class="col-md-3">
 							<label for='email'>E-Mail</label>
 							<select name="email" class="form-control"></select>
+						</div>
+						<div class="col-md-3">
+							<br>
+							<button class="button small green button-3d rounded icon-right" type="button">Bon de livraison</button>
 						</div>
             <div class="col-md-12">
               <h4 class="text-green">Informations sur les vélos</h4>
               <div class="col-md-12 bikes">
 								<div class="col-md-12">
 									<i class="fa fa-bicycle"></i> <span class="bikesNumber">0</span>
-									<button
-										class="button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
+									<button class="button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
 									<button class="button small red button-3d rounded icon-right glyphicon glyphicon-minus" type="button"></button>
 								</div>
 								<table class="table table-condensed tableFixed bikeNumberTable hideAt0">
@@ -77,8 +80,7 @@
 											<th>
 												<label for="status">Statut</label>
 											</th>
-											<th>
-											</th>
+											<th></th>
 										</tr>
 									</thead>
 									<tbody></tbody>
@@ -118,6 +120,7 @@
 											<th>
 												<label for="status">Statut</label>
 											</th>
+
 										</tr>
 									</thead>
 									<tbody></tbody>
@@ -189,6 +192,75 @@
 			 document.getElementById('widget_groupedOrderManagement-form').reset();
 			 $("#groupedOrdersListingTable").dataTable().api().ajax.reload();
 			} else {
+			 $.notify({
+				message: response.message
+			 }, {
+				type: 'danger'
+			 });
+			}
+		 }
+		});
+	 }
+	});
+</script>
+
+
+<div class="modal fade" id="confirmOrder" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <h4 class="text-green">Confirmer livraison d'une commande</h4>
+          <form id="widget_confirmOrder-form" action="api/orders" role="form" method="post">
+						<div class="col-md-4">
+							<label for='deliveryDate'>Date de livraison</label>
+							<input type='date' name='deliveryDate' class='form-control required'>
+						</div>
+						<div class="row"></div>
+						<div class="col-md-4">
+							<label for='contractStart'>Début de contrat</label>
+							<input type='date' name='contractStart' class='form-control required'>
+						</div>
+						<div class="col-md-4">
+							<label for='contractEnd'>Fin de contrat</label>
+							<input type='date' name='contractEnd' class='form-control required'>
+						</div>
+						<input type='text' class="hidden" name="itemType">
+						<input type='number' class="hidden" name="itemID">
+						<input type='text' class="hidden" name="action" value='confirmOrder'>
+						<div class="col-md-12"><button class="button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i><?= L::generic_send; ?></button>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">
+					<?= L::generic_close; ?>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+	jQuery("#widget_confirmOrder-form").validate({
+
+	 submitHandler: function(form) {
+		jQuery(form).ajaxSubmit({
+		 success: function(response) {
+			if (response.response == 'success') {
+			 $.notify({
+				message: response.message
+			 }, {
+				type: 'success'
+			 });
+			 $('#confirmOrder').modal('toggle');
+			 retrieveGroupedOrder($('#groupedOrderManagement input[name=ID]').val());
+			}else{
 			 $.notify({
 				message: response.message
 			 }, {

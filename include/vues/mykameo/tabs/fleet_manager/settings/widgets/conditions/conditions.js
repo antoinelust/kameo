@@ -1,21 +1,3 @@
-$( ".fleetmanager" ).click(function() {
-    $.ajax({
-        url: 'apis/Kameo/initialize_counters.php',
-        type: 'post',
-        data: { "email": email, "type": "conditions"},
-        success: function(response){
-            if(response.response == 'error') {
-                console.log(response.message);
-            }
-            if(response.response == 'success'){
-                document.getElementById("counterConditions").innerHTML = '<span style="margin-left:20px">'+response.conditionsNumber+'</span>';
-            }
-        }
-    })
-})
-
-
-
 $( "#settings" ).click(function() {
 	list_condition();
 });

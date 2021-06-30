@@ -1,20 +1,3 @@
-$(".fleetmanager").click(function () {
-  $.ajax({
-    url: "apis/Kameo/initialize_counters.php",
-    type: "post",
-    data: { email: email, type: "portfolioAccessories" },
-    success: function (response) {
-      if (response.response == "error") {
-        console.log(response.message);
-      }
-      if (response.response == "success") {
-        document.getElementById("counterAccessoriesPortfolio").innerHTML = '<span style="color: #3cb395; margin-left:20px">'+response.accessoriesNumberPortfolio+'</span>';
-      }
-    },
-  });
-});
-
-
 
 //FleetManager: Gérer le catalogue | Displays the portfolio <table> by calling load_portfolio.php and creating it
 $(".portfolioAccessoriesManagerClick").click(function () {

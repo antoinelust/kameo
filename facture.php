@@ -1,5 +1,8 @@
 <?php
 
+include_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/globalfunctions.php';
+
+
 $company = file_get_contents(__DIR__.'/temp/company.txt');
 $billingGroup = file_get_contents(__DIR__.'/temp/billingGroup.txt');
 
@@ -223,7 +226,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
             }
 
 
-            $sql2="select * from customer_bikes where COMPANY='$company' and CONTRACT_START<='$dateEnd' and (CONTRACT_END>='$dateEnd' or CONTRACT_END IS NULL) and BILLING_GROUP='$billingGroup' and AUTOMATIC_BILLING='Y' and STAANN !='D'".$sqlBike;
+            $sql2="select * from customer_bikes where COMPANY='$company' and CONTRACT_START<='$dateEnd' and (CONTRACT_END>='$dateEnd' or CONTRACT_END IS NULL) and BILLING_GROUP='$billingGroup' and AUTOMATIC_BILLING='Y' and STAANN !='D' AND CONTRACT_TYPE='leasing'".$sqlBike;
             error_log(date("Y-m-d H:i:s")."SQL6 :".$sql2."\n", 3, "generate_invoices.log");
             if ($conn->query($sql2) === FALSE){
                 echo $conn->error;
@@ -251,15 +254,6 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
               $catalogID=$row2['TYPE'];
 
               error_log(date("Y-m-d H:i:s")." - FRAME NUMBER :".$row2['FRAME_NUMBER']."\n", 3, "generate_invoices.log");
-              $sql="SELECT * FROM bike_catalog WHERE ID ='$catalogID'";
-              error_log(date("Y-m-d H:i:s")." - SQL CATALOG :".$sql."\n", 3, "generate_invoices.log");
-
-              if ($conn->query($sql) === FALSE) {
-                  echo $conn->error;
-                  die;
-              }
-              $result4 = mysqli_query($conn, $sql);
-              $resultat4 = mysqli_fetch_assoc($result4);
               $fichier = $_SERVER['DOCUMENT_ROOT']."/images_bikes/".$catalogID."_mini.jpg";
 
 
@@ -290,6 +284,8 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
 
               if($dateStartTemp >= $dateStartObject && $dateStartTemp <= $dateEndObject){
+                error_log(" Billing Type : ".$row2['BILLING_TYPE']."\n", 3, "generate_invoices.log");
+
                 if($row2['BILLING_TYPE'] == "monthly"){
                   if($dateStartTemp->format('m')==12){
                       $monthAfter2=1;
@@ -351,7 +347,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     $nameBikeUser=$resultat5['NOM'];
                     $firstNameBikeUser=$resultat5['PRENOM'];
                     $emailBikeUser=$resultat5['EMAIL'];
-                    $sqlAccessories="SELECT accessories_stock.ID as accessoryID, accessories_catalog.MODEL, accessories_categories.CATEGORY, CONTRACT_AMOUNT FROM accessories_stock, accessories_catalog, accessories_categories WHERE accessories_categories.ID= accessories_catalog.ACCESSORIES_CATEGORIES AND accessories_stock.CATALOG_ID=accessories_catalog.ID AND accessories_stock.USER_EMAIL='$emailBikeUser' and accessories_stock.CONTRACT_TYPE='leasing' and accessories_stock.CONTRACT_START<='$temp3' AND accessories_stock.CONTRACT_END>='$temp3'";
+                    $sqlAccessories="SELECT accessories_stock.ID as accessoryID, accessories_catalog.MODEL, accessories_categories.CATEGORY, CONTRACT_AMOUNT FROM accessories_stock, accessories_catalog, accessories_categories WHERE accessories_categories.ID= accessories_catalog.ACCESSORIES_CATEGORIES AND accessories_stock.CATALOG_ID=accessories_catalog.ID AND accessories_stock.USER_EMAIL='$emailBikeUser' and accessories_stock.CONTRACT_TYPE='leasing' and accessories_stock.CONTRACT_START<='$temp3' AND accessories_stock.CONTRACT_END>='$temp3' AND accessories_stock.BIKE_ID IS NULL";
                     if ($conn->query($sqlAccessories) === FALSE) {
                         echo $conn->error;
                         die;

@@ -119,7 +119,7 @@ foreach($_POST as $name => $value){
 }
 
 if($send_mail == "Y"){
-  require_once('../../../include/php-mailer/PHPMailerAutoload.php');
+  require_once $_SERVER['DOCUMENT_ROOT'].'/include/php-mailer/PHPMailerAutoload.php';
   $mail = new PHPMailer();
 
   $mail->IsHTML(true);

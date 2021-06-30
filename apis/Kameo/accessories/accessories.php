@@ -27,7 +27,7 @@ switch($_SERVER["REQUEST_METHOD"])
 		$id=isset($_GET['ID']) ? $_GET['ID'] : NULL;
 
 		if(get_user_permissions("admin", $token)){
-			$retrieveOrderAcessories= execSQL("SELECT order_accessories.ID, order_accessories.TYPE, order_accessories.PRICE_HTVA, order_accessories.STATUS, order_accessories.DESCRIPTION, grouped_orders.COMPANY_ID, grouped_orders.EMAIL, grouped_orders.ID as GROUP_ID,  accessories_categories.ID as categoryID, accessories_categories.CATEGORY, order_accessories.BRAND as catalogID, accessories_catalog.BRAND, accessories_catalog.MODEL FROM order_accessories, accessories_catalog, accessories_categories, grouped_orders WHERE order_accessories.BRAND=accessories_catalog.ID AND accessories_catalog.ACCESSORIES_CATEGORIES=accessories_categories.ID AND order_accessories.ID=? AND order_accessories.ORDER_ID=grouped_orders.ID", array('i', $id), false)[0];
+			$retrieveOrderAcessories= execSQL("SELECT order_accessories.ID, order_accessories.TYPE, order_accessories.PRICE_HTVA, order_accessories.STATUS, order_accessories.DESCRIPTION, grouped_orders.COMPANY_ID, grouped_orders.EMAIL, grouped_orders.ID as GROUP_ID,  accessories_categories.ID as categoryID, accessories_categories.CATEGORY, order_accessories.BRAND as catalogID, accessories_catalog.BRAND, accessories_catalog.MODEL, order_accessories.ACCESSORY_ID FROM order_accessories, accessories_catalog, accessories_categories, grouped_orders WHERE order_accessories.BRAND=accessories_catalog.ID AND accessories_catalog.ACCESSORIES_CATEGORIES=accessories_categories.ID AND order_accessories.ID=? AND order_accessories.ORDER_ID=grouped_orders.ID", array('i', $id), false)[0];
 			echo json_encode($retrieveOrderAcessories);
 			die;
 		}
@@ -78,46 +78,6 @@ switch($_SERVER["REQUEST_METHOD"])
 			$retrieveOrderAcessories['response']="success";
 
 			echo json_encode($retrieveOrderAcessories);
-			die;
-		}
-		else{
-			error_message('403');
-		}
-	}
-	else if ($action === 'getStatOfAccessoryOrder'){
-		$id=isset($_GET['ID']) ? $_GET['ID'] : NULL;
-		if(get_user_permissions("admin", $token)){
-			$response['state']= execSQL("SELECT aa.*, bb.* FROM accessories_stock aa, accessories_catalog bb WHERE aa.ORDER_ID='$id' AND aa.CATALOG_ID=bb.ID", array(), false);
-			$response['response']="success";
-
-			if($response['state']==null){
-				$status="En attente de traitement";
-			}
-			if($response['state'][0]['CONTRACT_TYPE']=='order'){
-				$status="En attente de livraison de nos fournisseurs";
-			}
-			if($response['state'][0]['CONTRACT_TYPE']=='pending_delivery'){
-				$status="En attente d'expedition chez le client";
-			}
-			if($response['state'][0]['CONTRACT_TYPE']=='leasing' || $response['state'][0]['CONTRACT_TYPE']=='selling'){
-				$status="Commande envoyé chez le client";
-			}
-			$response['status']=$status;
-			echo json_encode($response);
-			die;
-		}
-		else{
-			error_message('403');
-		}
-	}
-	else if ($action === 'updateOrderDetailAcessory'){
-		$id=isset($_GET['id']) ? $_GET['id'] : NULL;
-		$idAccessory = isset($_GET['accessory']) ? $_GET['accessory'] : NULL;
-
-		if(get_user_permissions("admin", $token)){
-			$sql=execSQL("UPDATE order_accessories SET STATUS=?, BRAND=?, PRICE_HTVA=?, TYPE=? WHERE ID=?", array('sidsi', $_GET['status'], $_GET['model'], $_GET['priceHTVA'], $_GET['contractType'], $id), true);
-			$response['response']="success";
-			echo json_encode($response);
 			die;
 		}
 		else{
@@ -284,17 +244,17 @@ switch($_SERVER["REQUEST_METHOD"])
 			die;
 		}else
 		error_message('403');
-	}
-	else if($action === 'linkAccessoryToBill'){
-			if(get_user_permissions("admin", $token)){
-				execSQL("UPDATE bills_catalog_accessories_link SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, ACCESSORY_ID=? WHERE ID=?", array('sii', $token, $_GET['accessoryID'], $_GET['ID']), true);
-				successMessage("SM0003");
-			}else
-				error_message('403');
-		}
-
-
-	else
+	}else if($action === 'linkAccessoryToBill'){
+		if(get_user_permissions("admin", $token)){
+			execSQL("UPDATE bills_catalog_accessories_link SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, ACCESSORY_ID=? WHERE ID=?", array('sii', $token, $_GET['accessoryID'], $_GET['ID']), true);
+			successMessage("SM0003");
+		}else
+			error_message('403');
+	}else if($action="getStockAccessoryNotLinkedToOrder"){
+		$response=execSQL("SELECT * FROM accessories_stock WHERE CONTRACT_TYPE IN ('stock', 'order') AND NOT EXISTS (SELECT 1 FROM order_accessories WHERE order_accessories.ACCESSORY_ID=accessories_stock.ID) AND accessories_stock.CATALOG_ID=?", array('i', $_GET['catalogID']), false);
+		echo json_encode($response);
+		die;
+	}else
 		error_message('405');
 	break;
 	case 'POST':
@@ -330,8 +290,24 @@ switch($_SERVER["REQUEST_METHOD"])
 			die;
 		}else
 		error_message('403');
+	}else if ($action === 'updateOrderDetailAcessory'){
+		if(get_user_permissions("admin", $token)){
+			$id=isset($_POST['id']) ? $_POST['id'] : NULL;
+			execSQL("UPDATE order_accessories SET STATUS=?, BRAND=?, PRICE_HTVA=?, TYPE=? WHERE ID=?", array('sidsi', $_POST['status'], $_POST['model'], $_POST['priceHTVA'], $_POST['contractType'], $id), true);
+			if(isset($_POST['linkOrderAccessoryToStock'])){
+				execSQL("UPDATE order_accessories SET ACCESSORY_ID=? WHERE ID=?", array('ii', $_POST['linkOrderAccessoryToStock'], $id), true);
+			}
+
+			$response['response']="success";
+			$response['message']="Commande modifiée avec succès";
+			echo json_encode($response);
+			die;
+		}
+		else{
+			error_message('403');
+		}
 	}else
-	error_message('405');
+		error_message('405');
 
 	break;
 	default:

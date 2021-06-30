@@ -1,17 +1,4 @@
 $(".fleetmanager").click(function () {
-  $.ajax({
-    url: "apis/Kameo/initialize_counters.php",
-    type: "post",
-    data: { email: email, type: "boxes" },
-    success: function (response) {
-      if (response.response == "error") {
-        console.log(response.message);
-      }
-      if (response.response == "success") {
-        document.getElementById("counterBoxes").innerHTML = '<span style="margin-left:20px">'+response.boxesNumberTotal+'</span>';
-      }
-    },
-  });
 
   var logBoxes;
 

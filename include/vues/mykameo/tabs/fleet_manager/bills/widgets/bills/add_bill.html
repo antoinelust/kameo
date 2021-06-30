@@ -20,6 +20,10 @@
 										<label for="ID_OUT">ID OUT</label>
 										<input type="number" name="ID_OUT" class="form-control" readonly='readonly'>
 									</div>
+									<div class="col-md-4">
+										<label for='individualBilling'>Facturer à un utilisateur</label>
+										<input type='checkbox' class='form-control' name='individualBilling'>
+									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="col-md-4">
@@ -30,6 +34,12 @@
 										<label for="beneficiaryCompany">Beneficiaire</label>
 										<input type="text" name="beneficiaryCompany" class="form-control required" readonly='readonly' value="KAMEO">
 									</div>
+									<div class='col-md-4' style='display: none'>
+										<label for='individualBillingName'>Utilisateur</label>
+										<select class="form-control" name='individualBillingName'></select>
+									</div>
+								</div>
+								<div class='col-md-12'>
 									<div class="col-md-4">
 										<label for="type">Type de facture</label>
 										<select name="type">
@@ -40,13 +50,6 @@
 											<option value="autre">Autre</option>
 										</select>
 									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="col-md-4 widget-addBill-form-companyOther">
-										<label for="widget-addBill-form-companyOther" class="widget-addBill-form-companyOther">Informations complémentaires (Origi.)</label>
-										<input type="text" class="form-control widget-addBill-form-companyOther" name="widget-addBill-form-companyOther">
-									</div>
-									<div class="col-md-4"></div>
 									<div class="col-md-4 typeOther">
 										<label for="typeOther" class="hidden">Informations complémentaires (type)</label>
 										<input type="text" class="form-control hidden" name="typeOther">

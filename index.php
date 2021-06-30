@@ -1,4 +1,5 @@
 <?php
+
 	session_cache_limiter('nocache');
 	if(!isset($_SESSION))
 		session_start();
@@ -13,6 +14,7 @@
 	$router->addMatchTypes(array('ext' => '((\.).+)?$'));
 
 	require_once 'include/pages-routes.php';
+
 
 	$router->map('GET|POST','@/api/.*', function(){
 		require_once 'include/apis-routes.php';

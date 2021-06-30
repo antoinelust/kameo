@@ -2,23 +2,6 @@ window.addEventListener("DOMContentLoaded", function(event) {
 	document.getElementsByClassName('commandFleetManagerClick')[0].addEventListener('click', function() { get_orders_fleet_listing()}, false);
 });
 
-$( ".fleetmanager" ).click(function() {
-    $.ajax({
-        url: 'apis/Kameo/initialize_counters.php',
-        type: 'post',
-        data: { "email": email, "type": "ordersFleet"},
-        success: function(response){
-            if(response.response == 'error') {
-              console.log(response.message);
-            }
-            if(response.response == 'success'){
-							document.getElementById("counterOrdersFleet").innerHTML = '<span style="margin-left:20px">'+response.ordersNumber+'</span>';
-            }
-        }
-    })
-})
-
-
 function get_orders_fleet_listing() {
 		document.getElementById('ordersFleetListingSpan').innerHTML='';
     $.ajax({
@@ -70,11 +53,23 @@ function get_orders_fleet_listing() {
 	            }
 
 							if(response.order[i].type=="leasing"){
-								var price= Math.round(response.order[i].price*100)/100 + "€/"+traduction.generic_mois;
+								if(response.tvaIncluded=='Y'){
+									var price= Math.round(response.order[i].price*1.21*100)/100 + "€/"+traduction.generic_moisTVAC;
+								}else{
+									var price= Math.round(response.order[i].price*100)/100 + "€/"+traduction.generic_mois;
+								}
 							}else if(response.order[i].type=="annualLeasing"){
-								var price= Math.round(response.order[i].price*100)/100 + "€/"/traduction.generic_year;
+								if(response.tvaIncluded=='Y'){
+									var price= Math.round(response.order[i].price*1.21*100)/100 + "€/"/traduction.generic_yearTVAC;
+								}else{
+									var price= Math.round(response.order[i].price*100)/100 + "€/"/traduction.generic_year;
+								}
 							}else{
-								var price= Math.round(response.order[i].price*100)/100 + "€";
+								if(response.tvaIncluded=="Y"){
+									var price= Math.round(response.order[i].price*100*1.21)/100 + "€";
+								}else{
+									var price= Math.round(response.order[i].price*100)/100 + "€";
+								}
 							}
 
 							var newDiv = document.createElement("div");
@@ -248,9 +243,9 @@ function construct_form_for_command_validation(ID){
 
 function retrieve_command_fleet(ID){
   $.ajax({
-    url: 'apis/Kameo/orders_management.php',
+    url: 'api/orders',
     type: 'get',
-    data: {"action": "retrieve", "ID": ID, "email": email},
+    data: {"action": "retrieve", "ID": ID},
     success: function(response){
       if(response.response == 'error') {
         console.log(response.message);

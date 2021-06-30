@@ -5,20 +5,22 @@ header('Content-type: application/json');
 
 session_start();
 include 'globalfunctions.php';
+log_inputs($token);
+
 
 require_once('../../include/php-mailer/PHPMailerAutoload.php');
 $mail = new PHPMailer();
 
 // Form Fields
-$name = $_POST["name"];
-$firstName = $_POST["firstName"];
-$email = $_POST["email"];
-$phone =  $_POST["phone"];
-$type = isset($_POST["type"]) ? $_POST["type"] : "N/A";
-$entreprise = isset($_POST["entreprise"]) ? $_POST["entreprise"] : "N/A";
-$companySize = isset($_POST["companySize"]) ? $_POST["companySize"] : NULL;
-$subject = isset($_POST["subject"]) ? $_POST["subject"] : "N/A";
-$message = nl2br($_POST["message"]);
+$name = htmlspecialchars($_POST["name"]);
+$firstName = htmlspecialchars($_POST["firstName"]);
+$email = htmlspecialchars($_POST["email"]);
+$phone =  htmlspecialchars($_POST["phone"]);
+$type = isset($_POST["type"]) ? htmlspecialchars($_POST["type"]) : "N/A";
+$entreprise = isset($_POST["entreprise"]) ? htmlspecialchars($_POST["entreprise"]) : "N/A";
+$companySize = isset($_POST["companySize"]) ? ($_POST["companySize"]) : NULL;
+$subject = isset($_POST["subject"]) ? htmlspecialchars($_POST["subject"]) : "N/A";
+$message = nl2br(htmlspecialchars($_POST["message"]));
 $captcha = strlen($_POST['g-recaptcha-response']);
 
 $length = strlen($phone);

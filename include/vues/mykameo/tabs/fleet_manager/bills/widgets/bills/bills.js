@@ -22,42 +22,19 @@ window.addEventListener("DOMContentLoaded", function(event) {
   });
 });
 
-$( ".fleetmanager" ).click(function() {
-  $.ajax({
-    url: 'apis/Kameo/initialize_counters.php',
-    type: 'post',
-    data: { "email": email, "type": "bills"},
-    success: function(response){
-      if(response.response == 'error') {
-        console.log(response.message);
-      }
-      if(response.response == 'success'){
-        document.getElementById('counterBills').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.billsNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.billsNumber+"</span>";
-      }
-    }
-  })
-})
-
 
 $('#widget-addBill-form select[name=company]').off();
-
-$('.widget-addBill-form-company').change(function(){
+$('#widget-addBill-form select[name=company]').change(function(){
   var e = document.getElementsByClassName('widget-addBill-form-company')[0];
   var valueSelect = e.options[e.selectedIndex].value;
   $('#widget-addBill-form input[name=communication]').attr('readonly', true);
-  if(valueSelect=='other'){
-    $('.widget-addBill-form-companyOther').removeClass("hidden");
-    $('#widget-addBill-form input[name=communication]').val($('#widget-addBill-form input[name=communicationHidden]').val());
-    $('input[name=beneficiaryCompany]').attr('readonly', true);
-    $('input[name=beneficiaryCompany]').val('KAMEO');
-  }else if(valueSelect=='KAMEO'){
+  if(valueSelect=='KAMEO'){
     $('input[name=beneficiaryCompany]').attr('readonly', false);
     $('input[name=beneficiaryCompany]').val('');
     $('#widget-addBill-form input[name=communication]').attr('readonly', false);
     $('#widget-addBill-form input[name=communication]').val('');
   }
   else{
-    $('.widget-addBill-form-companyOther').addClass("hidden");
     $('#widget-addBill-form input[name=communication]').val($('#widget-addBill-form input[name=communicationHidden]').val());
     $('input[name=beneficiaryCompany]').attr('readonly', true);
     $('input[name=beneficiaryCompany]').val('KAMEO');
@@ -65,6 +42,33 @@ $('.widget-addBill-form-company').change(function(){
     $('.IDAddBillOut').removeClass("hidden");
   }
 });
+$('#widget-addBill-form select[name=company], #widget-addBill-form input[name=individualBilling]').change(function(){
+  if($('#widget-addBill-form input[name=individualBilling]').is(':checked')){
+    $('#widget-addBill-form select[name=individualBillingName]').parent().fadeIn();
+    $.ajax({
+      url: 'api/companies',
+      type: 'get',
+      data: {
+        action: 'listUsers',
+        company: $('#widget-addBill-form select[name=company]').val()
+      },
+      success: function(response){
+        $('#widget-addBill-form select[name=individualBillingName]')
+        .find('option')
+        .remove()
+        .end()
+        ;
+        response.forEach(function(user){
+          $('#widget-addBill-form select[name=individualBillingName]').append("<option value="+user.EMAIL+">"+user.PRENOM+" "+user.NOM+"<br>");
+        })
+        $('#widget-addBill-form select[name=individualBillingName]').val();
+      }
+    })
+  }else{
+    $('#widget-addBill-form select[name=individualBillingName]').parent().fadeOut();
+  }
+})
+
 $('#widget-addBill-form input[name=beneficiaryCompany]').change(function(){
   if($('#widget-addBill-form input[name=beneficiaryCompany]').val()=='KAMEO'){
     $('.IDAddBill').removeClass("hidden");
@@ -412,6 +416,9 @@ function create_bill(){
             },
             success: function(response){
               var maintenances = [];
+              $select.closest('tr').find('.bikeMaintenance select option')
+              .remove()
+              .end();
               response.internalMaintenances.forEach(function(maintenance){
                 $select.closest('tr').find('.bikeMaintenance select').append('<option value="'+maintenance.ID+'">'+maintenance.ID+' - '+maintenance.DATE.shortDate()+' - '+maintenance.BRAND+' '+maintenance.MODEL+'</option>');
               })
@@ -637,7 +644,7 @@ function get_bills_listing() {
         if(response.update){
           var temp="<table id=\"billsListingTable\" class=\"table table-condensed\" data-order='[[ 1, \"desc\" ]]' data-page-length='50'><h4 class=\"text-green\">Vos Factures:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addBill\" data-toggle=\"modal\" onclick=\"create_bill()\" href=\"#\"><i class=\"fa fa-plus\"></i> Ajouter une facture</a><thead><tr><th>Type</th><th>ID</th><th style='width : 5%;'>Société</th><th style='width : 5%;'>Date d'initiation</th><th style='width : 5%;'>Montant (HTVA)</th><th style='width : 5%;'>Communication</th><th style='width : 5%;'>Envoi ?</th><th style='width : 5%;'>Payée ?</th><th style='width : 5%;'>Limite de paiement</th><th style='width : 5%;'>Comptable ?</th><th></th></tr></thead><tbody>";
         }else{
-          var temp="<table id=\"billsListingTable\" class=\"table table-condensed\" data-order='[[ 1, \"desc\" ]]' data-page-length='50'><h4 class=\"text-green\">Vos Factures:</h4><br/><thead><tr><th>ID</th><th>Date d'initiation</th><th>Montant (HTVA)</th><th>Communication</th><th>Envoyée ?</th><th>Payée ?</th><th>>Limite de paiement</th></tr></thead><tbody>";
+          var temp="<table id=\"billsListingTable\" class=\"table table-condensed\" data-order='[[ 1, \"desc\" ]]' data-page-length='50'><h4 class=\"text-green\">Vos Factures:</h4><br/><thead><tr><th>ID</th><th>Date d'initiation</th><th>Montant (HTVA)</th><th>Communication</th><th>Envoyée ?</th><th>Payée ?</th><th>Limite de paiement</th></tr></thead><tbody>";
         }
         dest=dest.concat(temp);
 
@@ -753,7 +760,7 @@ function get_bills_listing() {
               $.ajax({
                 url: 'api/bills',
                 type: 'get',
-                data: {"action" : "getContactsForBillingSending", 'company' : bill.companyID},
+                data: {"action" : "getContactsForBillingSending", 'ID' : bill.ID},
                 success: function(contacts){
                   var dest3="";
                   dest3+="<div class='row' style='border-top: 1px solid grey'><form action='api/bills' class='sendBillForm' role='form' method='post'><div class='col-md-4'><table class=\"table table-condensed\"><thead><tr><th>ID</th><th>Société</th><th>Montant</th><th>Date</th></tr></thead><tbody>";
@@ -873,7 +880,7 @@ function get_bills_listing() {
         var table = $('#billsListingTable').DataTable({
           orderCellsTop: true,
           fixedHeader: true,
-          scrollX: false,
+          scrollX: true,
           paging: false,
           search: false
         });

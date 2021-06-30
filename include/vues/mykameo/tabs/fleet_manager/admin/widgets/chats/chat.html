@@ -69,22 +69,6 @@
   </div>
 </div>
 <script>
-  $(".fleetmanager").click(function () {
-    $.ajax({
-      url: "apis/Kameo/initialize_counters.php",
-      type: "post",
-      data: { email: email, type: "chat" },
-      success: function (response) {
-        if (response.response == "error") {
-          console.log(response.message);
-        }
-        if (response.response == "success") {
-          document.getElementById("counterChat").innerHTML = '<span style="margin-left:20px">'+response.messagesNumberUnread+'</span>';
-        }
-      },
-    });
-  });
-
   $("#adminChat").on("hidden.bs.modal", function (e) {
     $("#chatsListing").modal("show");
   });

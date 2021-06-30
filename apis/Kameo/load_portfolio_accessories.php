@@ -32,10 +32,16 @@ try{
       else if($_GET['category']=="Produitsentretien"){$categories="'produit_entretien', 'protection_anti_rouille', 'anti_crevaison', 'lubrifiant', 'nettoyant_et_degraissant'";}
       else if($_GET['category']=="selle"){$categories="'selle'";}
 
-      $response['accessories'] = execSQL("SELECT accessories_catalog.ID as catalogID, accessories_catalog.BRAND, accessories_catalog.DESCRIPTION, accessories_catalog.MODEL, accessories_catalog.DISPLAY, accessories_categories.CATEGORY, accessories_catalog.PRICE_HTVA, accessories_catalog.PRICE_HTVA*1.5/36 as leasingPrice FROM accessories_catalog, accessories_categories WHERE  accessories_catalog.ACCESSORIES_CATEGORIES=accessories_categories.ID AND accessories_categories.CATEGORY IN ($categories) ORDER BY accessories_categories.CATEGORY", array(), false);
-      $response['sql']="SELECT accessories_catalog.ID as catalogID, accessories_catalog.BRAND, accessories_catalog.DESCRIPTION, accessories_catalog.MODEL, accessories_catalog.DISPLAY, accessories_categories.CATEGORY, accessories_catalog.PRICE_HTVA, accessories_catalog.PRICE_HTVA*1.5/36 as leasingPrice FROM accessories_catalog, accessories_categories WHERE  accessories_catalog.ACCESSORIES_CATEGORIES=accessories_categories.ID AND accessories_categories.CATEGORY IN ($categories) ORDER BY accessories_categories.CATEGORY";
+
+      if($_GET['category']=="*"){
+        $response['accessories'] = execSQL("SELECT accessories_catalog.ID as catalogID, accessories_catalog.BRAND, accessories_catalog.DESCRIPTION, accessories_catalog.MODEL, accessories_catalog.DISPLAY, accessories_categories.CATEGORY, accessories_catalog.PRICE_HTVA, accessories_catalog.PRICE_HTVA*1.5/36 as leasingPrice FROM accessories_catalog, accessories_categories WHERE  accessories_catalog.ACCESSORIES_CATEGORIES=accessories_categories.ID ORDER BY accessories_categories.CATEGORY", array(), false);
+      }else{
+        $response['accessories'] = execSQL("SELECT accessories_catalog.ID as catalogID, accessories_catalog.BRAND, accessories_catalog.DESCRIPTION, accessories_catalog.MODEL, accessories_catalog.DISPLAY, accessories_categories.CATEGORY, accessories_catalog.PRICE_HTVA, accessories_catalog.PRICE_HTVA*1.5/36 as leasingPrice FROM accessories_catalog, accessories_categories WHERE  accessories_catalog.ACCESSORIES_CATEGORIES=accessories_categories.ID AND accessories_categories.CATEGORY IN ($categories) ORDER BY accessories_categories.CATEGORY", array(), false);
+      }
+
       echo json_encode($response);
       die;
+
     }else if($action=="retrieve"){
       $response=array();
       $catalogID=isset($_GET['catalogID']) ? $_GET['catalogID'] : NULL;

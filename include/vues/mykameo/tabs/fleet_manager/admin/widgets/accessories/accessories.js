@@ -1,20 +1,3 @@
-$(".fleetmanager").click(function () {
-  $.ajax({
-    url: "apis/Kameo/initialize_counters.php",
-    type: "post",
-    data: { email: email, type: "stockAccessories" },
-    success: function (response) {
-      if (response.response == "error") {
-        console.log(response.message);
-      }
-      if (response.response == "success") {
-        document.getElementById("counterStockAccessoriesCounter").innerHTML = '<span style="margin-left:20px; color:#3cb395">'+response.accessoriesNumber+'</span>';
-      }
-    },
-  });
-});
-
-
 $('.addStockAccessoryButton').click(function(){
 
  $("#widget-manageStockAccessory-form input[name=numberArticle]").parent().fadeIn();
@@ -131,6 +114,21 @@ $('#widget-manageStockAccessory-form select[name=contractType]').change(function
     $("#widget-manageStockAccessory-form input[name=contractStart]").parent().fadeOut();
     $("#widget-manageStockAccessory-form input[name=contractEnd]").parent().fadeOut();
     $("#widget-manageStockAccessory-form input[name=leasingAmount]").parent().parent().fadeOut();
+    $("#widget-manageStockAccessory-form label[for=sellingDate]").html("Date de vente");
+    $("#widget-manageStockAccessory-form label[for=sellingAmount]").html("Montant vente");
+    $("#widget-manageStockAccessory-form input[name=sellingDate]").parent().fadeIn();
+    $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeIn();
+    $("#widget-manageStockAccessory-form input[name=deliveryDate]").parent().fadeOut();
+    $("#widget-manageStockAccessory-form input[name=estimateDeliveryDate]").parent().fadeOut();
+    $('#widget-manageStockAccessory-form select[name=company]').attr('readonly', false);
+    $("#widget-manageStockAccessory-form select[name=user]").parent().fadeIn();
+  }
+  else if($(this).val()=="stolen"){
+    $("#widget-manageStockAccessory-form input[name=contractStart]").parent().fadeOut();
+    $("#widget-manageStockAccessory-form input[name=contractEnd]").parent().fadeOut();
+    $("#widget-manageStockAccessory-form input[name=leasingAmount]").parent().parent().fadeOut();
+    $("#widget-manageStockAccessory-form label[for=sellingDate]").html("Date du vol");
+    $("#widget-manageStockAccessory-form label[for=sellingAmount]").html("Montant remboursé par assurance");
     $("#widget-manageStockAccessory-form input[name=sellingDate]").parent().fadeIn();
     $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeIn();
     $("#widget-manageStockAccessory-form input[name=deliveryDate]").parent().fadeOut();
@@ -297,6 +295,7 @@ function list_stock_accessories(){
         else if (sData == 'stock') $(nTd).html("En stock");
         else if (sData == 'pending_delivery') $(nTd).html("En attente de livraison");
         else if (sData == 'order') $(nTd).html("Commande chez fournisseur");
+        else if (sData == 'stolen') $(nTd).html("Volé");
         else $(nTd).html(sData);
       },
     },
@@ -354,35 +353,41 @@ function list_stock_accessories(){
   })
 }
 
-$('body').on('click','.accessoriesInLeasing', function(){
+$('#stockAccessoriesListing .accessoriesInLeasing').click(function(){
   var table = $('#stockAccessoriesList').DataTable()
   .column(6)
   .search( "leasing", true, false )
   .draw();
 })
-$('body').on('click','.accessoriesInStock', function(){
+$('#stockAccessoriesListing .accessoriesInStock').click(function(){
   var table = $('#stockAccessoriesList').DataTable()
   .column(6)
   .search( "stock", true, false )
   .draw();
 })
-$('body').on('click','.accessoriesPendingDelivery', function(){
+$('#stockAccessoriesListing .accessoriesPendingDelivery').click(function(){
   var table = $('#stockAccessoriesList').DataTable()
   .column(6)
   .search( "pending", true, false )
   .draw();
 })
 
-$('body').on('click','.accessoriesInOrder', function(){
+$('#stockAccessoriesListing .accessoriesInOrder').click(function(){
   var table = $('#stockAccessoriesList').DataTable()
   .column(6)
   .search("order", true, false )
   .draw();
 })
-$('body').on('click','.soldAccessories', function(){
+$('#stockAccessoriesListing .soldAccessories').click(function(){
   var table = $('#stockAccessoriesList').DataTable()
   .column(6)
   .search("selling", true, false )
+  .draw();
+})
+$('#stockAccessoriesListing .stolenAccessories').click(function(){
+  var table = $('#stockAccessoriesList').DataTable()
+  .column(6)
+  .search("stolen", true, false )
   .draw();
 })
 
@@ -497,12 +502,26 @@ function get_stock_accessory(ID){
          $("#widget-manageStockAccessory-form input[name=contractStart]").parent().fadeOut();
          $("#widget-manageStockAccessory-form input[name=contractEnd]").parent().fadeOut();
          $("#widget-manageStockAccessory-form input[name=leasingAmount]").parent().parent().fadeOut();
+         $("#widget-manageStockAccessory-form label[for=sellingDate]").html("Date de vente");
+         $("#widget-manageStockAccessory-form label[for=sellingAmount]").html("Montant vente");
          $("#widget-manageStockAccessory-form input[name=sellingDate]").parent().fadeIn();
          $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeIn();
          $("#widget-manageStockAccessory-form input[name=deliveryDate]").parent().fadeOut();
          $("#widget-manageStockAccessory-form input[name=estimateDeliveryDate]").parent().fadeOut();
          $("#widget-manageStockAccessory-form select[name=user]").parent().fadeIn();
-
+       }else if(data.CONTRACT_TYPE == 'stolen'){
+         $("#widget-manageStockAccessory-form input[name=sellingDate]").val(data.SELLING_DATE);
+         $("#widget-manageStockAccessory-form input[name=sellingAmount]").val(data.SELLING_AMOUNT);
+         $("#widget-manageStockAccessory-form input[name=contractStart]").parent().fadeOut();
+         $("#widget-manageStockAccessory-form input[name=contractEnd]").parent().fadeOut();
+         $("#widget-manageStockAccessory-form input[name=leasingAmount]").parent().parent().fadeOut();
+         $("#widget-manageStockAccessory-form input[name=sellingDate]").parent().fadeIn();
+         $("#widget-manageStockAccessory-form label[for=sellingDate]").html("Date du vol");
+         $("#widget-manageStockAccessory-form label[for=sellingAmount]").html("Montant remboursé par assurance");
+         $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeIn();
+         $("#widget-manageStockAccessory-form input[name=deliveryDate]").parent().fadeOut();
+         $("#widget-manageStockAccessory-form input[name=estimateDeliveryDate]").parent().fadeOut();
+         $("#widget-manageStockAccessory-form select[name=user]").parent().fadeIn();
        }
        else if(data.CONTRACT_TYPE=="order"){
          $("#widget-manageStockAccessory-form select[name=user]").parent().fadeIn();

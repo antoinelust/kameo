@@ -1,57 +1,41 @@
-$( ".fleetmanager" ).click(function() {
-    $.ajax({
-        url: 'apis/Kameo/initialize_counters.php',
-        type: 'post',
-        data: { "email": email, "type": "users"},
-        success: function(response){
-            if(response.response == 'error') {
-                console.log(response.message);
-            }
-            if(response.response == 'success'){
-                document.getElementById("counterUsers").innerHTML = '<span style="margin-left:20px">'+response.usersNumber+'</span>';
-            }
-        }
-    })
-})
-
-function get_users_listing(){
-  console.log("test");
-  $.ajax({
-     url: "apis/Kameo/get_users_listing",
-     success : function(data) {
-      $('#usersList').dataTable( {
-        destroy: true,
-        sAjaxDataProp: "",
-        data : data.users,
-        columns: [
-         { title: traduction.sidebar_last_name, data: "name" },
-         { title: traduction.sidebar_first_name, data: "firstName" },
-         { className: "hidden-xs", title: "E-Mail", data: "email" },
-         {
-           title: traduction.generic_status,
-           data: "staann",
-           fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-             if (sData == 'D') $(nTd).html("Supprimé");
-             else $(nTd).html("Actif");
-           },
-         },
-         {
-           data: "email",
-           fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-             $(nTd).html("<a href='#' data-target='#updateUserInformation' onclick=\"update_user_information('" +
-               sData +
-               "')\" class='text-green' data-toggle='modal'>"+traduction.generic_update+" </a>");
-             },
-          }
-
-        ],
-        order: [
-         [0, "asc"]
-        ]
-      });
-   }
+$("#usersListing").on('shown.bs.modal', function(event){
+  $("#usersList").dataTable({
+    destroy: true,
+    ajax: {
+      url: "api/users",
+      contentType: "application/json",
+      type: "GET",
+      data: {
+        action: "list",
+      },
+    },
+    sAjaxDataProp: "users",
+    columns: [
+      { title: traduction.sidebar_last_name, data: "name" },
+      { title: traduction.sidebar_first_name, data: "firstName" },
+      { className: "hidden-xs", title: "E-Mail", data: "email" },
+      {
+        title: traduction.generic_status,
+        data: "staann",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          if (sData !== null) $(nTd).html("Actif");
+          else $(nTd).html("Inactif");
+        },
+      },
+      {
+        data: "email",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html("<a href='#' data-target='#updateUserInformation' onclick=\"update_user_information('" +
+            sData +
+            "')\" class='text-green' data-toggle='modal'>"+traduction.generic_update+" </a>");
+          },
+       }
+    ],
+    order: [
+     [0, "asc"]
+    ]
   });
-}
+});
 
   //FleetManager: Nombre d'utilisateurs | Display user details when "Mettre à jour" button is pressed
   function update_user_information(email){

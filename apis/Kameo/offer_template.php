@@ -29,16 +29,25 @@
   $boxFinalLocationPrice = isset($_POST["boxFinalLocationPrice"]) ? $_POST["boxFinalLocationPrice"] : NULL;
   $boxFinalPrice=[$boxFinalInstallationlPrice, $boxFinalLocationPrice];
   $probability = isset($_POST["probability"]) ? $_POST["probability"] : NULL;
-  $dateSignature = ($_POST["dateSignature"] != '') ? $_POST["dateSignature"] : NULL;
-  $dateStart = ($_POST["dateStart"] != '') ? $_POST["dateStart"] : NULL;
-  $dateEnd = ($_POST["dateEnd"] != '') ? $_POST["dateEnd"] : NULL;
+  $dateStart = ($_POST["offerValidity"] != '') ? $_POST["offerValidity"] : NULL;
   $totalPerMonth = 0;
   $globalDDiscount = isset($_POST["globalDiscount"]) ? $_POST["globalDiscount"] : NULL;
 
   $delais = explode("\n",$delais);
+  $offerValidityYmd=$offerValidity;
   $offerValidity = date_create($offerValidity);
   $offerValidity = date_format($offerValidity,"d/m/Y");
 
+
+  if($buyOrLeasing=='leasing'){
+    $dateEnd=new DateTime($dateStart);
+    $intervalText='P'.$leasingDuration.'M';
+    $interval = new DateInterval($intervalText);
+    $dateEnd->add($interval);
+    $dateEnd=$dateEnd->format('Y-m-d');
+  }else{
+    $dateEnd=$dateStart;
+  }
 
   $others = array();
   //création des tableaux destinés a recevoir les id des différents item
@@ -340,8 +349,8 @@
   function add_PDF($id, $file, $bikesNumber, $boxesNumber, $buyOrLeasing, $accessoriesNumber, $email, $dateSignature, $dateStart, $dateEnd, $totalPerMonth, $company, $probability){
     $description="Facture générée depuis mykameo pour ".$bikesNumber." vélos, ".$boxesNumber." bornes et ".$accessoriesNumber." accessoires.";
     global $token;
-    $id=execSQL("INSERT INTO offers (HEU_MAJ, USR_MAJ, TITRE, DESCRIPTION, STATUS, PROBABILITY, TYPE, AMOUNT, MARGIN, DATE, START, END, COMPANY, COMPANY_ID, FILE_NAME, STAANN)
-    VALUES (CURRENT_TIMESTAMP, ?, 'Facture générée via le template', ?, 'ongoing', ?, ?, ?, '40', ?, ?, ?, ?, ?, ?, '')", array('ssisdssssis', $token, $description, $probability, $buyOrLeasing, $totalPerMonth, $dateSignature, $dateStart, $dateEnd, $company, $id, $file), true);
+    $id=execSQL("INSERT INTO offers (HEU_MAJ, USR_MAJ, TITRE, DESCRIPTION, STATUS, PROBABILITY, TYPE, AMOUNT, MARGIN, VALIDITY_DATE, START, END, COMPANY, COMPANY_ID, FILE_NAME, STAANN)
+    VALUES (CURRENT_TIMESTAMP, ?, 'Facture générée via le template', ?, 'ongoing', ?, ?, ?, '40', ?, ?, ?, ?, ?, ?, '')", array('ssisdsssssis', $token, $description, $probability, $buyOrLeasing, $totalPerMonth, $offerValidityYmd, $dateStart, $dateEnd, $company, $id, $file), true);
     $file = str_replace('temp', $id, $file);
     execSQL("UPDATE `offers` SET `FILE_NAME` = ? WHERE `offers`.`ID` = ?", array('si', $file, $id), true);
     return $id;

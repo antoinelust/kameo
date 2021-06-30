@@ -10,36 +10,19 @@ style="display: none; overflow-y: auto !important"
 <div class="modal-dialog modal-lg">
   <div class="modal-content">
     <div class="modal-header">
-      <button
-      type="button"
-      class="close"
-      data-dismiss="modal"
-      aria-hidden="true"
-      >
-      ×
-    </button>
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
   </div>
   <div class="modal-body">
     <div class="row">
       <div class="col-sm-12">
-        <form
-        id="widget-order-form"
-        action="apis/Kameo/orders_management.php"
-        role="form"
-        method="post"
-        >
+        <form id="widget-order-form" action="api/orders" role="form" method="post">
         <h4 class="text-green orderManagementTitle">Gestion de la commande client</h4>
         <div class="form-group col-sm-12">
           <div class="col-sm-12">
             <h4 class="text-green">Informations techniques</h4>
             <div class="col-sm-4" name="ID">
               <label for="portfolio">ID commande</label>
-              <input
-              type="text"
-              name="ID"
-              class="form-control required"
-              readonly
-              />
+              <input type="text" name="ID" class="form-control required" readonly/>
             </div>
             <div class="col-sm-4">
               <label for="status">Statut</label>
@@ -88,12 +71,7 @@ style="display: none; overflow-y: auto !important"
           <div class="col-sm-12">
             <div class="col-sm-4">
               <label for="testBoolean">Besoin d'un test ?</label>
-              <input
-              type="checkbox"
-              name="testBoolean"
-              class="form-control"
-              checked
-              />
+              <input type="checkbox" name="testBoolean" class="form-control" checked>
             </div>
             <div class="col-sm-4 testDate">
               <label for="testDate">Date du test</label>
@@ -110,23 +88,14 @@ style="display: none; overflow-y: auto !important"
             </div>
             <div class="col-sm-12 testAddress">
               <label for="testAddress">Adresse pour le test</label>
-              <input
-              type="text"
-              name="testAddress"
-              class="form-control"
-              />
+              <input type="text" name="testAddress" class="form-control">
             </div>
             <div class="col-sm-12 testResult">
               <label for="testResult">Résultat du test</label>
-              <textarea
-              class="form-control"
-              rows="5"
-              name="testResult"
-              ></textarea>
+              <textarea class="form-control" rows="5" name="testResult"></textarea>
             </div>
           </div>
         </div>
-
         <div class="form-group col-sm-12">
           <h4 class="text-green">Caractéristiques du vélo</h4>
           <div class="col-sm-12">
@@ -196,29 +165,15 @@ style="display: none; overflow-y: auto !important"
               />
             </div>
           </div>
-            <div class="col-sm-12">
-              <label for="deliveryAddress">Commentaire </label>
-             <textarea name="commentsAdmin" class="form-control">
-              </textarea>
-            </div>
-            <input
-            type="text"
-            name="action"
-            class="form-control hidden"
-            value="update"
-            />
-            <input
-            type="text"
-            name="emailUser"
-            class="form-control hidden"
-            />
-            <input
-            type="text"
-            name="email"
-            disabled
-            class="form-control hidden"
-            value="<?php echo $user_data['EMAIL']; ?>"
-            />
+          <div class="col-sm-12">
+            <label for="deliveryAddress">Commentaire </label>
+           <textarea name="commentsAdmin" class="form-control">
+            </textarea>
+          </div>
+          <div class="col-sm-12">
+            <input type="text" name="action" class="form-control hidden" value="update">
+            <input type="text" name="emailUser" class="form-control hidden">
+            <input type="text" name="email" disabled class="form-control hidden" value="<?php echo $user_data['EMAIL']; ?>">
           </div>
         </div>
         <div class="form-group col-sm-12">
@@ -236,12 +191,9 @@ style="display: none; overflow-y: auto !important"
           <p name="assignation"></p>
           <div class="row">
             <div class="col-md-8 ">
-              <label for="linkOfferToBike">Liaison de cette commande à vélo en stock</label>
-              <select name="linkOfferToBike" class="form-control"></select>
+              <label for="linkOrderToBike">Liaison de cette commande à vélo en stock</label>
+              <select name="linkOrderToBike" class="form-control"></select>
             </div>
-            <!--<div class="col-md-4">
-              <button class="testAssignation button small green button-3d" name="commanderVelo" data-target="#bikeManagement" data-toggle ="modal" type="button">Commander Pour cette commande</button>
-          </div>-->
         </div>
       </div>
       <div class="separator"></div>
@@ -252,20 +204,10 @@ style="display: none; overflow-y: auto !important"
           </div>
           <div class="col-sm-12 accessoriesButtons">
             <i class="fa fa-calculator"></i>
-            <span class="accessoriesNumber">0</span
-              ><input
-              type="hidden"
-              name="accessoriesNumber"
-              value="0"
-              />
-              <button
-              class="button small green button-3d rounded icon-right glyphicon glyphicon-plus"
-              type="button"
-              ></button>
-              <button
-              class="button small red button-3d rounded icon-right glyphicon glyphicon-minus"
-              type="button"
-              ></button>
+            <span class="accessoriesNumber">0</span>
+            <input type="hidden" name="accessoriesNumber" value="0">
+              <button class="button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
+              <button class="button small red button-3d rounded icon-right glyphicon glyphicon-minus" type="button"></button>
             </div>
             <table class="table table-condensed tableFixed otherCostsAccesoiresTable" id="ExistingAccessory">
             <thead><tr><th>Categorie</th><th>Accessoire</th><th>Type</th><th>Prix d'Achat</th><th>Prix vente HTVA</th></tr></thead>
@@ -274,20 +216,14 @@ style="display: none; overflow-y: auto !important"
         </div>
       </div>
       <div class="col-sm-12">
-        <button
-        class="button small green button-3d rounded icon-left"
-        type="submit"
-        >
-        <i class="fa fa-paper-plane"></i>Envoyer
-      </button>
-    </div>
+        <button class="button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
+      </div>
   </form>
 </div>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-b" data-dismiss="modal">
-    Fermer
-  </button>
+    <?= L::generic_close; ?></button>
 </div>
 </div>
 </div>

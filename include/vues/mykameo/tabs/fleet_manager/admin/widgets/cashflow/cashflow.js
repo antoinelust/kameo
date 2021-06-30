@@ -1,23 +1,3 @@
-$(".fleetmanager").click(function () {
-  $.ajax({
-    url: "apis/Kameo/initialize_counters.php",
-    type: "post",
-    data: { email: email, type: "cashFlow" },
-    success: function (response) {
-      if (response.response == "error") {
-        console.log(response.message);
-      }
-      if (response.response == "success") {
-        if (response.sumContractsCurrent > 0) {
-          document.getElementById("cashFlowSpan").innerHTML = '<span style="color: #3cb395; margin-left:20px">'+Math.round(response.sumContractsCurrent)+'€</span>';
-        } else {
-          document.getElementById("cashFlowSpan").innerHTML = '<span style="color: #d80000; margin-left:20px">'+Math.round(response.sumContractsCurrent)+'€</span>';
-        }
-      }
-    },
-  });
-});
-
 
 $('#offerManagerClick').click(function(){
     list_contracts_offers('*');
@@ -406,9 +386,14 @@ function list_contracts_offers(company) {
 
         var dest = "";
         var temp =
-          '<h4 class="text-green">Offres en cours :</h4><br/><div class="seperator seperator-small visible-xs"></div><table class="table table-condensed"><tbody><thead><tr><th>ID</th><th>PDF</th><th>Société</th><th>Type</th><th>Titre</th><th>Montant</th><th>Debut</th><th>Fin</th><th>Probabilité</th><th></th></tr></thead>';
+          '<h4 class="text-green">Offres en cours :</h4><br/><div class="seperator seperator-small visible-xs"></div><table class="table table-condensed"><tbody><thead><tr><th>ID</th><th>PDF</th><th>Société</th><th>Type</th><th>Titre</th><th>Montant</th><th>Validité</th><th>Debut</th><th>Fin</th><th>Probabilité</th><th></th></tr></thead>';
         dest = dest.concat(temp);
         response.offers.forEach(function(offer){
+          if (offer.VALIDITY_DATE != null) {
+            var validityDate = offer.VALIDITY_DATE.shortDate();
+          } else {
+            var validityDate = '<span class="text-red">N/A</span>';
+          }
           if (offer.START != null) {
             var offer_start = offer.START.shortDate();
           } else {
@@ -468,6 +453,8 @@ function list_contracts_offers(company) {
               "</td><td>" +
               amount +
               " </td><td>" +
+              validityDate +
+              " </td><td>" +
               offer_start +
               "</td><td>" +
               offer_end +
@@ -490,6 +477,8 @@ function list_contracts_offers(company) {
               offer.TITRE +
               "</td><td>" +
               amount +
+              " </td><td>" +
+              validityDate +
               " </td><td>" +
               offer_start +
               "</td><td>" +

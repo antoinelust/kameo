@@ -1,8 +1,8 @@
 <?php
-if(!isset($_SESSION))
-    session_start();
-if(!isset($_SESSION['langue']))
-    $_SESSION['langue']="fr";
+if(!isset($_SESSION)){
+  session_cache_expire(60);
+  session_start();
+}
 
 require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/authentication.php';
@@ -371,7 +371,12 @@ execSQL("INSERT INTO table(id, name) VALUES (?,?)", array('ss', $id, $name), tru
 
 
 function execSQL($sql, $params, $close){
-  include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
+  if(!isset($conn)){
+    include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
+  }else if (!$conn->ping()) {
+    include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
+  }
+
   $stmt = $conn->prepare($sql) or die ("Failed to prepare the statement : ".$conn->error);
   if($params){
     call_user_func_array(array($stmt, 'bind_param'), refValues($params));
@@ -406,7 +411,7 @@ function execSQL($sql, $params, $close){
   }
 
   $stmt->close();
-  $conn->close();
+  //$conn->close();
   return  $result;
 }
 

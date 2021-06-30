@@ -3,7 +3,7 @@
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/include/lang_management.php';
 //require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/activitylog.php';
-header("Content-Security-Policy: script-src 'self' 'unsafe-inline' https://unpkg.com www.google-analytics.com ajax.googleapis.com https://www.google-analytics.com https://snap.licdn.com https://static.mobilemonkey.com https://webchat.mobilemonkey.com https://www.google.com https://www.gstatic.com https://www.googletagmanager.com https://cdn.jsdelivr.net https://connect.facebook.net;");
+header("Content-Security-Policy: script-src 'self' 'unsafe-inline' https://unpkg.com www.google-analytics.com ajax.googleapis.com https://www.google-analytics.com https://snap.licdn.com https://static.mobilemonkey.com https://webchat.mobilemonkey.com https://www.google.com https://www.gstatic.com https://www.googletagmanager.com https://cdn.jsdelivr.net https://connect.facebook.net https://nightly.datatables.net/css/jquery.dataTables.css;");
 
 function get_class_consts($class_name)
 {
@@ -47,11 +47,10 @@ var traduction = '.json_encode(get_class_consts("L")).';
 	<title><?=L::header_tabTitle; ?></title>
 
 	<!-- Bootstrap Core CSS -->
-	<link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" rel="preload" as="style">
 	<link href="/vendor/animateit/animate.min.css" rel="stylesheet">
 	<!-- vendor css -->
-	<link href="/vendor/owlcarousel/owl.carousel.css" rel="stylesheet">
-	<link href="/vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
+	<!-- <link href="/vendor/magnific-popup/magnific-popup.css" rel="stylesheet"> -->
 	<!-- Template base -->
 	<link href="/css/theme-base.css" rel="stylesheet">
 	<!-- Template elements -->
@@ -67,7 +66,7 @@ var traduction = '.json_encode(get_class_consts("L")).';
 	<!-- LOAD GOOGLE FONTS -->
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,800,700,600%7CRaleway:100,300,600,700,800&display=swap" rel="stylesheet" type="text/css" />
 	<!-- FONT AWESOME PRELOAD -->
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous" rel="preload" as="style">
 	<link rel="stylesheet" as="style" href="/vendor/fontawesome/css/font-awesome.min.css">
 	<!-- CSS CUSTOM STYLE -->
 	<link rel="stylesheet" type="text/css" href="/css/custom.css" media="screen" />
@@ -75,8 +74,8 @@ var traduction = '.json_encode(get_class_consts("L")).';
 	<!--VENDOR SCRIPT-->
 	<script src="/vendor/jquery/jquery-1.11.2.min.js"></script>
 	<script src="/vendor/plugins-compressed.js"></script>
-	<!-- I am not a robot script -->
-	<script defer src='https://www.google.com/recaptcha/api.js'></script>
+
+	<link href="https://nightly.datatables.net/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
 
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<?php
@@ -99,8 +98,8 @@ var traduction = '.json_encode(get_class_consts("L")).';
 	<![endif]-->
 
 	<!-- GDPR cookie consent bar -->
-	<script src="/js/cookie_consent.js"></script>
+	<script src="/js/cookie_consent.js" async></script>
 	<!-- Modernizr WebP -->
-	<script src="/js/modernizr-custom.js"></script>
+	<script src="/js/modernizr-custom.js" async></script>
 
 </head>

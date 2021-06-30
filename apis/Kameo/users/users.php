@@ -55,6 +55,28 @@ switch($_SERVER["REQUEST_METHOD"])
 				echo json_encode($response);
 			  die;
 			}
+		}else if($action=='list'){
+			$email=isset($_POST['email']) ? $_POST['email'] : NULL;
+			$company=isset($_POST['company']) ? $_POST['company'] : (isset($_GET['company']) ? $_GET['company'] : NULL);
+			$companyID=isset($_POST['companyID']) ? $_POST['companyID'] : (isset($_GET['companyID']) ? $_GET['companyID'] : NULL);
+
+			$companyTOKEN=execSQL("SELECT COMPANY from customer_referential WHERE TOKEN = ?", array('s', $token), false)[0]['COMPANY'];
+			if($companyTOKEN != 'KAMEO'){
+				$company=NULL;
+				$companyID=NULL;
+				$company = execSQL("SELECT COMPANY from customer_referential WHERE TOKEN = ?", array('s', $token), false)[0]['COMPANY'];
+			}
+
+			if($company){
+				$response['users'] = execSQL("SELECT NOM AS name, PRENOM AS firstName, PHONE as phone, EMAIL AS email, STAANN AS staann FROM customer_referential WHERE COMPANY = ?", array('s', $company), false);
+			}else{
+				$response['users'] = execSQL("SELECT NOM AS name, PRENOM AS firstName, PHONE as phone, EMAIL AS email, customer_referential.STAANN AS staann FROM customer_referential, companies WHERE companies.ID=? and companies.INTERNAL_REFERENCE=customer_referential.COMPANY", array('i', $companyID), false);
+			}
+			$response['usersNumber']=count($response['users']);
+			$response['response']="success";
+			log_output($response);
+			echo json_encode($response);
+			die;
 		}else
 			error_message('405');
 		break;
@@ -81,5 +103,4 @@ switch($_SERVER["REQUEST_METHOD"])
 			error_message('405');
 		break;
 }
-$conn->close();
 ?>

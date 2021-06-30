@@ -131,7 +131,7 @@
 									<i style="opacity:0.15" class="fa fa-users"></i>
 								</a>
 							</div>
-							<div class="counter bold" id="counterGroupedCommands"></div>
+							<div id="counterGroupedCommands" style="font-size: 4em"></div>
 						</div>
 						<strong style="text-align: left">Commandes groupées</strong>
 					</div>
@@ -142,7 +142,7 @@
                   <i style="opacity:0.15" class="fa fa-users"></i>
                 </a>
               </div>
-              <div class="counter bold" id="counterOrdersAdmin" style="color:#3cb395"></div>
+							<div id="counterOrdersAdmin" style="font-size: 4em"></div>
             </div>
 						<strong style="text-align: left">Commandes Vélos</strong>
           </div>
@@ -153,7 +153,7 @@
 									<i style="opacity:0.15" class="fa fa-users"></i>
 								</a>
 							</div>
-							<div class="counter bold" id="counterOrderAccessoriesCounter"></div>
+							<div id="counterOrderAccessoriesCounter" style="font-size: 4em"></div>
 						</div>
 						<strong style="text-align: left">Commande accessoires</strong>
 					</div>
@@ -164,7 +164,7 @@
 									<i style="opacity:0.15" class="fa fa-comment"></i>
 								</a>
 							</div>
-							<div class="counter bold" id="counterChat" style="color:#3cb395"></div>
+							<div id="counterChat" style="font-size: 4em"></div>
 						</div>
 						<strong style="text-align: left; margin-left:25px">Chat</strong>
 					</div>
@@ -201,7 +201,7 @@
 									<i style="opacity:0.15" class="fa fa-wrench"></i>
 								</a>
 							</div>
-							<div class="counter bold" id="counterMaintenance" style="color:#3cb395"></div>
+							<div id="counterMaintenance" style="font-size: 4em"></div>
 						</div>
 						<strong style="text-align: left">Vue sur les entretiens</strong>
 					</div>
@@ -223,7 +223,7 @@
                   <i style="opacity:0.15" class="fa fa-book"></i>
                 </a>
               </div>
-              <div class="counter bold" id="counterAccessoriesPortfolio" style="color:#3cb395"></div>
+							<div id="counterAccessoriesPortfolio" style="font-size: 4em"></div>
             </div>
 						<strong style="text-align: left">Catalogue accessoires</strong>
           </div>
@@ -234,7 +234,7 @@
 									<i style="opacity:0.15" class="fa fa-briefcase"></i>
 								</a>
 							</div>
-							<div class="counter bold" id="counterStockAccessoriesCounter"></div>
+							<div id="counterStockAccessoriesCounter" style="color:#3cb395; font-size: 4em"></div>
 						</div>
 						<strong style="text-align: left">Stock accessoires</strong>
 					</div>
@@ -303,7 +303,7 @@
 									<i style="opacity:0.15" class="fa fa-comments"></i>
 								</a>
 							</div>
-							<div class="counter bold" id="counterFeedbacks" style="color:#3cb395"></div>
+							<div id="counterFeedbacks" style="color:#3cb395; font-size: 4em"></div>
 						</div>
 						<strong style="text-align: left">Vue sur les feedbacks</strong>
 					</div>
@@ -314,7 +314,7 @@
 									<i style="opacity:0.15" class="fa fa-tasks"></i>
 								</a>
 							</div>
-							<div class="counter bold" id="counterTasks" style="color:#3cb395"></div>
+							<div id="counterTasks" style="color:#d80000; font-size: 4em"></div>
 						</div>
 						<strong style="text-align: left">Gérer les Actions</strong>
 					</div>';
@@ -347,7 +347,7 @@
                   <i style="opacity:0.15" class="fa fa-folder-open-o"></i>
                 </a>
               </div>
-              <div class="counter bold" id=\'counterBills\' style="color:#3cb395"></div>
+							<div id="counterBills" style="font-size: 4em"></div>
             </div>
 						<strong style="text-align: left">'.L::widgetTitle_billsManager.'</strong>
           </div>
@@ -382,3 +382,107 @@
     }
     ?>
 	</div>
+
+	<script type='text/javascript'>
+
+	$.ajax({
+		url: "apis/Kameo/initialize_counters.php",
+		type: "get",
+		success: function (response) {
+			if(typeof response.accessoriesNumber != 'undefined'){
+				$("#counterStockAccessoriesCounter").html('<span style="margin-left:20px; color:#3cb395">'+response.accessoriesNumber+'</span>');
+			}
+			if(typeof response.bikeNumber != 'undefined'){
+				$("#counterBikeAdmin").html('<span style="color: #3cb395; margin-left:20px">'+response.bikeNumber+'</span><span style="color: #d80000; margin-left:0px">/'+response.bikeOrdersLate+'</span>');
+			}
+			if(typeof response.boxesNumberTotal != 'undefined'){
+				$("#counterBoxes").html('<span style="margin-left:20px">'+response.boxesNumberTotal+'</span>');
+			}
+			if(typeof response.cashFlow != 'undefined'){
+				if (response.sumContractsCurrent > 0) {
+					$("#cashFlowSpan").html('<span style="color: #3cb395; margin-left:20px">'+Math.round(response.cashFlow.sumContractsCurrent)+'€</span>');
+				} else {
+					$("#cashFlowSpan").html('<span style="color: #d80000; margin-left:20px">'+Math.round(response.cashFlow.sumContractsCurrent)+'€</span>');
+				}
+			}
+			if(typeof response.messagesNumberUnread != 'undefined'){
+				$("#counterChat").html('<span style="margin-left:20px; color: #3cb395">'+response.messagesNumberUnread+'</span>');
+			}
+			if(typeof response.companiesNumberClientOrProspect != 'undefined'){
+				$("#counterClients").html('<span style="margin-left:20px">'+response.companiesNumberClientOrProspect+'</span>');
+			}
+			if(typeof response.feedbacksNumber != 'undefined'){
+				$("#counterFeedbacks").html('<span style="margin-left:20px">'+response.feedbacksNumber+'</span>');
+			}
+			if(typeof response.groupedOrdersNumber != 'undefined'){
+				$("#counterGroupedCommands").html('<span style="margin-left:20px; color:#3cb395">'+response.groupedOrdersNumber+'</span>');
+			}
+			if(typeof response.maintenances != 'undefined'){
+				$("#counterMaintenance").html('<span style="color: #d80000; margin-left:20px">'+response.maintenances.maintenancesNumberAuto+'</span><span style="color: #3cb395; margin-left:0px">/'+response.maintenances.maitenancesConfirmed+'</span>');
+			}
+			if(typeof response.ordersAccessoryNumber != 'undefined'){
+				$("#counterOrderAccessoriesCounter").html('<span style="margin-left:20px; color:#3cb395">'+response.ordersAccessoryNumber+'</span>');
+			}
+			if(typeof response.bikesOrdersNumber != 'undefined'){
+				$("#counterOrdersAdmin").html('<span style="margin-left:20px; color: #3cb395">'+response.bikesOrdersNumber+'</span>');
+			}
+			if(typeof response.stillToDo != 'undefined'){
+				$("#counterPlannings").html('<span style="color: orange; margin-left:20px">'+response.stillToDo+'</span>');
+			}
+			if(typeof response.bikeNumberPortfolio != 'undefined'){
+				$("#counterBikePortfolio").html('<span style="color: #3cb395; margin-left:20px">'+response.bikeNumberPortfolio+'</span>');
+			}
+			if(typeof response.accessoriesNumberPortfolio != 'undefined'){
+				$("#counterAccessoriesPortfolio").html('<span style="color: #3cb395; margin-left:20px">'+response.accessoriesNumberPortfolio+'</span>');
+			}
+			if(typeof response.actionNumberNotDone != 'undefined'){
+				if(response.actionNumberNotDone == 0){
+					$("#counterTasks").html('<span style="color: #3cb395; margin-left:20px">0</span>');
+				}else{
+					$("#counterTasks").html('<span style="color: #d80000; margin-left:20px">'+response.actionNumberNotDone+'</span>');
+				}
+			}
+			if(typeof response.statistics != 'undefined'){
+				if (response.statistics.progressCA > 0) {
+					$("#statisticsCounter").html('<span style="color: #3cb395; margin-left:20px">'+Math.round(response.statistics.progressCA*100)+'%</span>');
+				}else {
+					$("#statisticsCounter").html('<span style="color: #d80000; margin-left:20px">'+Math.round(response.statistics.progressCA*100)+'%</span>');
+				}
+			}
+
+			if(typeof response.billsNumber != 'undefined'){
+				if (response.billsNumber == 0) {
+					$("#counterBills").html('<span style="color: #3cb395; margin-left:20px">0</span>');
+				}else {
+					$("#counterBills").html('<span style="color: #d80000; margin-left:20px">'+response.billsNumber+'</span>');
+				}
+			}
+
+
+			if(typeof response.bikeNumberClient != 'undefined'){
+				$("#counterBike").html('<span style="margin-left:20px">'+response.bikeNumberClient+'</span>');
+			}
+
+			if(typeof response.fleetBoxesNumber != 'undefined'){
+				$("#counterBoxesFleet").html('<span style="margin-left:20px">'+response.fleetBoxesNumber+'</span>');
+			}
+
+			if(typeof response.fleetOrdersNumber != 'undefined'){
+				$("#counterOrdersFleet").html('<span style="margin-left:20px">'+response.fleetOrdersNumber+'</span>');
+			}
+
+			if(typeof response.bookingNumber != 'undefined'){
+				$("#counterBookings").html('<span style="margin-left:20px">'+response.bookingNumber+'</span>');
+			}
+
+			if(typeof response.usersNumber != 'undefined'){
+				$("#counterUsers").html('<span style="margin-left:20px">'+response.usersNumber+'</span>');
+			}
+
+			if(typeof response.conditionsNumber != 'undefined'){
+				$("#counterConditions").html('<span style="margin-left:20px">'+response.conditionsNumber+'</span>');
+			}
+		}
+	})
+
+	</script>

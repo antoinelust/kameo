@@ -52,10 +52,15 @@ switch($_SERVER["REQUEST_METHOD"])
 				error_message('403');
 		}else if($action === 'getContactsForBillingSending'){
 			if(get_user_permissions(["admin"], $token)){
-				$response['beneficiaries']=execSQL("SELECT * FROM companies_contact WHERE ID_COMPANY=? AND TYPE='billing'", array('i', $_GET['company']), false);
-				$response['cc']=execSQL("SELECT * FROM companies_contact WHERE ID_COMPANY=? AND TYPE='ccBilling'", array('i', $_GET['company']), false);
-				if($response['beneficiaries'] == null){
-					$response['beneficiaries']=array();
+				$result=execSQL('SELECT * FROM factures WHERE ID=?', array('i', $_GET['ID']), false)[0];
+				if($result['EMAIL'] == NULL || $result['EMAIL'] == ''){
+					$response['beneficiaries']=execSQL("SELECT companies_contact.NOM, companies_contact.PRENOM, companies_contact.EMAIL FROM companies_contact, companies WHERE companies.INTERNAL_REFERENCE=? AND companies_contact.ID_COMPANY=companies.ID AND companies_contact.TYPE='billing' GROUP BY companies_contact.NOM, companies_contact.PRENOM, companies_contact.EMAIL", array('s', $result['COMPANY']), false);
+					$response['cc']=execSQL("SELECT companies_contact.NOM, companies_contact.PRENOM, companies_contact.EMAIL FROM companies_contact, companies WHERE companies.INTERNAL_REFERENCE=? AND companies_contact.ID_COMPANY=companies.ID AND companies_contact.TYPE='ccBilling' GROUP BY companies_contact.NOM, companies_contact.PRENOM, companies_contact.EMAIL", array('s', $result['COMPANY']), false);
+					if($response['beneficiaries'] == null){
+						$response['beneficiaries']=array();
+					}
+				}else{
+					$response['beneficiaries']=execSQL("SELECT NOM, PRENOM, EMAIL FROM customer_referential WHERE EMAIL=?", array('s', $result['EMAIL']), false);
 				}
 				if($response['cc'] == null){
 					$response['cc']=array();

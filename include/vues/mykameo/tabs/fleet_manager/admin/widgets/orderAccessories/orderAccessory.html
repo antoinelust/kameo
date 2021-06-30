@@ -20,63 +20,71 @@
 			</div>
 			<h4 class="text-green">Modifier les commandes accessoires</h4>
 			<hr>
-			<div class="table-responsive">
-				<form  name = "widget-orderAcessory-form" id="widget-orderAcessory-form" role="form" method="get" action="apis/Kameo/accessories/accessories.php">
-					<div class="col-md-12">
-						<input class="form-control" type="hidden" name="action" value="updateOrderDetailAcessory" />
-						<div class="col-md-4">
-							<label for="id">ID :</label>
-							<input type="number" class="form-control required" name="id">
-						</div>
-						<div class="col-md-4">
-							<label for="grouped_id">ID Groupé :</label>
-							<input type="number" class="form-control required" name="grouped_id">
-						</div>
-						<div class="col-md-4">
-							<label for="company">Société :</label>
-							<select class="form-control" name="company">
-							</select>
-						</div>
-						<div class="col-md-4">
-							<label for="emailUser">Email :</label>
-							<input class="form-control" type="text" name="emailUser" readonly/>
-						</div>
-						<div class="col-md-4">
-							<label for="contractType">Type de contrat :</label>
-							<select class="form-control" name="contractType">
-								<option value='leasing'>Leasing</option>
-								<option value='achat'>Vente</option>
-							</select>
-						</div>
-						<div class="col-md-4">
-							<label for="contractType">Statut :</label>
-							<select class="form-control required" name="status">
-								<option value='new'>Nouvelle Commande</option>
-								<option value='confirmed'>Commande confirmée</option>
-								<option value='waiting_delivery'>En attente de livraison</option>
-								<option value='done'>Terminée</option>
-							</select>
-						</div>
+			<form  name = "widget-orderAcessory-form" id="widget-orderAcessory-form" role="form" method="post" action="api/accessories">
+				<div class="col-md-12">
+					<input class="form-control" type="hidden" name="action" value="updateOrderDetailAcessory" />
+					<div class="col-md-4">
+						<label for="id">ID :</label>
+						<input type="number" class="form-control required" name="id">
 					</div>
-					<div class="col-md-12">
-						<div class="col-md-4">
-						<label for="description">Catégorie :</label>
-							<select class="form-control" name="category"></select>
-						</div>
-						<div class="col-md-4">
-						<label for="description">Modèle :</label>
-							<select class="form-control" name="model"></select>
-						</div>
-						<div class="col-md-4">
-							<label for="priceHTVA">Prix  :</label>
-							<input class="form-control" type="text" name="priceHTVA">
-						</div>
+					<div class="col-md-4">
+						<label for="grouped_id">ID Groupé :</label>
+						<input type="number" class="form-control required" name="grouped_id">
 					</div>
-					<div class="col-md-12" >
-						<button class="button small green button-3d rounded icon-left" type="submit" name="submitBtn"><i class="fa fa-plus"></i>Modifier</button>
+					<div class="col-md-4">
+						<label for="company">Société :</label>
+						<select class="form-control" name="company">
+						</select>
 					</div>
-				</form>
-			</div>
+					<div class="col-md-4">
+						<label for="emailUser">Email :</label>
+						<input class="form-control" type="text" name="emailUser" readonly/>
+					</div>
+					<div class="col-md-4">
+						<label for="contractType">Type de contrat :</label>
+						<select class="form-control" name="contractType">
+							<option value='leasing'>Leasing</option>
+							<option value='achat'>Vente</option>
+						</select>
+					</div>
+					<div class="col-md-4">
+						<label for="contractType">Statut :</label>
+						<select class="form-control required" name="status">
+							<option value='new'>Nouvelle Commande</option>
+							<option value='confirmed'>Commande confirmée</option>
+							<option value='waiting_delivery'>En attente de livraison</option>
+							<option value='done'>Terminée</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="col-md-4">
+					<label for="description">Catégorie :</label>
+						<select class="form-control" name="category"></select>
+					</div>
+					<div class="col-md-4">
+					<label for="description">Modèle :</label>
+						<select class="form-control" name="model"></select>
+					</div>
+					<div class="col-md-4">
+						<label for="priceHTVA">Prix  :</label>
+						<input class="form-control" type="text" name="priceHTVA">
+					</div>
+				</div>
+				<div class="separator"></div>
+				<div class="col-md-12">
+					<h4 class="text-green">Liaison de la commande avec le stock</h4>
+					<hr>
+					<div class='col-md-6'>
+						<label for='linkOrderAccessoryToStock'>Lier la commande au stock</label>
+						<select class="form-control" name='linkOrderAccessoryToStock'></select>
+					</div>
+					<p name='linkOrderAccessoryToStock'><strong>Commande liée à l'accessoire</strong> : <span></span></p>
+				</div>
+				<div class="col-md-12" >
+					<button class="button small green button-3d rounded icon-left" type="submit" name="submitBtn"><i class="fa fa-plus"></i>Modifier</button>
+				</div>
+			</form>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal">
 					<?= L::generic_close; ?>
@@ -102,7 +110,9 @@
 						);
 						document.getElementById("widget-orderAcessory-form").reset();
 						$('#accessoryOrderManagement').modal('toggle');
-						$("#displayorderAcessory").dataTable().api().ajax.reload();
+						if ( $.fn.DataTable.isDataTable( '#displayorderAcessory' ) ) {
+							$("#displayorderAcessory").dataTable().api().ajax.reload();
+						}
 					} else {
 						$.notify(
 						{

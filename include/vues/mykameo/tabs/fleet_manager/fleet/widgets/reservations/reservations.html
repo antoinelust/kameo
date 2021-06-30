@@ -5,18 +5,6 @@
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			</div>
 			<h4 class="fr text-green">Vue sur les réservations</h4>
-			<div class="dropdown">
-				<div class="col-md-3">
-					<ul class="nav">
-						<li class="dropdown" role="presentation">
-							<a aria-expanded="false" href="#" data-toggle="dropdown" class="dropdown-toggle"> <span class="bikeSelectionText">Sélection de vélo</span><span class="caret"></span> </a>
-							<ul role="menu" class="dropdown-menu bikeSelection">
-							</ul>
-						</li>
-					</ul>
-				</div>
-			</div>
-			<div class="separator"></div>
 			<div class="col-md-5">
 				<div class="form-group">
 					<label for="dtp_input2" class="control-label">Date de début comprise entre le</label>
@@ -40,16 +28,10 @@
 				</div>
 			</div>
 			<div data-example-id="contextual-table" class="bs-example">
-				<span id="ReservationsList"></span>
+				<table id="ReservationsList" style='width:100%'></table>
 			</div>
-			<div class="fr" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-			</div>
-			<div class="en" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-			</div>
-			<div class="nl" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal"><?= L::generic_close; ?></button>
 			</div>
 		</div>
 	</div>
@@ -74,11 +56,5 @@
 		startView: 2,
 		minView: 2,
 		forceParse: 0
-	});
-	$('.form_date_start').change(function(){
-		get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()));
-	});
-	$('.form_date_end').change(function(){
-		get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()));
 	});
 </script>

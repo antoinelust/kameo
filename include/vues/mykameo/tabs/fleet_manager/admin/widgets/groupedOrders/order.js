@@ -1,20 +1,3 @@
-$( ".fleetmanager" ).click(function() {
-	$.ajax({
-		url: 'apis/Kameo/initialize_counters.php',
-		type: 'post',
-		data: { "email": email, "type": "groupedOrders"},
-		success: function(response){
-			if(response.response == 'error') {
-				console.log(response.message);
-			}
-			if(response.response == 'success'){
-				document.getElementById("counterGroupedCommands").innerHTML = '<span style="margin-left:20px; color:#3cb395">'+response.ordersNumber+'</span>';
-			}
-		}
-	})
-})
-
-
 var categoriesOptions;
 
 
@@ -33,6 +16,7 @@ $("#groupedOrdersListing").on("show.bs.modal", function (event){
 	$("#groupedOrdersListingTable").dataTable({
 		destroy: true,
 		paging : false,
+		scrollX : true,
 		ajax: {
 			url: "api/orders",
 			contentType: "application/json",
@@ -53,11 +37,11 @@ $("#groupedOrdersListing").on("show.bs.modal", function (event){
 			{ title: "Nom de la société", data: "COMPANY_NAME"},
 			{ title: "Assigné à", data: "EMAIL"},
 			{ title: "Nombre de vélos", data: "numberBikes"},
-			{ title: "Done", data: "numberBikesNotDelivered"},
+			{ title: "A livrer", data: "numberBikesNotDelivered"},
 			{ title: "Nombre d'accessoires", data: "numberAccessories"},
-			{ title: "Done", data: "numberAccessoriesNotDelivered"},
+			{ title: "A livrer", data: "numberAccessoriesNotDelivered"},
 			{ title: "Nombre de bornes", data: "numberBoxes"},
-			{ title: "Done", data: "numberBoxesNotDelivered"},
+			{ title: "A livrer", data: "numberBoxesNotDelivered"},
 			{
 				title: "Progrès",
 				data: "ID",
@@ -165,12 +149,18 @@ function retrieveGroupedOrder(ID){
 				}else{
 					bike.ESTIMATED_DELIVERY_DATE=bike.ESTIMATED_DELIVERY_DATE.shortDate();
 				}
+				if(bike.BIKE_ID != null && bike.STATUS=='confirmed'){
+					var confirmOrder='<a href="#" data-target="#confirmOrder" data-toggle="modal" class="button small green button-3d rounded icon-right confirmBikeOrder" data-id="'+bike.ID+'">+</a>';
+				}else{
+					var confirmOrder='';
+				}
+
 				$('#groupedOrderManagement .bikeNumberTable').find('tbody')
-				.append('<tr><td>'+bike.ID+'</td><td>'+bike.BRAND+'</td><td>'+bike.MODEL+'</td><td>'+bike.SIZE+'</td><td>'+bike.TYPE+'</td><td>'+bike.LEASING_PRICE+' '+units+'</td><td>'+bike.ESTIMATED_DELIVERY_DATE+'</td><td>'+bike.STATUS+'</td><td><button class="button small red button-3d rounded icon-right deleteBikeOrder" type="button" data-id="'+bike.ID+'">-</button></td>');
+				.append('<tr><td>'+bike.ID+'</td><td>'+bike.BRAND+'</td><td>'+bike.MODEL+'</td><td>'+bike.SIZE+'</td><td>'+bike.TYPE+'</td><td>'+bike.LEASING_PRICE+' '+units+'</td><td>'+bike.ESTIMATED_DELIVERY_DATE+'</td><td>'+bike.STATUS+'</td><td><button class="button small red button-3d rounded icon-right deleteBikeOrder" type="button" data-id="'+bike.ID+'">-</button>'+confirmOrder+'</td>');
 			})
 
-			$('.deleteBikeOrder').off();
-			$('.deleteBikeOrder').click(function(){
+			$('#groupedOrderManagement .deleteBikeOrder').off();
+			$('#groupedOrderManagement .deleteBikeOrder').click(function(){
 				var ID = $(this).data('id');
 				$.ajax({
 					url: 'api/orders',
@@ -189,6 +179,35 @@ function retrieveGroupedOrder(ID){
 			});
 
 
+			$('#groupedOrderManagement .confirmBikeOrder').off();
+			$('#groupedOrderManagement .confirmBikeOrder').click(function(){
+				var ID = $(this).data('id');
+				$.ajax({
+					url: 'api/orders',
+					type: 'get',
+					data: { action: "retrieve", 'ID': ID},
+					success: function(response){
+						if(response.order.type=="leasing"){
+							var dateNow = new Date();
+							var dateInThreeYears = new Date();
+							dateInThreeYears.setFullYear(dateInThreeYears.getFullYear()+3);
+							$('#confirmOrder input[name=contractStart]').val(get_date_string(dateNow));
+							$('#confirmOrder input[name=contractEnd]').val(get_date_string(dateInThreeYears));
+							$('#confirmOrder input[name=itemType]').val('bike');
+							$('#confirmOrder input[name=itemID]').val(ID);
+
+						}else{
+							$.notify({
+							 message: "Veuillez générer une facture de vente"
+							}, {
+							 type: 'danger'
+							});
+						}
+					}
+				});
+			});
+
+
 			response.accessories.forEach(function(accessory){
 				if(accessory.TYPE=='leasing'){
 					var units='€/mois';
@@ -196,11 +215,21 @@ function retrieveGroupedOrder(ID){
 					var units='€';
 				}
 				if(accessory.ESTIMATED_DELIVERY_DATE==null){
-					accessory.ESTIMATED_DELIVERY_DATE='N/A';
+					estimatedDeliveryDate='N/A';
+				}else {
+					estimatedDeliveryDate=accessory.ESTIMATED_DELIVERY_DATE.shortDate();
 				}
+
+				if(accessory.ACCESSORY_ID != null && accessory.STATUS=='confirmed'){
+					var confirmOrder='<a href="#" data-target="#confirmOrder" data-toggle="modal" class="button small green button-3d rounded icon-right confirmAccessoryOrder" data-id="'+accessory.ID+'">+</a>';
+				}else{
+					var confirmOrder='';
+				}
+
+
 				$('#groupedOrderManagement .accessoriesTable').find('tbody')
-				.append('<tr><td>'+accessory.ID+'</td><td>'+traduction['accessoryCategories_'+accessory.CATEGORY]+'</td><td>'+accessory.BRAND+' '+accessory.MODEL+'</td><td>'+accessory.TYPE+'</td><td>'+Math.round(accessory.PRICE_HTVA*100)/100+' '+units+'</td><td>'+accessory.ESTIMATED_DELIVERY_DATE.shortDate()+'</td><td>'+accessory.STATUS+'</td><td><button class="button small red button-3d rounded icon-right deleteAccessoryOrder" type="button" data-id="'+accessory.ID+'">-</button></td>');
-			})
+				.append('<tr><td><a href="#" class="text-green" data-target="#accessoryOrderManagement" data-toggle="modal" data-action="update" data-id="'+accessory.ID+'">'+accessory.ID+'</a></td><td>'+traduction['accessoryCategories_'+accessory.CATEGORY]+'</td><td>'+accessory.BRAND+' '+accessory.MODEL+'</td><td>'+accessory.TYPE+'</td><td>'+Math.round(accessory.PRICE_HTVA*100)/100+' '+units+'</td><td>'+estimatedDeliveryDate+'</td><td>'+accessory.STATUS+'</td><td><button class="button small red button-3d rounded icon-right deleteAccessoryOrder" type="button" data-id="'+accessory.ID+'">-</button>'+confirmOrder+'</td>');
+			});
 
 			$('.deleteAccessoryOrder').off();
 			$('.deleteAccessoryOrder').click(function(){
@@ -220,6 +249,34 @@ function retrieveGroupedOrder(ID){
 					}
 				});
 			});
+
+			$('#groupedOrderManagement .confirmAccessoryOrder').off();
+			$('#groupedOrderManagement .confirmAccessoryOrder').click(function(){
+				var ID = $(this).data('id');
+				$.ajax({
+					url: 'api/accessories',
+					type: 'get',
+					data: { action: "getOrderDetailAcessory", 'ID': ID},
+					success: function(response){
+						if(response.TYPE=="leasing"){
+							var dateNow = new Date();
+							var dateInThreeYears = new Date();
+							dateInThreeYears.setFullYear(dateInThreeYears.getFullYear()+3);
+							$('#confirmOrder input[name=contractStart]').val(get_date_string(dateNow));
+							$('#confirmOrder input[name=contractEnd]').val(get_date_string(dateInThreeYears));
+							$('#confirmOrder input[name=itemType]').val('accessory');
+							$('#confirmOrder input[name=itemID]').val(ID);
+						}else{
+							$.notify({
+							 message: "Veuillez générer une facture de vente"
+							}, {
+							 type: 'danger'
+							});
+						}
+					}
+				});
+			});
+
 
 			response.boxes.forEach(function(box){
 				if(box.ESTIMATED_DELIVERY_DATE==null){

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
-<?php 
+<?php
 	include 'include/head.php';
 ?>
 <body class="wide">
@@ -8,6 +8,7 @@
 	<div class="wrapper">
 		<?php include 'include/topbar.php'; ?>
 		<?php include 'include/header.php'; ?>
+		<link href="/vendor/owlcarousel/owl.carousel.css" rel="stylesheet">
 <!-- SHOP PRODUCT PAGE -->
 <section id="product-page" class="product-page p-b-0">
 	<div class="container">
@@ -36,25 +37,25 @@
 						<div class="product-price"><ins class="text-green">1487€</ins> htva
 						<p class="right text-right">Location tout inclus:<br> <strong class="text-green">77€</strong> / mois</p>
 						</div>
-						
+
 
 						<div class="seperator m-b-10"></div>
 						<h4>Caractéristiques techniques</H4>
 						<p>Voir le <a href="https://ahooga.bike/folding-bike/" target="_blank">site de la marque</a>.</p>
-						
+
 					<div class="m-t-20">
 						<a class="button color button-3d rounded effect icon-left text-light" data-target="#acheter" data-toggle="modal" href="#"><span><i class="fa fa-shopping-cart"></i> Acheter</span></a>
 					</div>
 
 				</div>
-				
+
 				<a class="read-more" href="bons-plans.php"><i class="fa fa-long-arrow-left"></i> Tous les articles</a>
 
 			</div>
 		</div>
 	</div>
 </section>
-<!-- END: SHOP PRODUCT PAGE -->        
+<!-- END: SHOP PRODUCT PAGE -->
 
 <div class="modal fade" id="acheter" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog">
@@ -154,4 +155,3 @@
 </body>
 
 </html>
-

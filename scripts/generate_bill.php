@@ -9,6 +9,9 @@ include_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/authentication.php';
 
 $token = getBearerToken();
 
+error_log("Appel au script generate_bill.php :\n", 3, "generate_invoices.log");
+
+
 if($token==''){
   $token='generate_invoices.php';
 }
@@ -76,13 +79,21 @@ if($length=='0'){
     }
 }
 $resultat = mysqli_fetch_assoc($result);
-$companyName=$resultat['COMPANY_NAME'];
+if($_POST['user']){
+  $resultat=execSQL("SELECT * FROM customer_referential WHERE EMAIL = ?", array('s', $_POST['user']), false)[0];
+  $companyName=$resultat['PRENOM'].' '.$resultat['NOM'];
+  $street=$resultat['ADRESS'];
+  $zip=($resultat['POSTAL_CODE'] != '0') ? $resultat['POSTAL_CODE'] : '';
+  $town=$resultat['CITY'];
+  $vat=NULL;
+}else{
+  $companyName=$resultat['COMPANY_NAME'];
+  $street=$resultat['STREET'];
+  $zip=$resultat['ZIP_CODE'];
+  $town=$resultat['TOWN'];
+  $vat=$resultat['VAT_NUMBER'];
+}
 $companyID=$resultat['ID'];
-$street=$resultat['STREET'];
-$zip=$resultat['ZIP_CODE'];
-$town=$resultat['TOWN'];
-$vat=$resultat['VAT_NUMBER'];
-
 $length=strlen($newID);
 $i=(3-$length);
 $reference=$newID;
@@ -178,11 +189,13 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
 				<p>'.$street.'
 				<br>'.$zip.' '.$town.'
-				<br>Belgium</p>
+				<br>Belgium</p>';
 
-				<p>TVA/VAT : '.$vat.'</p>
+        if(!$_POST['user']){
+          $test1.='<p>TVA/VAT : '.$vat.'</p>';
+        }
 
-				<p>Référence client : '.$company.'</p>
+				$test1.='<p>Référence client : '.$companyName.'</p>
         </td>
 
     </tr>
@@ -410,6 +423,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                         <td></td>
                         ';
                     $test2=$test2."<td>Vente<br><br></td></tr>";
+                    execSQL("INSERT INTO factures_details (USR_MAJ, FACTURE_ID, ITEM_TYPE, ITEM_ID, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES(?, ?, 'otherAccessory', 0, ?, ?, ?, ?, ?)", array('sisssdd', $token, $newID, $comment, $sellingDate, $sellingDate, $price, $priceTVAC), true);
                 }else if($type=="maintenance"){
 
 
@@ -496,7 +510,6 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
               </tr>
         </tbody>
     </table>
-
     <br><br>
     <div>
         <table style="border-collapse: collapse">
@@ -512,7 +525,6 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
             </tbody>
         </table>
         <br><br>
-
         <table style="border-collapse: collapse">
            <tbody>
                <tr>
@@ -532,27 +544,13 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
     </div>
     <br><br>
     <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
-
-
-
 </page>';
 
 error_log("test3 :".$test3."\n", 3, "generate_invoices.log");
 
-include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
-$sql= "INSERT INTO factures (ID, ID_OUT_BILL, USR_MAJ, COMPANY, BILLING_GROUP, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_PAID, FACTURE_LIMIT_PAID_DATE, TYPE, FACTURE_SENT_DATE) VALUES ('$newID', '$newIDOUT', 'facture.php', '$company', '$billingGroup', 'KAMEO', '$today', round($totalTVA6+$totalTVA21,2), round($totalTVAIncluded6+$totalTVAIncluded21,2), '$reference', '$fileName', '0', '0', '$date1monthAfterString','leasing', NULL)";
-
-if ($conn->query($sql) === FALSE) {
-    $response = array ('response'=>'error', 'message'=> $conn->error);
-    echo json_encode($response);
-    die;
-}
-$conn->close();
-
+execSQL("INSERT INTO factures (ID, ID_OUT_BILL, USR_MAJ, COMPANY, EMAIL, BILLING_GROUP, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_PAID, FACTURE_LIMIT_PAID_DATE, TYPE, FACTURE_SENT_DATE) VALUES (?, ?, 'facture.php', ?, ?, ?, 'KAMEO', ?, ?, ?, ?, ?, '0', '0', ?,'leasing', NULL)",
+array('iissisddsss', $newID, $newIDOUT, $company, $_POST['user'], $billingGroup, $today, round($totalTVA6+$totalTVA21,2), round($totalTVAIncluded6+$totalTVAIncluded21,2), $reference, $fileName, $date1monthAfterString), true);
 echo $test1.$test2.$test3;
-
 error_log(date("Y-m-d H:i:s")." - <Result :".$test1.$test2.$test3."\n", 3, "generate_bill.log");
-
-
 
 ?>

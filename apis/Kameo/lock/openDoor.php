@@ -9,10 +9,9 @@ if($reservationID){
 }
 
 include '../globalfunctions.php';
-execSQL("UPDATE boxes SET HEU_MAJ=CURRENT_TIMESTAMP, DOOR='Open', OPEN_UPDATE_TIME=CURRENT_TIMESTAMP WHERE building=?", array("s", $_GET['building']), true);
+$lastBookingID = execSQL("SELECT RESERVATION_ID FROM reservations_details WHERE ACTION IN ('verifier_code', 'verifier_rfid') AND BUILDING = ? ORDER BY ID DESC", array('s', $_GET['building']), false)[0]['RESERVATION_ID'];
+execSQL("UPDATE boxes SET HEU_MAJ=CURRENT_TIMESTAMP, DOOR='Open', RESERVATION_ID=?, OPEN_UPDATE_TIME=CURRENT_TIMESTAMP WHERE building=?", array("is", $lastBookingID, $_GET['building']), true);
 
-$lastBooking = execSQL("SELECT RESERVATION_ID FROM reservations_details WHERE ACTION IN ('verifier_code', 'verifier_rfid') AND BUILDING = ? ORDER BY ID DESC", array('s', $_GET['building']), false);
-$lastBookingID = $lastBooking[0]['RESERVATION_ID'];
 
 execSQL("INSERT INTO reservations_details (ACTION, RESERVATION_ID, BUILDING, OUTCOME) VALUES (?, ?, ?, ?)", array('siss', 'open_door', $lastBookingID, $_GET['building'], 'OK'), true);
 

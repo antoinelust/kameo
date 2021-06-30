@@ -19,6 +19,7 @@
       <a class="button small green button-3d rounded icon-right accessoriesPendingDelivery" href="#">En attente de livraison</a>
       <a class="button small green button-3d rounded icon-right accessoriesInOrder" href="#">En commande fournisseur</a>
       <a class="button small red button-3d rounded icon-right soldAccessories" href="#">Vendus</a>
+      <a class="button small red button-3d rounded icon-right stolenAccessories" href="#">Volés</a>
       <a class="button small green button-3d rounded icon-right bindBillToAccessory" data-target="#accessoriesBills" onclick="rempDataTable()"data-toggle="modal" href="#">Liaison Factures-Accessoires</a>
       <table id="stockAccessoriesList" class="table" style='width: 100%;'></table>
     </div>
@@ -42,7 +43,7 @@
 				<div class="row">
 					<div class="col-sm-12">
 						<h4 class="text-green"><?= L::accessories_add_accessory; ?></h4>
-            <form id="widget-manageStockAccessory-form" action="apis/Kameo/accessories/accessories.php" role="form" method="post">
+            <form id="widget-manageStockAccessory-form" action="api/accessories" role="form" method="post">
              <div class="form-group col-sm-12">
               <div class="space"></div>
               <h4 class="text-green">Sélection de l'accessoire</h4>
@@ -89,6 +90,8 @@
                 <option value="order">Commande</option>
                 <option value="stock">Stock</option>
                 <option value="pending_delivery">En attente de livraison client</option>
+                <option value="selling">Vendu</option>
+                <option value="stolen">Volé</option>
               </select>
             </div>
           </div>

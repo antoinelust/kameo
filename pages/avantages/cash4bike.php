@@ -30,11 +30,11 @@
 				<div class="m-t-30 col-md-12">
                 	<form id="cash4bike-form" action="apis/Kameo/calculate_cash4bike.php" role="form" method="get">
                     <div class="row">
-                        <div class="col-md-6" style= "background-color: #D3EFDD ; height: 500px">
+                        <div class="col-md-6" style= "background-color: #D3EFDD; height: 550px">
                         <div class="space"></div>
                             <h4 class="text-green"><?=L::cash4bike_personalinfo_title;?></h4>
 
-                            <div class="form-group col-md-12 ">
+														<div class="form-group col-md-12">
                                 <div class="employe">
                                     <label><input type="radio" name="type" value="employe" checked><?=L::cash4bike_personalinfo_employee;?></label>
                                 </div>
@@ -70,8 +70,18 @@
                             </div>
                             <div class="space"></div>
                         </div>
-                        <div class="col-md-6" style= "background-color: #E6E6E6 ; height: 500px">
+                        <div class="col-md-6" style= "background-color: #E6E6E6; height: 550px">
                         <div class="space"></div>
+													<h4 class="text-green"><?=L::cash4bike_tc_employer;?></h4>
+													<div class="form-group col-md-12">
+														<div class="privateSector">
+															<label><input type="radio" name="sector" value="private" checked><?=L::cash4bike_tc_private_sector;?></label>
+														</div>
+														<div class="publicSector">
+															<label><input type="radio" name="sector" value="public"><?=L::cash4bike_tc_public_sector;?></label>
+														</div>
+													</div>
+
                             <h4 class="text-green"><?=L::cash4bike_transport_title;?></h4>
                             <div class="form-group col-md-12">
                                 <div class="col-md-6">
@@ -93,12 +103,8 @@
                                         <label><input type="radio" name="transportationEssence" value="diesel"><?=L::cash4bike_diesel;?></label>
                                     </div>
                                 </div>
-
                             </div>
                             <div class="form-group col-md-12">
-
-
-
                                 <div class="col-md-12">
                                     <div class="employeurremunere">
                                         <label><input type="radio" name="prime" value="1" checked><?=L::cash4bike_bike_kmpayback;?></label>
@@ -108,22 +114,16 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="form-group col-md-12">
-                                <div class="col-md-6">
-                                    <label for="frequence"><?=L::cash4bike_transport_frequence;?></label>
-                                    <select class="form-control" name="frequence">
-                                        <option value="1"><?=L::cash4bike_tf_once;?></option>
-                                        <option value="2"><?=L::cash4bike_tf_twice;?></option>
-                                        <option value="3"><?=L::cash4bike_tf_three;?></option>
-                                        <option value="4" selected><?=L::cash4bike_tf_four;?></option>
-                                        <option value="5"><?=L::cash4bike_tf_five;?></option>
-                                    </select>
-                                </div>
+	                            <label for="frequence"><?=L::cash4bike_transport_frequence;?></label>
+	                            <select class="form-control" name="frequence">
+	                                <option value="1"><?=L::cash4bike_tf_once;?></option>
+	                                <option value="2"><?=L::cash4bike_tf_twice;?></option>
+	                                <option value="3"><?=L::cash4bike_tf_three;?></option>
+	                                <option value="4" selected><?=L::cash4bike_tf_four;?></option>
+	                                <option value="5"><?=L::cash4bike_tf_five;?></option>
+	                            </select>
                             </div>
-
-
-
                             <div class="space visible-md visible-lg"></div>
                             <div class="space visible-md visible-lg"></div>
                             <div class="space visible-md visible-lg"></div>
@@ -147,7 +147,6 @@
                                     <option value="selection"><?=L::cash4bike_wantedbike_choose;?></option>
                                 </select>
                             </div>
-
                         </div>
 
                         <div class="col-md-12 bike_picture hidden">
