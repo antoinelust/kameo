@@ -3,11 +3,11 @@ $response=array();
 
 $company=execSQL("select COMPANY from customer_referential WHERE TOKEN=?", array('s', $token), false)[0]['COMPANY'];
 
-$sql="select aa.ID as ID, bb.ID as companyID, COMPANY as company, BENEFICIARY_COMPANY as beneficiaryCompany, DATE as date, AMOUNT_HTVA as amountHTVA, AMOUNT_TVAINC as amountTVAC, FACTURE_SENT as sent, FACTURE_SENT_DATE as sentDate, FACTURE_PAID as paid, FACTURE_PAID_DATE as paidDate, FACTURE_LIMIT_PAID_DATE as limitPaidDate, FILE_NAME as fileName, COMMUNICATION_STRUCTUREE as communication, FACTURE_SENT_ACCOUNTING as communicationSentAccounting from factures aa, companies bb where aa.COMPANY=bb.INTERNAL_REFERENCE";
+$sql="select aa.ID as ID, (SELECT companies.ID as companyID FROM companies WHERE companies.INTERNAL_REFERENCE=aa.COMPANY LIMIT 1) as companyID, COMPANY as company, BENEFICIARY_COMPANY as beneficiaryCompany, DATE as date, AMOUNT_HTVA as amountHTVA, AMOUNT_TVAINC as amountTVAC, FACTURE_SENT as sent, FACTURE_SENT_DATE as sentDate, FACTURE_PAID as paid, FACTURE_PAID_DATE as paidDate, FACTURE_LIMIT_PAID_DATE as limitPaidDate, FILE_NAME as fileName, COMMUNICATION_STRUCTUREE as communication, FACTURE_SENT_ACCOUNTING as communicationSentAccounting from factures aa";
 
 if($company!=='KAMEO'){
   $response['update']=false;
-	$sql=$sql." and aa.COMPANY = '$company'";
+	$sql=$sql." WHERE aa.COMPANY = '$company'";
 }else{
   $response['update']=true;
 }

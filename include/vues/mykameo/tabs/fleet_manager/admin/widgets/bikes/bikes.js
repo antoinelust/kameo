@@ -507,7 +507,7 @@ function updateDisplayBikeManagement(type){
     $('#widget-bikeManagement-form input[name=lockerReference]').closest("div").fadeIn("slow");
     $('#widget-bikeManagement-form input[name=frameNumber]').closest("div").fadeIn("slow");
     $('#widget-bikeManagement-form input[name=model]').closest("div").fadeIn("slow");
-    $('#widget-bikeManagement-form input[name=insurance]').prop('checked', true);
+    $('#widget-bikeManagement-form input[name=insurance]').prop('checked', false);
 
     $('.buyingInfos').fadeIn("slow");
     $('.orderInfos').fadeIn("slow");
@@ -1042,9 +1042,8 @@ $('#BikesListingAdmin .showSoldBikes').click(function(){
   var titleContent = "Vélos: Vendus";
   var table = $('#bikesListingTable').DataTable()
   .column(4)
-  .search( "selling", true, false )
+  .search("selling", true, false )
   .draw();
-
   table.column( 4 ).visible( false, true );
   table.column( 5 ).visible( true, true );
   table.column( 6 ).visible( true, true );
@@ -1063,7 +1062,8 @@ $('#BikesListingAdmin .showSoldBikes').click(function(){
   $(table.column(5).header()).text('Date vente');
   $(table.column(6).header()).text('Fin assurance');
 
-  switch_showed_bikes ('showSoldBikes', 'hideSoldBikes', buttonContent, titleContent);
+  switch_showed_bikes('showSoldBikes', 'hideSoldBikes', buttonContent, titleContent);
+
 });
 
 //Affichage des vélos volés
@@ -1127,15 +1127,11 @@ $('body').on('click','.showOrders', function(){
 });
 
 //Affichage des autres vélos
-$('body').on('click','.hideSoldBikes', function(){
-  var buttonContent = "Afficher vélos vendus";
-  var titleContent = "Vélos: Leasing et autres";
-
-  table=$('#bikesListingTable').DataTable()
+$('.displayAllBikes').click(function(){
+  var table = $('#bikesListingTable').DataTable()
   .column(4)
-  .search( "test|renting|leasing", true, false )
+  .search( "")
   .draw();
-
   table.column( 4 ).visible( true, true );
   table.column( 5 ).visible( true, true );
   table.column( 6 ).visible( true, true );
@@ -1150,12 +1146,8 @@ $('body').on('click','.hideSoldBikes', function(){
   table.column( 15 ).visible( false, true );
   table.column( 16 ).visible( false, true );
   table.column( 17 ).visible( false, true );
-
   $(table.column(5).header()).text('Début contrat');
   $(table.column(6).header()).text('Fin contrat');
-
-
-  switch_showed_bikes ('hideSoldBikes', 'showSoldBikes', buttonContent, titleContent);
 });
 
 
@@ -1182,15 +1174,12 @@ $('body').on('click','.showStockBikes', function(){
   table.column( 15 ).visible( false, true );
   table.column( 16 ).visible( true, true );
   table.column( 17 ).visible( true, true );
-    //$(table.column(5).header()).text('Date de commande');
-    //$(table.column(6).header()).text('Date d\'arrivée');
+  //$(table.column(5).header()).text('Date de commande');
+  //$(table.column(6).header()).text('Date d\'arrivée');
     table.draw();
-    $('#bikeDetailsAdmin').find('h4.fr-inline').html(titleContent);
   });
 
 $('body').on('click','.showPendingDeliveryBike', function(){
-
-  var titleContent = "Vélos : En attente livraison";
   var table = $('#bikesListingTable').DataTable()
   .column(4)
   .search( "pending_delivery", true, false )
@@ -1211,7 +1200,6 @@ $('body').on('click','.showPendingDeliveryBike', function(){
   table.column( 16 ).visible( true, true );
   table.column( 17 ).visible( true, true );
   table.draw();
-  $('#bikeDetailsAdmin').find('h4.fr-inline').html(titleContent);
 });
 
 
@@ -1219,7 +1207,7 @@ function switch_showed_bikes(buttonRemove, buttonAdd, buttonContent, titleConten
   //modification du bouton
   $('.'+buttonRemove).removeClass(buttonRemove).addClass(buttonAdd).find('.fr-inline').html(buttonContent);
   //modification du Titre
-  $('#bikeDetailsAdmin').find('h4.fr-inline').html(titleContent);
+  $('#BikesListingAdmin').find('h4').html(titleContent);
 }
 
 function list_bikes_admin(){

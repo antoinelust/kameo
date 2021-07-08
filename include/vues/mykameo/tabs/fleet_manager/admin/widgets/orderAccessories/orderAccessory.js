@@ -82,7 +82,6 @@ function getOrderDetailAcessory(ID){
 		type: 'get',
 		data: {"action": "getOrderDetailAcessory", "ID":ID},
 		success: function(response){
-			console.log("test2");
 			if($("#widget-orderAcessory-form select[name=company] option").length == 0){
 				$("#widget-orderAcessory-form select[name=company]")
 					.find("option")
@@ -111,31 +110,31 @@ function getOrderDetailAcessory(ID){
 				$("#widget-orderAcessory-form [name=company]").val(response.COMPANY_ID);
 			}
 
-			if(response.ACCESSORY_ID==null){
-				$("#widget-orderAcessory-form p[name=linkOrderAccessoryToStock]").addClass("hidden");
-				$("#widget-orderAcessory-form select[name=linkOrderAccessoryToStock]").parent().removeClass("hidden");
 
-				$.ajax({
-					url: 'api/accessories',
-					type: 'get',
-					data: {action: "getStockAccessoryNotLinkedToOrder", catalogID:response.catalogID},
-					success: function(accessories){
-						$("#widget-orderAcessory-form select[name=linkOrderAccessoryToStock]")
-						.find("option")
-						.remove()
-						.end();
-						accessories.forEach(function(accessory){
-							$("#widget-orderAcessory-form select[name=linkOrderAccessoryToStock]").append("<option value='"+accessory.ID+"'>"+accessory.ID+" - "+accessory.CONTRACT_TYPE+"</option>");
-						})
+			$.ajax({
+				url: 'api/accessories',
+				type: 'get',
+				data: {action: "getStockAccessoryNotLinkedToOrder", catalogID:response.catalogID},
+				success: function(accessories){
+					$("#widget-orderAcessory-form select[name=linkOrderAccessoryToStock]")
+					.find("option")
+					.remove()
+					.end();
+					accessories.forEach(function(accessory){
+						$("#widget-orderAcessory-form select[name=linkOrderAccessoryToStock]").append("<option value='"+accessory.ID+"'>"+accessory.ID+" - "+accessory.CONTRACT_TYPE+"</option>");
+					})
+					if(response.ACCESSORY_ID==null){
+						$("#widget-orderAcessory-form p[name=linkOrderAccessoryToStock]").addClass("hidden");
+						$("#widget-orderAcessory-form select[name=linkOrderAccessoryToStock]").parent().removeClass("hidden");
 						$("#widget-orderAcessory-form select[name=linkOrderAccessoryToStock]").val("");
+					}else{
+						$("#widget-orderAcessory-form select[name=linkOrderAccessoryToStock]").val(response.ACCESSORY_ID);
+						$("#widget-orderAcessory-form p[name=linkOrderAccessoryToStock] span").html(response.ACCESSORY_ID);
+						$("#widget-orderAcessory-form p[name=linkOrderAccessoryToStock]").removeClass("hidden");
+						$("#widget-orderAcessory-form select[name=linkOrderAccessoryToStock]").parent().addClass("hidden");
 					}
-				})
-			}else{
-				$("#widget-orderAcessory-form p[name=linkOrderAccessoryToStock]").removeClass("hidden");
-				$("#widget-orderAcessory-form p[name=linkOrderAccessoryToStock] span").html(response.ACCESSORY_ID);
-				$("#widget-orderAcessory-form select[name=linkOrderAccessoryToStock]").parent().addClass("hidden");
-			}
-
+				}
+			})
 			$("#widget-orderAcessory-form [name=emailUser]").val(response.EMAIL);
 			$("#widget-orderAcessory-form [name=contractType]").val(response.TYPE);
 			$("#widget-orderAcessory-form [name=priceHTVA]").val(response.PRICE_HTVA);

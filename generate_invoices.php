@@ -59,14 +59,14 @@ while($row = mysqli_fetch_array($result))
       $dateStart = $dateStart->format('Y-m-d');
     }
 
-    $sql_dateStart="SELECT MIN(start) as start, COMPANY, BILLING_GROUP from ((select min(SUBSTR(CONTRACT_START, 9, 2)) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='$dateStart' and (aa.CONTRACT_END>'$dateStart' or aa.CONTRACT_END is NULL) and aa.COMPANY='$internalReference' and aa.BILLING_GROUP='$billingGroup') UNION (select min(SUBSTR(START, 9, 2)) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='$dateStart' and (aa.END>'$dateStart' or aa.END is NULL) and aa.COMPANY='$internalReference' and aa.BILLING_GROUP='$billingGroup') UNION (SELECT min(SUBSTR(accessories_stock.CONTRACT_START, 9, 2)), companies.INTERNAL_REFERENCE as COMPANY, accessories_stock.BILLING_GROUP FROM accessories_stock, companies WHERE companies.ID=accessories_stock.COMPANY_ID AND accessories_stock.CONTRACT_TYPE='leasing' AND accessories_stock.CONTRACT_START<'$dateStart' AND accessories_stock.CONTRACT_END>'$dateStart' AND accessories_stock.STAANN != 'D' AND companies.INTERNAL_REFERENCE='$internalReference')) AS T1 WHERE start is NOT NULL";
+    $sql_dateStart="SELECT COMPANY, BILLING_GROUP, MIN(start) as start from ((select min(SUBSTR(CONTRACT_START, 9, 2)) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='$dateStart' and (aa.CONTRACT_END>'$dateStart' or aa.CONTRACT_END is NULL) and aa.COMPANY='$internalReference' and aa.BILLING_GROUP='$billingGroup') UNION (select min(SUBSTR(START, 9, 2)) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='$dateStart' and (aa.END>'$dateStart' or aa.END is NULL) and aa.COMPANY='$internalReference' and aa.BILLING_GROUP='$billingGroup') UNION (SELECT min(SUBSTR(accessories_stock.CONTRACT_START, 9, 2)) as 'start', companies.INTERNAL_REFERENCE as COMPANY, '1' as BILLING_GROUP FROM accessories_stock, companies WHERE companies.ID=accessories_stock.COMPANY_ID AND accessories_stock.CONTRACT_TYPE='leasing' AND accessories_stock.CONTRACT_START<'$dateStart' AND accessories_stock.CONTRACT_END>'$dateStart' AND accessories_stock.STAANN != 'D' AND companies.INTERNAL_REFERENCE='$internalReference')) AS T1 WHERE start is NOT NULL GROUP BY COMPANY, BILLING_GROUP";
     error_log("SQL2 :".$sql_dateStart."\n", 3, "generate_invoices.log");
 
     if ($conn->query($sql_dateStart) === FALSE) {
         echo $conn->error;
         die;
     }
-    
+
     $result_dateStart = mysqli_query($conn, $sql_dateStart);
     $length=$result_dateStart->num_rows;
     while($resultat_dateStart = mysqli_fetch_array($result_dateStart)){

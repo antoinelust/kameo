@@ -41,8 +41,7 @@ if($modelID != '' && $contractType != '') {
       execSQL("UPDATE accessories_stock set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, COMPANY_ID=?, USER_EMAIL=?, CATALOG_ID=?, CONTRACT_TYPE=?, SELLING_DATE=?, SELLING_AMOUNT=?,BIKE_ID=? WHERE ID=? ", array("sisissdii", $token, $companyID, $userEMAIL, $modelID, $contractType, $sellingDate, $sellingAmount,$bikeID, $ID), true);
     }else if($contractType=="leasing"){
       execSQL("UPDATE accessories_stock set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, COMPANY_ID=?, USER_EMAIL=?, CATALOG_ID=?, CONTRACT_TYPE=?, CONTRACT_START=?, CONTRACT_END=?, CONTRACT_AMOUNT=?, BIKE_ID=? WHERE ID=? ", array("sisisssdii", $token, $companyID, $userEMAIL, $modelID, $contractType, $contractStart, $contractEnd, $leasingAmount,$bikeID, $ID), true);
-    }
-    else if($contractType=="stock" || $contractType=="pending_delivery"){
+    }else if($contractType=="stock" || $contractType=="pending_delivery"){
       if($contractType=="stock"){
         $companyID=12;
       }
@@ -50,9 +49,11 @@ if($modelID != '' && $contractType != '') {
     }
     else if($contractType=="order"){
       execSQL("UPDATE accessories_stock set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, COMPANY_ID=?, USER_EMAIL=?, CATALOG_ID=?, CONTRACT_TYPE=?,  BIKE_ID=?, ESTIMATED_DELIVERY_DATE=? WHERE ID=? ", array("sisisisi", $token, $companyID, $userEMAIL, $modelID, $contractType,$bikeID,$estimatedDeliveryDate, $ID), true);
+    }else if($contractType=="stolen"){
+      execSQL("UPDATE accessories_stock set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, COMPANY_ID=?, USER_EMAIL=?, CATALOG_ID=?, CONTRACT_TYPE=?, SELLING_DATE=?, SELLING_AMOUNT=?,BIKE_ID=? WHERE ID=? ", array("sisissdii", $token, $companyID, $userEMAIL, $modelID, $contractType, $sellingDate, $sellingAmount,$bikeID, $ID), true);
+    }
+    successMessage("SM0028");
   }
-  successMessage("SM0028");
-}
 }else{
   $response = array ('response'=>'error');
   echo json_encode($response);

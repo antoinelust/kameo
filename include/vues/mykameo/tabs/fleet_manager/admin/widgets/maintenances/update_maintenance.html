@@ -68,8 +68,8 @@
               <div class="col-md-4 text-center">
                 <label for="dateOutPlanned">Client prévenu ?</label>
                 <input type="checkbox" name="clientWarned" class="form-control">
+                <a class="button small green button-3d rounded icon-right warnClient" data-target="#warnClient" data-toggle="modal" href="#">Prévenir le client</a>
               </div>
-
             </div>
             <div class="separator"></div>
             <div class="row manualWorkload">
@@ -122,6 +122,9 @@
                   <th class="accessoriesPriceHTVA">
                     <label for="aPriceTVAC">Prix Vente TVAC</label>
                   </th>
+                  <th>ID Stock
+                  </th>
+                  <th>Commentaire</th>
                 </thead>
                 <tbody>
                 </tbody>
@@ -245,3 +248,89 @@
 </div>
 </div>
 </div>
+
+<div class="modal fade" id="warnClient" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+      <form id="widget-warnClient-form" action="api/maintenances" role="form" method="post">
+        <div class='col-md-4'>
+          <label for='warnByEmail'>Prévenir par mail ?</label>
+          <input type='checkbox' class='form-control' name='warnByEmail' checked>
+        </div>
+        <div class='col-md-4'>
+          <label for='emailAddress'>Adresse mail:</label>
+          <select class='form-control required' name='emailAddress'></select>
+        </div>
+        <div class='separator'></div>
+        <div class='col-md-4'>
+          <label for='warnByPhone'>Prévenir par téléphone ?</label>
+          <input type='checkbox' class='form-control' name='warnByPhone' checked>
+        </div>
+        <div class='col-md-4'>
+          <label for='emailAddress'>Numéro:</label>
+          <select class='form-control required' name='phoneNumber'></select>
+        </div>
+        <div class='separator'></div>
+        <label for="message">Message</label>
+        <textarea class="form-control" name='message' rows="3">Bonjour,&#13;&#10;Votre vélo est réparé est prêt dans nos locaux.&#13;&#10;&#10;Adresse: 8 Rue de la brasserie, 4000 Liège&#13;&#10;Numéro de téléphone: 04 290 71 21&#13;&#10;&#10;Bien à vous,&#13;&#10;Kameo Bikes</textarea>
+        <button class="button small green button-3d rounded icon-left" type="submit">
+          <i class="fa fa-paper-plane"></i><?= L::generic_confirm; ?>
+        </button>
+        <input type='text' name='maintenanceID' class='hidden'>
+        <input type='text' name='action' class='hidden' value='sendCommunication'>
+      </form>
+      <div class="modal-footer"><button type="button" class="btn btn-b" data-dismiss="modal"><?= L::generic_close; ?></button></div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $('#widget-warnClient-form input[name=warnByEmail]').change(function(){
+    if($(this).prop('checked')){
+      $('#widget-warnClient-form select[name=emailAddress]').parent().removeClass("hidden");
+    }else{
+      $('#widget-warnClient-form select[name=emailAddress]').parent().addClass("hidden");
+    }
+  })
+
+  $('#widget-warnClient-form input[name=warnByPhone]').change(function(){
+    if($(this).prop('checked')){
+      $('#widget-warnClient-form select[name=phoneNumber]').parent().removeClass("hidden")
+    }else{
+      $('#widget-warnClient-form select[name=phoneNumber]').parent().addClass("hidden")
+    }
+  })
+
+  jQuery("#widget-warnClient-form").validate({
+    submitHandler: function (form) {
+      jQuery(form).ajaxSubmit({
+        success: function (response) {
+          if (response.response == "success") {
+            $.notify(
+            {
+              message: response.message,
+            },
+            {
+              type: "success",
+            }
+            );
+            document.getElementById("widget-warnClient-form").reset();
+            get_maintenance($('#maintenanceManagementItem input[name=ID]').val());
+            $("#warnClient").modal("toggle");
+          } else {
+            $.notify(
+            {
+              message: response.message,
+            },
+            {
+              type: "danger",
+            }
+            );
+          }
+        },
+      });
+    },
+  });
+</script>

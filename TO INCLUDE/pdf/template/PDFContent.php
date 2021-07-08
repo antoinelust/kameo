@@ -207,7 +207,8 @@ h2{
       <td style="text-align:left; padding-left:0; margin-left:0;  width:50%;">
         <div class="arcamajora" style="color:#efefef; font-size:25px;"><?php echo $prenomKameo.' '.$nomKameo; ?></div><br/>
         <?php echo $contactKameo; ?><br/>
-        <?php echo $phoneKameo; ?>
+        <?php echo $phoneKameo; ?><br/>
+        <?php echo date('d/m/Y'); ?>
       </td>
       <td style="text-align:right; padding-right:0; margin-right:0;  width:50%;">
         <span class="arcamajora" style="color:#efefef; font-size:25px;"><?php echo $contact['PRENOM']; ?> <?php echo strtoupper($contact['NOM']); ?></span><br/><br/>

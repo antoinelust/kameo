@@ -13,7 +13,6 @@ $("#statisticsListing").on("show.bs.modal", function (event) {
           totalLeasing += response.leasingOrders[i] << 0;
           totalSelling += response.sellingOrders[i] << 0;
           totalBoxes += response.boxesOrders[i] << 0;
-
         }
       }
       $('#statisticsListing span[name=ordersStatisticsTotalLeasing]').html(totalLeasing);
@@ -99,7 +98,7 @@ $("#statisticsListing").on("show.bs.modal", function (event) {
           totalBoxesMargin += response.boxesMargin[i] << 0;
           totalLeasingMargin += response.leasingMargin[i] << 0;
           totalSellingMargin += response.sellingMargin[i] << 0;
-          totalBoxesValue += (response.boxesMargin[i]+response.boxesCost[i]) <<0;
+          totalBoxesValue += (parseInt(response.boxesMargin[i])+parseInt(response.boxesCost[i])) <<0;
           totalLeasingValue += (response.leasingCost[i]+response.leasingMargin[i]) <<0;
           totalSellingValue += (response.sellingCost[i]+response.sellingMargin[i]) <<0;
         }

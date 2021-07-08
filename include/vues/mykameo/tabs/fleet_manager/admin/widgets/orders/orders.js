@@ -287,7 +287,7 @@ function retrieve_command(ID){
 
         if(response.order.accessories){
           response.order.accessories.forEach(function (accessory, i) {
-            if(accessory.TYPE=="achat"){
+            if(accessory.TYPE=="selling"){
               var currency = "€";
             }else if(accessory.TYPE='leasing'){
               var currency = "€/mois";
@@ -458,7 +458,7 @@ $('.ordersManagerClick').click(function(){
       .append('<select name="accessoryAccessory[]" id="selectAccessory'+
         accessoriesOrderNumber+
         '"class="selectAccessory form-control required"></select>');
-      $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesOrderNumber)+'>.aType').append('<select name="financialTypeAccessory[]" class="selectType form-control required"><option value="achat">Achat</option><option value="leasing">Leasing</option></select>');
+      $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesOrderNumber)+'>.aType').append('<select name="financialTypeAccessory[]" class="selectType form-control required"><option value="selling">Achat</option><option value="leasing">Leasing</option></select>');
       $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesOrderNumber)+'>.aBuyingPrice').append('<div class="input-group"><span class="input-group-addon">€</span><input type="number" min="0" name="buyingPriceAcc[]" class="buyingPriceInput form-control required"></div>');
       $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesOrderNumber)+'>.aPriceHTVA').append('<div class="input-group"><span class="input-group-addon">€</span><input type="number" min="0" name="sellingPriceAcc[]" class="sellingPriceInput form-control required"></div>');
       checkMinus('.orderAccessories','.accessoriesNumber');

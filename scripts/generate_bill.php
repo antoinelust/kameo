@@ -79,6 +79,8 @@ if($length=='0'){
     }
 }
 $resultat = mysqli_fetch_assoc($result);
+$companyID=$resultat['ID'];
+
 if($_POST['user']){
   $resultat=execSQL("SELECT * FROM customer_referential WHERE EMAIL = ?", array('s', $_POST['user']), false)[0];
   $companyName=$resultat['PRENOM'].' '.$resultat['NOM'];
@@ -93,7 +95,6 @@ if($_POST['user']){
   $town=$resultat['TOWN'];
   $vat=$resultat['VAT_NUMBER'];
 }
-$companyID=$resultat['ID'];
 $length=strlen($newID);
 $i=(3-$length);
 $reference=$newID;
@@ -403,7 +404,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
                     $sellingDate=$dateStart->format('Y-m-d');
                     execSQL("INSERT INTO factures_details (USR_MAJ, FACTURE_ID, ITEM_TYPE, ITEM_ID, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES(?, ?, 'accessory', ?, ?, ?, ?, ?, ?)", array('siisssdd', $token, $newID, $ID, $comment, $sellingDate, $sellingDate, $price, $priceTVAC), true);
-                    execSQL("UPDATE accessories_stock SET USR_MAJ=?, HEU_MAJ=CURRENT_TIMESTAMP, COMPANY_ID=?, BIKE_ID=NULL, CONTRACT_TYPE='achat', CONTRACT_START=NULL, CONTRACT_END=NULL, CONTRACT_AMOUNT=NULL, SELLING_DATE=?, SELLING_AMOUNT=? WHERE ID=?", array('sisdi', $token, $companyID, $sellingDate, $price, $ID), true);
+                    execSQL("UPDATE accessories_stock SET USR_MAJ=?, HEU_MAJ=CURRENT_TIMESTAMP, COMPANY_ID=?, BIKE_ID=NULL, CONTRACT_TYPE='selling', CONTRACT_START=NULL, CONTRACT_END=NULL, CONTRACT_AMOUNT=NULL, SELLING_DATE=?, SELLING_AMOUNT=? WHERE ID=?", array('sisdi', $token, $companyID, $sellingDate, $price, $ID), true);
 
                 }else if($type=="otherAccessorySell"){
                     $comment='Vente au '.$dateStart->format('d-m-Y');

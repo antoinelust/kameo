@@ -124,14 +124,32 @@ switch($_SERVER["REQUEST_METHOD"])
 			echo json_encode(execSQL("SELECT CATEGORY FROM services_entretiens GROUP BY CATEGORY ORDER BY CATEGORY", array(), false));
 			die;
 		}
-	}else
+	}else if($action === "getContacts"){
+		if(get_user_permissions("admin", $token)){
+			$result=execSQL("SELECT EXTERNAL_BIKE, BIKE_ID FROM entretiens WHERE ID=?", array('i', $_GET['maintenanceID']), false)[0];
+			$bikeID=$result['BIKE_ID'];
+			$externalBike=$result['EXTERNAL_BIKE'];
+			if($externalBike=='0'){
+				$result=execSQL("SELECT * FROM customer_bike_access WHERE BIKE_ID=(SELECT BIKE_ID FROM entretiens WHERE ID=?) AND TYPE='personnel' AND STAANN != 'D'", array('i', $_GET['maintenanceID']), false);
+				if(count($result)>0){
+					$contact=execSQL("SELECT PHONE, NOM, PRENOM, EMAIL from customer_referential WHERE EMAIL=?", array('i', $result['EMAIL']), false);
+				}else{
+					$contact=execSQL("SELECT PHONE, NOM, PRENOM, EMAIL FROM companies_contact WHERE TYPE='contact' AND ID_COMPANY=(SELECT ID FROM companies WHERE INTERNAL_REFERENCE = (SELECT COMPANY FROM customer_bikes WHERE ID=?))", array('i', $bikeID), false);
+				}
+			}else{
+				$contact=execSQL("SELECT PHONE, NOM, PRENOM, EMAIL FROM companies_contact WHERE TYPE='contact' AND ID_COMPANY=(SELECT COMPANY_ID FROM external_bikes WHERE ID = ?)", array('i', $bikeID), false);
+			}
+			echo json_encode($contact);
+			die;
+		}
+	}
+	else
 	error_message('405');
 	break;
 	case 'POST':
 	$action=isset($_POST['action']) ? $_POST['action'] : NULL;
 	if($action === 'add'){
 		if(get_user_permissions("admin", $token)){
-			$id = isset($_POST["ID"]) ? $_POST["ID"] : NULL;
 			$user = isset($_POST["user"]) ? $_POST["user"] : NULL;
 			$date = isset($_POST["dateMaintenance"]) ? date('Y-m-d',strtotime($_POST["dateMaintenance"])): NULL;
 			$status = isset($_POST["status"]) ? $_POST["status"] : NULL;
@@ -147,14 +165,38 @@ switch($_SERVER["REQUEST_METHOD"])
 			}
 
 			if($status=='DONE'){
-				execSQL("INSERT INTO entretiens (HEU_MAJ,END_DATE_MAINTENANCE, USR_MAJ, BIKE_ID, EXTERNAL_BIKE, DATE, STATUS, COMMENT, INTERNAL_COMMENT, NR_ENTR,OUT_DATE_PLANNED, ADDRESS ) VALUES (CURRENT_TIMESTAMP,CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?)", array('siissssss', $user, $bike_id, $external, $date, $status, $comment, $internalComment,$outDatePlanned, $address), true);
+				$id=execSQL("INSERT INTO entretiens (HEU_MAJ,END_DATE_MAINTENANCE, USR_MAJ, BIKE_ID, EXTERNAL_BIKE, DATE, STATUS, COMMENT, INTERNAL_COMMENT, NR_ENTR,OUT_DATE_PLANNED, ADDRESS ) VALUES (CURRENT_TIMESTAMP,CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?)", array('siissssss', $user, $bike_id, $external, $date, $status, $comment, $internalComment,$outDatePlanned, $address), true);
 			}
 			else if($status=='DELIVERED_TO_CLIENT'){
-				execSQL("INSERT INTO entretiens (HEU_MAJ,OUT_DATE, USR_MAJ, BIKE_ID, EXTERNAL_BIKE, DATE, STATUS, COMMENT, INTERNAL_COMMENT, NR_ENTR, OUT_DATE_PLANNED ) VALUES (CURRENT_TIMESTAMP,CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?)", array('siissssss', $user, $bike_id, $external, $date, $status, $comment, $internalComment,$outDatePlanned, $address), true);
+				$id=execSQL("INSERT INTO entretiens (HEU_MAJ,OUT_DATE, USR_MAJ, BIKE_ID, EXTERNAL_BIKE, DATE, STATUS, COMMENT, INTERNAL_COMMENT, NR_ENTR, OUT_DATE_PLANNED ) VALUES (CURRENT_TIMESTAMP,CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?)", array('siissssss', $user, $bike_id, $external, $date, $status, $comment, $internalComment,$outDatePlanned, $address), true);
 			}
 			else{
-				execSQL("INSERT INTO entretiens (HEU_MAJ, USR_MAJ, BIKE_ID, EXTERNAL_BIKE, DATE, STATUS, COMMENT, INTERNAL_COMMENT, NR_ENTR, OUT_DATE_PLANNED, ADDRESS ) VALUES (CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?)", array('siissssss', $user, $bike_id, $external, $date, $status, $comment, $internalComment, $outDatePlanned, $address), true);
+				$id=execSQL("INSERT INTO entretiens (HEU_MAJ, USR_MAJ, BIKE_ID, EXTERNAL_BIKE, DATE, STATUS, COMMENT, INTERNAL_COMMENT, NR_ENTR, OUT_DATE_PLANNED, ADDRESS ) VALUES (CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?)", array('siissssss', $user, $bike_id, $external, $date, $status, $comment, $internalComment, $outDatePlanned, $address), true);
 			}
+
+			if(isset($_POST['service'])){
+				$services['ID']=$_POST['service'];
+				$services['length']=$_POST['manualWorkloadLength'];
+				$services['amount']=$_POST['manualWorkloadTotal'];
+				for ($i = 0; $i < count($services['ID']); $i++) {
+					execSQL("INSERT INTO entretiens_details (USR_MAJ, TYPE, MAINTENANCE_ID, SERVICE, DURATION, AMOUNT) VALUES (?, 'service', ?, ?, ?, ?)", array('siiid', $token, $id, $services['ID'][$i], $services['length'][$i], $services['amount'][$i]), true);
+				}
+			}
+			if(isset($_POST['linkIDStock'])){
+				$accessory['linkIDStock']=$_POST['linkIDStock'];
+				$accessory['amount']=$_POST['accessoryAmount'];
+				for ($i = 0; $i < count($accessory['linkIDStock']); $i++) {
+					execSQL("INSERT INTO entretiens_details (USR_MAJ, TYPE, MAINTENANCE_ID, SERVICE, AMOUNT) VALUES (?, 'accessory', ?, ?, ?)", array('siid', $token, $id, $accessory['linkIDStock'][$i], $accessory['amount'][$i]), true);
+				}
+			}
+			if(isset($_POST['otherAccessoryDescription'])){
+				$accessory['description']=$_POST['otherAccessoryDescription'];
+				$accessory['amount']=$_POST['otherAccessoryAmount'];
+				for ($i = 0; $i < count($accessory['description']); $i++) {
+					execSQL("INSERT INTO entretiens_details (USR_MAJ, TYPE, MAINTENANCE_ID, DESCRIPTION, AMOUNT) VALUES (?, 'otherAccessory', ?, ?, ?)", array('sisd', $token, $id, $accessory['description'][$i], $accessory['amount'][$i]), true);
+				}
+			}
+
 			$response=array('response'=>"success", "message"=>"Entretien ajouté avec succès");
 			echo json_encode($response);
 			die;
@@ -194,11 +236,11 @@ switch($_SERVER["REQUEST_METHOD"])
 					execSQL("INSERT INTO entretiens_details (USR_MAJ, TYPE, MAINTENANCE_ID, SERVICE, DURATION, AMOUNT) VALUES (?, 'service', ?, ?, ?, ?)", array('siiid', $token, $id, $services['ID'][$i], $services['length'][$i], $services['amount'][$i]), true);
 				}
 			}
-			if(isset($_POST['portfolioID'])){
-				$accessory['portfolioID']=$_POST['portfolioID'];
+			if(isset($_POST['linkIDStock'])){
+				$accessory['linkIDStock']=$_POST['linkIDStock'];
 				$accessory['amount']=$_POST['accessoryAmount'];
-				for ($i = 0; $i < count($accessory['portfolioID']); $i++) {
-					execSQL("INSERT INTO entretiens_details (USR_MAJ, TYPE, MAINTENANCE_ID, SERVICE, AMOUNT) VALUES (?, 'accessory', ?, ?, ?)", array('siid', $token, $id, $accessory['portfolioID'][$i], $accessory['amount'][$i]), true);
+				for ($i = 0; $i < count($accessory['linkIDStock']); $i++) {
+					execSQL("INSERT INTO entretiens_details (USR_MAJ, TYPE, MAINTENANCE_ID, SERVICE, AMOUNT) VALUES (?, 'accessory', ?, ?, ?)", array('siid', $token, $id, $accessory['linkIDStock'][$i], $accessory['amount'][$i]), true);
 				}
 			}
 			if(isset($_POST['otherAccessoryDescription'])){
@@ -261,6 +303,133 @@ switch($_SERVER["REQUEST_METHOD"])
 			execSQL("DELETE FROM entretiens WHERE ID = ?", array('i', $ID), true);
 			successMessage("SM0031");
 			die;
+		}else if($action==="sendCommunication"){
+			$sendMail=(isset($_POST['warnByEmail']) ? true : false);
+			$sendSMS=(isset($_POST['warnByPhone']) ? true : false);
+			$message=nl2br($_POST['message']);
+			if($sendMail){
+				require_once($_SERVER['DOCUMENT_ROOT'].'/include/php-mailer/PHPMailerAutoload.php');
+				$mail = new PHPMailer();
+				if(constant('ENVIRONMENT')=="production"){
+					$mail->AddAddress($_POST['emailAddress']);
+				}else{
+					$mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
+				}
+				$mail->IsHTML(true);
+				$mail->CharSet = 'UTF-8';
+				$mail->From = "info@kameobikes.com";
+				$mail->FromName = 'Info KAMEO Bikes';
+				$mail->AddReplyTo("info@kameobikes.com", "Info KAMEO Bikes");
+				$subject="Votre vélo est prêt !";
+				$mail->Subject = $subject;
+				include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mails/mail_header.php';
+
+        $body = $body."
+            <body>
+                <!--[if !gte mso 9]><!----><span class=\"mcnPreviewText\" style=\"display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;\">Mail du service entretien</span><!--<![endif]-->
+                <!--*|END:IF|*-->
+                <center>
+                    <table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" height=\"100%\" width=\"100%\" id=\"bodyTable\">
+                        <tr>
+                            <td align=\"center\" valign=\"top\" id=\"bodyCell\">
+                                <!-- BEGIN TEMPLATE // -->
+                                <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">
+                                    <tr>
+                                        <td align=\"center\" valign=\"top\" id=\"templateHeader\" data-template-container>
+                                            <!--[if (gte mso 9)|(IE)]>
+                                            <table align=\"center\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" width=\"600\" style=\"width:600px;\">
+                                            <tr>
+                                            <td align=\"center\" valign=\"top\" width=\"600\" style=\"width:600px;\">
+                                            <![endif]-->
+                                            <table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"templateContainer\">
+                                                <tr>
+                                                    <td valign=\"top\" class=\"headerContainer\"><table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"mcnImageBlock\" style=\"min-width:100%;\">
+            <tbody class=\"mcnImageBlockOuter\">
+                    <tr>
+                        <td valign=\"top\" style=\"padding:9px\" class=\"mcnImageBlockInner\">
+                            <table align=\"left\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"mcnImageContentContainer\" style=\"min-width:100%;\">
+                                <tbody><tr>
+                                    <td class=\"mcnImageContent\" valign=\"top\" style=\"padding-right: 9px; padding-left: 9px; padding-top: 0; padding-bottom: 0; text-align:center;\">
+
+
+                                                <img align=\"center\" alt=\"\" src=\"https://gallery.mailchimp.com/c4664c7c8ed5e2d53dc63720c/images/8b95e5d1-2ce7-4244-a9b0-c5c046bf7e66.png\" width=\"300\" style=\"max-width:300px; padding-bottom: 0; display: inline !important; vertical-align: bottom;\" class=\"mcnImage\">
+
+
+                                    </td>
+                                </tr>
+                            </tbody></table>
+                        </td>
+                    </tr>
+            </tbody>
+        </table></td>
+                                                </tr>
+                                            </table>
+                                            <!--[if (gte mso 9)|(IE)]>
+                                            </td>
+                                            </tr>
+                                            </table>
+                                            <![endif]-->
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align=\"center\" valign=\"top\" id=\"templateBody\" data-template-container>
+                                            <!--[if (gte mso 9)|(IE)]>
+                                            <table align=\"center\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" width=\"600\" style=\"width:600px;\">
+                                            <tr>
+                                            <td align=\"center\" valign=\"top\" width=\"600\" style=\"width:600px;\">
+                                            <![endif]-->
+                                            <table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"templateContainer\">
+                                                <tr>
+                                                    <td valign=\"top\" class=\"bodyContainer\"><table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"mcnTextBlock\" style=\"min-width:100%;\">
+            <tbody class=\"mcnTextBlockOuter\">
+                <tr>
+                    <td valign=\"top\" class=\"mcnTextBlockInner\" style=\"padding-top:9px;\">
+                        <!--[if mso]>
+                        <table align=\"left\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" width=\"100%\" style=\"width:100%;\">
+                        <tr>
+                        <![endif]-->
+
+                        <!--[if mso]>
+                        <td valign=\"top\" width=\"600\" style=\"width:600px;\">
+                        <![endif]-->
+                        <table align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:100%; min-width:100%;\" width=\"100%\" class=\"mcnTextContentContainer\">
+                            <tbody><tr>
+
+                                <td valign=\"top\" class=\"mcnTextContent\" style=\"padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;\">
+																$message
+                                </td>
+                            </tr>
+                        </tbody></table>
+                        <!--[if mso]>
+                        </td>
+                        <![endif]-->
+
+                        <!--[if mso]>
+                        </tr>
+                        </table>
+                        <![endif]-->
+                    </td>
+                </tr>
+            </tbody>
+        </table>";
+
+
+
+        include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mails/mail_footer.php';
+
+        $mail->Body = $body;
+
+        if(constant('ENVIRONMENT')=="test" || constant('ENVIRONMENT')=='production'){
+            if(!$mail->Send()) {
+               $response = array ('response'=>'error', 'message'=> $mail->ErrorInfo);
+                echo json_encode($response);
+                die;
+            }
+        }
+				execSQL("UPDATE entretiens SET USR_MAJ=?, HEU_MAJ=CURRENT_TIMESTAMP, CLIENT_WARNED=1 WHERE ID=?", array('si', $token, $_POST['maintenanceID']), true);
+        successMessage("SM0026");
+				die;
+			}
 		}else{
 			error_message('405');
 		}

@@ -5,7 +5,7 @@ header('Content-type: application/json');
 
 session_start();
 include 'globalfunctions.php';
-log_inputs($token);
+log_inputs();
 
 
 require_once('../../include/php-mailer/PHPMailerAutoload.php');
@@ -17,7 +17,7 @@ $firstName = htmlspecialchars($_POST["firstName"]);
 $email = htmlspecialchars($_POST["email"]);
 $phone =  htmlspecialchars($_POST["phone"]);
 $type = isset($_POST["type"]) ? htmlspecialchars($_POST["type"]) : "N/A";
-$entreprise = isset($_POST["entreprise"]) ? htmlspecialchars($_POST["entreprise"]) : "N/A";
+$entreprise = isset($_POST["entreprise"]) ? (($_POST["entreprise"] != '') ? htmlspecialchars($_POST["entreprise"]) : "N/A") : "N/A";
 $companySize = isset($_POST["companySize"]) ? ($_POST["companySize"]) : NULL;
 $subject = isset($_POST["subject"]) ? htmlspecialchars($_POST["subject"]) : "N/A";
 $message = nl2br(htmlspecialchars($_POST["message"]));
@@ -923,17 +923,16 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $mail->Body = $body;
 
-		if($entreprise != 'N/A'){
-			execSQL("INSERT IGNORE  INTO companies (USR_MAJ, COMPANY_NAME, BILLING_GROUP, STREET, ZIP_CODE, TOWN, VAT_NUMBER, INTERNAL_REFERENCE, TYPE, AQUISITION, AUTOMATIC_STATISTICS, BILLS_SENDING, STAANN, AUDIENCE) VALUES ('contact_form.php', ?, '1', '/', '/', '/', '/',?, 'prospect', 'KAMEO', 'N', 'N', '', 'B2B')", array('ss', $entreprise, $entreprise), true);
+		if($entreprise != 'N/A' && $entreprise != ''){
+			execSQL("INSERT IGNORE INTO companies (USR_MAJ, COMPANY_NAME, BILLING_GROUP, STREET, ZIP_CODE, TOWN, VAT_NUMBER, INTERNAL_REFERENCE, TYPE, AQUISITION, AUTOMATIC_STATISTICS, BILLS_SENDING, STAANN, AUDIENCE) VALUES ('contact_form.php', ?, '1', '/', '/', '/', '/',?, 'prospect', 'KAMEO', 'N', 'N', '', 'B2B')", array('ss', $entreprise, $entreprise), true);
 			$companyID=execSQL("SELECT ID FROM companies WHERE INTERNAL_REFERENCE=?", array('s', $entreprise), false)[0]['ID'];
-
 		}else{
 			$companyName=$firstName.' '.$name;
-			execSQL("INSERT INTO companies (USR_MAJ, COMPANY_NAME, BILLING_GROUP, STREET, ZIP_CODE, TOWN, VAT_NUMBER, INTERNAL_REFERENCE, TYPE, AQUISITION, AUTOMATIC_STATISTICS, BILLS_SENDING, STAANN, AUDIENCE) VALUES ('contact_form.php', ?, '1', '/', '/', '/', '/',?, 'prospect', 'KAMEO', 'N', 'N', '', 'B2C')", array('ss', $companyName, $companyName), true);
+			execSQL("INSERT IGNORE INTO companies (USR_MAJ, COMPANY_NAME, BILLING_GROUP, STREET, ZIP_CODE, TOWN, VAT_NUMBER, INTERNAL_REFERENCE, TYPE, AQUISITION, AUTOMATIC_STATISTICS, BILLS_SENDING, STAANN, AUDIENCE) VALUES ('contact_form.php', ?, '1', '/', '/', '/', '/',?, 'prospect', 'KAMEO', 'N', 'N', '', 'B2C')", array('ss', $companyName, $companyName), true);
 			$companyID=execSQL("SELECT ID FROM companies WHERE INTERNAL_REFERENCE=?", array('s', $companyName), false)[0]['ID'];
 		}
 
-		execSQL("INSERT IGNORE INTO companies_contact (USR_MAJ, NOM, PRENOM, EMAIL, PHONE, ID_COMPANY, FUNCTION, TYPE, BIKES_STATS) VALUES('contact_form.php', ?, ?, ?, ?, ?, 'TBC', 'contact', 'N')", array('ssssi', $name, $firstName, $email, $phone, $companyID), true);
+		execSQL("INSERT IGNORE INTO companies_contact (USR_MAJ, NOM, PRENOM, EMAIL, PHONE, ID_COMPANY, companies_contact.FUNCTION, TYPE, BIKES_STATS) VALUES('contact_form.php', ?, ?, ?, ?, ?, 'TBC', 'contact', 'N')", array('ssssi', $name, $firstName, $email, $phone, $companyID), true);
 		execSQL("INSERT INTO company_actions (USR_MAJ, TYPE, CHANNEL, COMPANY_ID, DATE, DATE_REMINDER, TITLE, DESCRIPTION, STATUS, OWNER) VALUES('contact_form.php', 'contact', 'site', ?, CURRENT_TIMESTAMP, NULL, 'Prise de contact via le site', 'Mail envoyé depuis la page de contact', 'TO DO', 'antoine@kameobikes.com')", array('i', $companyID), true);
 
 		if(constant('ENVIRONMENT') == "production" || constant('ENVIRONMENT') == "test")

@@ -1,3 +1,8 @@
+$('#portfolioManager').on('shown.bs.modal', function(event){
+  listPortfolioBikes()
+});
+
+
 //FleetManager: Gérer le catalogue | Displays the portfolio <table> by calling load_portfolio.php and creating it
 function listPortfolioBikes(){
   $.ajax({
@@ -75,7 +80,7 @@ function listPortfolioBikes(){
         var table = $("#portfolioBikeListing").DataTable({
           orderCellsTop: true,
           fixedHeader: true,
-          scrollX: false,
+          scrollX: true,
           paging: false,
           search: false
         });

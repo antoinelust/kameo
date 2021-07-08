@@ -227,19 +227,14 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
 
             $sql2="select * from customer_bikes where COMPANY='$company' and CONTRACT_START<='$dateEnd' and (CONTRACT_END>='$dateEnd' or CONTRACT_END IS NULL) and BILLING_GROUP='$billingGroup' and AUTOMATIC_BILLING='Y' and STAANN !='D' AND CONTRACT_TYPE='leasing'".$sqlBike;
+            $result2=execSQL($sql2, array(), false);
             error_log(date("Y-m-d H:i:s")."SQL6 :".$sql2."\n", 3, "generate_invoices.log");
-            if ($conn->query($sql2) === FALSE){
-                echo $conn->error;
-                die;
-            }
-            $result2 = mysqli_query($conn, $sql2);
-            $length = $result2->num_rows;
-
 
             $i=1;
             $total=0;
 
-            while($row2 = mysqli_fetch_array($result2)){
+            foreach($result2 as $row2){
+              $catalogPrice=execSQL("SELECT PRICE_HTVA FROM bike_catalog WHERE ID=?", array('i', $row2['TYPE']), false)[0]['PRICE_HTVA'];
 
               if($row2['BILLING_TYPE']=='monthly'){
                 $units = '€/mois';
@@ -426,10 +421,15 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
                 }
 
-
-                $test2.='<tr>
-                    <td></td>
-                    <td style="color: grey">'.$row2['MODEL'].' - CADRE: '.$row2['FRAME_REFERENCE'].'<br> Période du '.$dateStartTemp->format('d-m-Y').' au '.$dateAfter2->format('d-m-Y').'<br>';
+                if($company=='Laurie Yans'){
+                  $test2.='<tr>
+                      <td></td>
+                      <td style="color: grey">'.$row2['MODEL'].' - CADRE: '.$row2['FRAME_REFERENCE'].'<br>Valeur catalogue (HTVA) : '.$catalogPrice.' € <br>Période du '.$dateStartTemp->format('d-m-Y').' au '.$dateAfter2->format('d-m-Y').'<br>';
+                }else{
+                  $test2.='<tr>
+                      <td></td>
+                      <td style="color: grey">'.$row2['MODEL'].' - CADRE: '.$row2['FRAME_REFERENCE'].'<br> Période du '.$dateStartTemp->format('d-m-Y').' au '.$dateAfter2->format('d-m-Y').'<br>';
+                }
 
                 if(($row2['CONTRACT_END'])){
                   if($row2['BILLING_TYPE']=='annual'){

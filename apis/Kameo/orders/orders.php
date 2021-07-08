@@ -264,7 +264,7 @@ switch($_SERVER["REQUEST_METHOD"])
 					}
 				}
 				if(isset($_POST['accessoryCatalogID'])){
-					foreach ($_POST['accessoryCatalogID'] as $key => $catalogID) {
+					foreach ($_POST['accessoryCatalogID'] as $key => $catalogID){
 						$contractType=$_POST['accessoryContractType'][$key];
 						$amount=$_POST['accessoryAmount'][$key];
 						$status=$_POST['accessoryStatus'][$key];
@@ -421,7 +421,7 @@ switch($_SERVER["REQUEST_METHOD"])
 					$email=$result['EMAIL'];
 					$internalReference=execSQL('SELECT INTERNAL_REFERENCE FROM companies WHERE ID=?', array('i', $companyID), false)[0]['INTERNAL_REFERENCE'];
 					execSQL('UPDATE client_orders SET USR_MAJ=?, status="done", ESTIMATED_DELIVERY_DATE=? WHERE ID=?', array('ssi', $token, $_POST['deliveryDate'], $_POST['itemID']), true);
-					execSQL('UPDATE customer_bikes SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, COMPANY=?, BILLING_TYPE="monthly", INSURANCE="Y", CONTRACT_TYPE="leasing", CONTRACT_START=?, CONTRACT_END=?, LEASING_PRICE=? WHERE ID=?', array('ssssdi', $token, $internalReference, $_POST['contractStart'], $_POST['contractEnd'], $leasingAmount, $bikeID), true);
+					execSQL('UPDATE customer_bikes SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, COMPANY=?, BILLING_TYPE="monthly", INSURANCE="Y", AUTOMATIC_BILLING="Y", CONTRACT_TYPE="leasing", CONTRACT_START=?, CONTRACT_END=?, LEASING_PRICE=? WHERE ID=?', array('ssssdi', $token, $internalReference, $_POST['contractStart'], $_POST['contractEnd'], $leasingAmount, $bikeID), true);
 					if($email != ""){
 						$result=execSQL("SELECT * FROM customer_bike_access WHERE BIKE_ID=? and EMAIL=?", array('is', $bikeID, $email), false);
 						if(count($result)>0){

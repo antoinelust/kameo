@@ -1,8 +1,9 @@
 
 //FleetManager: Gérer le catalogue | Displays the portfolio <table> by calling load_portfolio.php and creating it
-$(".portfolioAccessoriesManagerClick").click(function () {
+$('#portfolioAccessoriesManager').on('shown.bs.modal', function(event){
   $("#porfolioAccessoriesListing").dataTable({
     destroy: true,
+    scrollX: true,
     ajax: {
       url: "apis/Kameo/accessories/accessories.php",
       contentType: "application/json",

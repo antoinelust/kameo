@@ -149,14 +149,26 @@ function retrieveGroupedOrder(ID){
 				}else{
 					bike.ESTIMATED_DELIVERY_DATE=bike.ESTIMATED_DELIVERY_DATE.shortDate();
 				}
-				if(bike.BIKE_ID != null && bike.STATUS=='confirmed'){
-					var confirmOrder='<a href="#" data-target="#confirmOrder" data-toggle="modal" class="button small green button-3d rounded icon-right confirmBikeOrder" data-id="'+bike.ID+'">+</a>';
+
+				var row='<tr><td>'+bike.ID+'</td><td>'+bike.BRAND+'</td><td>'+bike.MODEL+'</td><td>'+bike.SIZE+'</td><td>'+bike.TYPE+'</td><td class="amount"><span>'+bike.LEASING_PRICE+'</span> '+units+'</td><td>'+bike.ESTIMATED_DELIVERY_DATE+'</td><td>'+bike.STATUS+'</td><td class="IDstockLinked">'+((bike.BIKE_ID == null) ? '<span class="text-red">N/A</span>' : bike.BIKE_ID)+'</td>';
+				if(bike.TYPE=='selling'){
+					if(bike.BIKE_ID != null && bike.STATUS=='confirmed'){
+						var checkboxGenerateBill='<input type="checkbox" name="generateBillAccessory[]">';
+					}else{
+						var checkboxGenerateBill='<input type="checkbox" name="generateBillAccessory[]" disabled>';
+					}
+					row = row + '<td><button class="button small red button-3d rounded icon-right deleteBikeOrder" type="button" data-id="'+bike.ID+'">-</button></td><td class="generateBillGroupedOrderBike">'+checkboxGenerateBill+'</td>'
 				}else{
-					var confirmOrder='';
+					if(bike.BIKE_ID != null && bike.STATUS=='confirmed'){
+						var confirmOrder='<a href="#" data-target="#confirmOrder" data-toggle="modal" class="button small green button-3d rounded icon-right confirmBikeOrder" data-id="'+bike.ID+'">+</a>';
+					}else{
+						var confirmOrder='';
+					}
+					row = row + '<td><button class="button small red button-3d rounded icon-right deleteBikeOrder" type="button" data-id="'+bike.ID+'">-</button></td><td>'+confirmOrder+'</td>'
 				}
 
 				$('#groupedOrderManagement .bikeNumberTable').find('tbody')
-				.append('<tr><td>'+bike.ID+'</td><td>'+bike.BRAND+'</td><td>'+bike.MODEL+'</td><td>'+bike.SIZE+'</td><td>'+bike.TYPE+'</td><td>'+bike.LEASING_PRICE+' '+units+'</td><td>'+bike.ESTIMATED_DELIVERY_DATE+'</td><td>'+bike.STATUS+'</td><td><button class="button small red button-3d rounded icon-right deleteBikeOrder" type="button" data-id="'+bike.ID+'">-</button>'+confirmOrder+'</td>');
+				.append(row);
 			})
 
 			$('#groupedOrderManagement .deleteBikeOrder').off();
@@ -195,7 +207,6 @@ function retrieveGroupedOrder(ID){
 							$('#confirmOrder input[name=contractEnd]').val(get_date_string(dateInThreeYears));
 							$('#confirmOrder input[name=itemType]').val('bike');
 							$('#confirmOrder input[name=itemID]').val(ID);
-
 						}else{
 							$.notify({
 							 message: "Veuillez générer une facture de vente"
@@ -220,15 +231,24 @@ function retrieveGroupedOrder(ID){
 					estimatedDeliveryDate=accessory.ESTIMATED_DELIVERY_DATE.shortDate();
 				}
 
-				if(accessory.ACCESSORY_ID != null && accessory.STATUS=='confirmed'){
-					var confirmOrder='<a href="#" data-target="#confirmOrder" data-toggle="modal" class="button small green button-3d rounded icon-right confirmAccessoryOrder" data-id="'+accessory.ID+'">+</a>';
+				var row='<tr><td><a href="#" class="text-green" data-target="#accessoryOrderManagement" data-toggle="modal" data-action="update" data-id="'+accessory.ID+'">'+accessory.ID+'</a></td><td>'+traduction['accessoryCategories_'+accessory.CATEGORY]+'</td><td>'+accessory.BRAND+' '+accessory.MODEL+'</td><td>'+accessory.TYPE+'</td><td class="amount"><span>'+Math.round(accessory.PRICE_HTVA*100)/100+'</span> '+units+'</td><td>'+estimatedDeliveryDate+'</td><td>'+accessory.STATUS+'</td><td class="IDstockLinked">'+((accessory.ACCESSORY_ID == null) ? '<span class="text-red">N/A</span>' : accessory.ACCESSORY_ID)+'</td>';
+				if(accessory.TYPE=='selling'){
+					if(accessory.ACCESSORY_ID != null && accessory.STATUS=='confirmed'){
+						var checkboxGenerateBill='<input type="checkbox" name="generateBillAccessory[]">';
+					}else{
+						var checkboxGenerateBill='<input type="checkbox" name="generateBillAccessory[]" disabled>';
+					}
+					row = row + '<td><button class="button small red button-3d rounded icon-right deleteAccessoryOrder" type="button" data-id="'+accessory.ID+'">-</button></td><td class="generateBillGroupedOrderAccessory">'+checkboxGenerateBill+'</td>'
 				}else{
-					var confirmOrder='';
+					if(accessory.ACCESSORY_ID != null && accessory.STATUS=='confirmed'){
+						var confirmOrder='<a href="#" data-target="#confirmOrder" data-toggle="modal" class="button small green button-3d rounded icon-right confirmAccessoryOrder" data-id="'+accessory.ID+'">+</a>';
+					}else{
+						var confirmOrder='';
+					}
+					row = row + '<td><td><button class="button small red button-3d rounded icon-right deleteAccessoryOrder" type="button" data-id="'+accessory.ID+'">-</button> '+confirmOrder+'</td>'
 				}
+				$('#groupedOrderManagement .accessoriesTable').find('tbody').append(row);
 
-
-				$('#groupedOrderManagement .accessoriesTable').find('tbody')
-				.append('<tr><td><a href="#" class="text-green" data-target="#accessoryOrderManagement" data-toggle="modal" data-action="update" data-id="'+accessory.ID+'">'+accessory.ID+'</a></td><td>'+traduction['accessoryCategories_'+accessory.CATEGORY]+'</td><td>'+accessory.BRAND+' '+accessory.MODEL+'</td><td>'+accessory.TYPE+'</td><td>'+Math.round(accessory.PRICE_HTVA*100)/100+' '+units+'</td><td>'+estimatedDeliveryDate+'</td><td>'+accessory.STATUS+'</td><td><button class="button small red button-3d rounded icon-right deleteAccessoryOrder" type="button" data-id="'+accessory.ID+'">-</button>'+confirmOrder+'</td>');
 			});
 
 			$('.deleteAccessoryOrder').off();
@@ -378,7 +398,7 @@ $('#groupedOrderManagement .bikes .glyphicon-plus').click(function(){
 	</td>
 	<td class="model"><select name="catalogID[]" class="form-control required"></select></td>
 	<td class="size"><select name="size[]" class="form-control required"></select></td>
-	<td class="contractType"><select name="contractType[]" class="form-control required"><option value="leasing">Leasing</option><option value="achat">Vente</option></select></td>
+	<td class="contractType"><select name="contractType[]" class="form-control required"><option value="leasing">Leasing</option><option value="selling">Vente</option></select></td>
 	<td class="amount"><input type="amount" step="0.01" class="form-control required" name="bikeAmount[]"></td>
 	<td class="estimatedDeliveryDate"><input type="date" class="form-control required" name='estimatedDeliveryDate[]'></td>
 	<td class="status">
@@ -434,7 +454,7 @@ $('#groupedOrderManagement .bikes .glyphicon-plus').click(function(){
 		$amount=$(this).closest('tr').find('.amount input');
 		var retailPrice=$(this).closest('tr').find('.model select').children("option:selected").data('retailprice');
 		var contractType=$(this).closest('tr').find('.contractType select').val();
-		if(contractType=="achat"){
+		if(contractType=="selling"){
 			$amount.val(retailPrice);
 		}else{
 			get_leasing_price(retailPrice, $('#groupedOrderManagement select[name=company]').val()).done(function(response){
@@ -547,4 +567,60 @@ $('#groupedOrderManagement .boxes .glyphicon-plus').click(function(){
 			}
 		})
 	})
+})
+
+
+$('.generateBillGroupedOrder').click(function(){
+	var i=0;
+	var total=0;
+	var j=0;
+
+	var data=[];
+
+	$(".generateBillGroupedOrderAccessory")
+		.find("input:checked")
+		.closest('tr')
+		.map(function(){
+			i++;
+			total=total+parseInt($(this).find('.amount span').html());
+			data.push({ name: "accessoryID[]", value: $(this).find('.IDstockLinked').html() });
+			data.push({ name: "accessoryFinalPrice[]", value: $(this).find('.amount span').html() });
+		})
+
+	$(".generateBillGroupedOrderBike")
+		.find("input:checked")
+		.closest('tr')
+		.map(function(){
+			j++;
+			total=total+parseInt($(this).find('.amount span').html());
+			data.push({ name: "bikeID[]", value: $(this).find('.IDstockLinked').html() });
+			data.push({ name: "bikeFinalPrice[]", value: $(this).find('.amount span').html() });
+		})
+
+	data.push({ name: "bikesNumber", value: j });
+	data.push({ name: "accessoriesNumber", value: i });
+	data.push({ name: "companyID", value: $('#groupedOrderManagement select[name=company]').val() });
+	data.push({ name: "billingGroup", value: "1" });
+	data.push({ name: "beneficiaryCompany", value: "KAMEO" });
+	data.push({ name: "type", value: "achat" });
+	data.push({ name: "individualBillingName", value: $('#groupedOrderManagement select[name=email]').val() });
+	data.push({ name: "widget-addBill-form-amountHTVA", value: total });
+	data.push({ name: "widget-addBill-form-amountTVAC", value: total*1.21 });
+	data.push({ name: "comingFrom", value: "groupedOrders" });
+
+	$.ajax({
+		url: 'apis/Kameo/add_bill.php',
+		type: 'POST',
+		data: data,
+		success: function(response){
+			retrieveGroupedOrder($('#groupedOrderManagement input[name=ID]').val());
+			$("#groupedOrdersListingTable").dataTable().api().ajax.reload();
+			$.notify({
+			 message: "Facture générée et commandes mises à jour"
+			}, {
+			 type: 'success'
+			});
+
+		}
+	});
 })

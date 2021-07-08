@@ -377,8 +377,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
     }
 
     if($company=='Infrabel' || $company=='Actiris'){
-      $code=execSQL("SELECT CODE, count(1) as SOMME FROM locking_code, reservations WHERE reservations.ID=locking_code.ID_reservation AND EMAIL=? ORDER BY DATE_BEGIN DESC LIMIT 1", array('s', $email), false)[0];
-      if($code['CODE'] != '' && $code['SOMME'] > 0){
+      $code=execSQL("SELECT CODE FROM locking_code, reservations WHERE reservations.ID=locking_code.ID_reservation AND EMAIL=? ORDER BY DATE_BEGIN DESC LIMIT 1", array('s', $email), false)[0];
+      if($code['CODE'] != ''){
         $code=$code['CODE'];
         $sql="SELECT COUNT(1) as SOMME FROM locking_code WHERE CODE='$code' AND VALID='Y' AND BUILDING_START='$intake_building'";
         if ($conn->query($sql) === FALSE) {

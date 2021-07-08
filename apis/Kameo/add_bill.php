@@ -15,11 +15,13 @@ use Spipu\Html2Pdf\Html2Pdf;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 
+$token = getBearerToken();
+log_inputs($token);
 
-$email=$_POST['widget-addBill-form-email'];
-$company=addslashes($_POST['company']);
-$beneficiaryCompany=addslashes($_POST['beneficiaryCompany']);
-$date=$_POST['widget-addBill-form-date'];
+$company=isset($_POST['company']) ? addslashes($_POST['company']) : NULL;
+$companyID=isset($_POST['companyID']) ? addslashes($_POST['companyID']) : NULL;
+$beneficiaryCompany=isset($_POST['beneficiaryCompany']) ? $_POST['beneficiaryCompany'] : "KAMEO";
+$date=isset($_POST['widget-addBill-form-date']) ? $_POST['widget-addBill-form-date'] : date('Y-m-d');
 $type=$_POST['type'];
 $billType=isset($_POST['billType']) ? $_POST['billType'] : NULL;
 $typeOther=isset($_POST['typeOther']) ? addslashes($_POST['typeOther']) : NULL;
@@ -34,11 +36,11 @@ $billingPaidDate=isset($_POST['widget-addBill-form-paymentDate']) ? date($_POST[
 $billingLimitPaidDate=isset($_POST['widget-addBill-form-datelimite']) ? date($_POST['widget-addBill-form-datelimite']) : "0";
 $communication=isset($_POST['communication']) ? $_POST['communication'] : NULL;
 $commentBilling=isset($_POST['comment']) ? nl2br($_POST['comment']) : NULL;
+$comingFrom=isset($_POST['comingFrom']) ? $_POST['comingFrom'] : NULL;
 
 $scan=isset($_POST['scan']) ? addslashes($_POST['scan']) : NULL;
 
 $typeArticle = isset($_POST['typeArticle']) ? addslashes($_POST['typeArticle']) : NULL;
-$companyInternalReference = isset($_POST['companyInternalReference']) ? addslashes($_POST['companyInternalReference']) : NULL;
 $articlePrice= isset($_POST['articlePrice']) ? addslashes($_POST['articlePrice']) : NULL;
 $articleId= isset($_POST['articleId']) ? addslashes($_POST['articleId']) : NULL;
 
@@ -48,6 +50,9 @@ $bikeArrayId = isset($_POST['bikeArrayId']) ?$_POST['bikeArrayId'] :  NULL;
 $lengthArray= isset($_POST['articleNumbers']) ? addslashes($_POST['articleNumbers']) : NULL;
 
 
+if($companyID && !$company){
+  $company=execSQL("SELECT INTERNAL_REFERENCE FROM companies WHERE ID = ?", array('i', $companyID), false)[0]['INTERNAL_REFERENCE'];
+}
 
 if($amountHTVA<0 && $type != 'credit' && $company!="KAMEO"){
     errorMessage("ES0045");
@@ -101,8 +106,6 @@ if($type=="autre" && !isset($typeOther)){
 }else if($type=="autre"){
     $type=$typeOther;
 }
-
-
 
 if($billType == "manual"){
   if(isset($_FILES['widget-addBill-form-file']))
@@ -207,6 +210,9 @@ else{
         $data['price'.$i] = $_POST['bikeFinalPrice'][$i];
         $data['type'.$i] = "bikeSell";
         $data['TVA'.$i] = "21";
+        if($comingFrom=='groupedOrders'){
+          execSQL("UPDATE client_orders SET STATUS='done' WHERE BIKE_ID=?", array('i', $_POST['bikeID'][$i]), true);
+        }
         $i++;
     }
     $j=0;
@@ -215,6 +221,9 @@ else{
         $data['price'.$i] = $_POST['accessoryFinalPrice'][$j];
         $data['type'.$i] = "accessorySell";
         $data['TVA'.$i] = "21";
+        if($comingFrom=='groupedOrders'){
+          execSQL("UPDATE order_accessories SET STATUS='done' WHERE ACCESSORY_ID=?", array('i', $_POST['accessoryID'][$j]), true);
+        }
         $j++;
         $i++;
     }
@@ -245,7 +254,7 @@ else{
     $data['billingGroup'] = "1";
   }
   error_log("Data :".json_encode($data)."\n", 3, "../../scripts/generate_invoices.log");
-  $url='https://'.$_SERVER['HTTP_HOST'].'/scripts/generate_bill.php';
+  $url='http://'.$_SERVER['HTTP_HOST'].'/scripts/generate_bill.php';
   error_log("URL :".$url."\n", 3, "../../scripts/generate_invoices.log");
   $test=CallAPI('POST', $url, $data);
   try {
@@ -285,9 +294,9 @@ if($billingPaidDate!=NULL){
 include 'connexion.php';
 if($billType=='manual'){
     if($ID && $beneficiaryCompany=='KAMEO'){
-        $sql= "INSERT INTO  factures (ID, ID_OUT_BILL, USR_MAJ, HEU_MAJ, COMPANY, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_SENT_DATE, FACTURE_PAID, FACTURE_PAID_DATE, TYPE, FACTURE_LIMIT_PAID_DATE) VALUES ('$ID', '$ID_OUT', '$email', CURRENT_TIMESTAMP, '$company', '$beneficiaryCompany', '$date', '$amountHTVA', '$amountTVAC', '$communication', '$fichier', '$billingSent', $billingSentDate, '$billingPaid', $billingPaidDate, '$type', $billingLimitPaidDate)";
+        $sql= "INSERT INTO  factures (ID, ID_OUT_BILL, USR_MAJ, HEU_MAJ, COMPANY, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_SENT_DATE, FACTURE_PAID, FACTURE_PAID_DATE, TYPE, FACTURE_LIMIT_PAID_DATE) VALUES ('$ID', '$ID_OUT', '$token', CURRENT_TIMESTAMP, '$company', '$beneficiaryCompany', '$date', '$amountHTVA', '$amountTVAC', '$communication', '$fichier', '$billingSent', $billingSentDate, '$billingPaid', $billingPaidDate, '$type', $billingLimitPaidDate)";
     }else{
-        $sql= "INSERT INTO  factures (ID, ID_OUT_BILL, USR_MAJ, HEU_MAJ, COMPANY, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_SENT_DATE, FACTURE_PAID, FACTURE_PAID_DATE, TYPE, FACTURE_LIMIT_PAID_DATE) VALUES ('$ID', NULL, '$email', CURRENT_TIMESTAMP, '$company', '$beneficiaryCompany', '$date', '$amountHTVA', '$amountTVAC', '$communication', '$fichier', '$billingSent', $billingSentDate, '$billingPaid', $billingPaidDate, '$type', $billingLimitPaidDate)";
+        $sql= "INSERT INTO  factures (ID, ID_OUT_BILL, USR_MAJ, HEU_MAJ, COMPANY, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_SENT_DATE, FACTURE_PAID, FACTURE_PAID_DATE, TYPE, FACTURE_LIMIT_PAID_DATE) VALUES ('$ID', NULL, '$token', CURRENT_TIMESTAMP, '$company', '$beneficiaryCompany', '$date', '$amountHTVA', '$amountTVAC', '$communication', '$fichier', '$billingSent', $billingSentDate, '$billingPaid', $billingPaidDate, '$type', $billingLimitPaidDate)";
     }
 
     if ($conn->query($sql) === FALSE) {

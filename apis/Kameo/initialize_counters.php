@@ -92,7 +92,6 @@ if(get_user_permissions("admin", $token)){
   $dateEnd->add(new DateInterval('P1M'));
   $dateEnd=$dateEnd->format('Y-m-d');
 
-
   $response['stillToDo']=execSQL("SELECT COUNT(1) as SOMME FROM (SELECT DATE FROM (SELECT substr(entretiens.DATE, 1, 10) as DATE FROM entretiens WHERE DATE>=? AND DATE <=? AND ADDRESS != '8 Rue de la brasserie, 4000 Liège' AND NOT EXISTS (SELECT 1 FROM plannings where (plannings.ITEM_TYPE='internalMaintenance' OR plannings.ITEM_TYPE='externalMaintenance') AND plannings.ITEM_ID=entretiens.ID) GROUP BY substr(entretiens.DATE, 1, 10) UNION ALL SELECT substr(client_orders.ESTIMATED_DELIVERY_DATE, 1, 10) as DATE FROM client_orders WHERE ESTIMATED_DELIVERY_DATE>=? AND ESTIMATED_DELIVERY_DATE <=? AND client_orders.DELIVERY_ADDRESS != '8 Rue de la brasserie, 4000 Liège' AND NOT EXISTS (SELECT 1 FROM plannings where plannings.ITEM_TYPE='order' AND plannings.ITEM_ID=client_orders.ID) GROUP BY substr(client_orders.ESTIMATED_DELIVERY_DATE, 1, 10)) as tt GROUP BY DATE) AS tt", array('ssss', $dateStart, $dateEnd, $dateStart, $dateEnd), false)[0]['SOMME'];
 }
 
@@ -108,11 +107,11 @@ if(get_user_permissions("admin", $token)){
   $response['bikesOrdersNumber']=execSQL("SELECT COUNT(1) as SOMME FROM (SELECT * FROM(SELECT GROUP_ID FROM client_orders WHERE client_orders.STATUS != 'closed' UNION SELECT order_accessories.ORDER_ID as GROUP_ID FROM order_accessories WHERE order_accessories.STATUS != 'closed') as tt GROUP BY tt.GROUP_ID) as yy", array(), false)[0]['SOMME'];
 
   $response['bikeNumber'] = execSQL("SELECT COUNT(1) AS SOMME from customer_bikes where STAANN != 'D' AND (CONTRACT_TYPE='stock' OR CONTRACT_TYPE='leasing' OR CONTRACT_TYPE='renting' OR CONTRACT_TYPE='order')", array(), false)[0]['SOMME'];
-  $response['bikeOrdersLate'] = execSQL("SELECT COUNT(1) as SOMME FROM customer_bikes WHERE CONTRACT_TYPE='order' AND STAANN != 'D' AND (ESTIMATED_DELIVERY_DATE < CURRENT_DATE OR ESTIMATED_DELIVERY_DATE is NULL OR ESTIMATED_DELIVERY_DATE = '0000-00-00')", array(), false)[0]['SOMME'];
+  $response['bikeOrdersLate'] = execSQL("SELECT COUNT(1) as SOMME FROM customer_bikes WHERE CONTRACT_TYPE='order' AND STAANN != 'D' AND (ESTIMATED_DELIVERY_DATE < CURRENT_DATE OR ESTIMATED_DELIVERY_DATE is NULL)", array(), false)[0]['SOMME'];
 
   $response['accessoriesNumber']=execSQL("SELECT COUNT(1) AS SOMME from accessories_stock where STAANN != 'D'", array(), false)[0]['SOMME'];
 
-  $response['bikeNumberPortfolio'] = execSQL("select COUNT(1) AS SOMME from bike_catalog where STAANN != 'D'", array(), false)[0]['SOMME'];
+  $response['bikeNumberPortfolio'] = execSQL("SELECT COUNT(1) AS SOMME from bike_catalog where STAANN != 'D'", array(), false)[0]['SOMME'];
 
   $response['accessoriesNumberPortfolio'] = execSQL("SELECT COUNT(1) as accessoriesNumberPortfolio, 'success' as response from accessories_catalog", array(), false)[0]['accessoriesNumberPortfolio'];
 
@@ -121,7 +120,7 @@ if(get_user_permissions("admin", $token)){
   $response['messagesNumberUnread']=execSQL("SELECT COUNT(1) as 'TOTAL' FROM `chat` aa, customer_referential cc where NOT exists (select 1 from chat bb where aa.EMAIL_USER=bb.EMAIL_DESTINARY and aa.MESSAGE_TIMESTAMP<bb.MESSAGE_TIMESTAMP) and aa.EMAIL_USER=cc.EMAIL and cc.COMPANY != 'KAMEO'", array(), false)[0]['TOTAL'];
 
   $response['boxesNumberTotal']=execSQL("SELECT COUNT(1) AS 'SOMME' FROM boxes WHERE STAANN != 'D'", array(), false)[0]['SOMME'];
-
+  
   $response['cashFlow']['leasingBikes'] = execSQL("SELECT SUM(CASE WHEN BILLING_TYPE = 'annual'  THEN LEASING_PRICE/12 ELSE LEASING_PRICE END) as 'SOMME' from customer_bikes WHERE CONTRACT_START < CURRENT_TIMESTAMP AND (CONTRACT_END > CURRENT_TIMESTAMP OR CONTRACT_END is NULL) AND CONTRACT_TYPE IN ('location', 'leasing') AND STAANN !='D' AND COMPANY != 'KAMEO'", array(), false)[0]['SOMME'];
   $response['cashFlow']['sumContractsCurrent'] = $response['cashFlow']['leasingBikes'];
   $response['cashFlow']['leasingBoxes'] = execSQL("SELECT SUM(AMOUNT) as 'PRICE' FROM boxes WHERE START<CURRENT_TIMESTAMP AND STAANN != 'D' and COMPANY != 'KAMEO' and COMPANY!='KAMEO VELOS TEST'", array(), false)[0]['PRICE'];

@@ -20,9 +20,8 @@
 </div>
 
 
-
 <div class="modal fade" id="groupedOrderManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-lg" style="width: 80%">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -77,10 +76,10 @@
 											<th >
 												<label for="bikeEstimatedDeliveryDate">Date estimée de livraison</label>
 											</th>
-											<th>
-												<label for="status">Statut</label>
-											</th>
+											<th>Statut</th>
+											<th>ID Stock</th>
 											<th></th>
+											<th>Générer facture</th>
 										</tr>
 									</thead>
 									<tbody></tbody>
@@ -115,12 +114,12 @@
 												<label for="amount">Montant</label>
 											</th>
 											<th >
-												<label for="accessoryEstimatedDeliveryDate">Date estimée de livraison</label>
+												<label for="accessoryEstimatedDeliveryDate">Livraison</label>
 											</th>
-											<th>
-												<label for="status">Statut</label>
-											</th>
-
+											<th>Statut</th>
+											<th>ID Stock</th>
+											<th></th>
+											<th>Générer facture</th>
 										</tr>
 									</thead>
 									<tbody></tbody>
@@ -148,7 +147,7 @@
 												<label for="boxMonthlyPrice">Tarif mensuel</label>
 											</th>
 											<th>
-												<label for="boxEstimatedDeliveryDate">Date estimée de livraison</label>
+												<label for="boxEstimatedDeliveryDate">Livraison</label>
 											</th>
 											<th>
 												<label for="boxStatus">Statut</label>
@@ -160,7 +159,9 @@
               </div>
             </div>
 						<input type='text' class="hidden" name="action">
-            <div class="col-md-12"><button class="button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i><?= L::generic_send; ?></button>
+            <div class="col-md-12">
+							<button class="button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i> <?= L::generic_send; ?></button>
+							<button class="button small green button-3d rounded icon-right generateBillGroupedOrder" type="button"><i class="fa fa-money"></i> Générer facture</button>
             </div>
           </form>
         </div>
@@ -188,8 +189,7 @@
 			 }, {
 				type: 'success'
 			 });
-			 $('#groupedOrderManagement').modal('toggle');
-			 document.getElementById('widget_groupedOrderManagement-form').reset();
+			 retrieveGroupedOrder($('#widget_groupedOrderManagement-form input[name=ID]').val());
 			 $("#groupedOrdersListingTable").dataTable().api().ajax.reload();
 			} else {
 			 $.notify({

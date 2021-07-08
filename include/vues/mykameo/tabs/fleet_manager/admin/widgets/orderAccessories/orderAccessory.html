@@ -44,7 +44,7 @@
 						<label for="contractType">Type de contrat :</label>
 						<select class="form-control" name="contractType">
 							<option value='leasing'>Leasing</option>
-							<option value='achat'>Vente</option>
+							<option value='selling'>Vente</option>
 						</select>
 					</div>
 					<div class="col-md-4">
@@ -110,6 +110,7 @@
 						);
 						document.getElementById("widget-orderAcessory-form").reset();
 						$('#accessoryOrderManagement').modal('toggle');
+						retrieveGroupedOrder($('#groupedOrderManagement input[name=ID]').val());
 						if ( $.fn.DataTable.isDataTable( '#displayorderAcessory' ) ) {
 							$("#displayorderAcessory").dataTable().api().ajax.reload();
 						}

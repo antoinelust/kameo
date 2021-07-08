@@ -123,11 +123,11 @@ switch($_SERVER["REQUEST_METHOD"])
 						$response['steps'][$i]["NAME"]=$resultat['NAME'];
 					}
 					if($step['ITEM_TYPE']=='order'){
-						$resultat=execSQL("SELECT COMPANY_NAME, customer_bikes.FRAME_REFERENCE,
-							(CASE WHEN EXISTS (SELECT 1 FROM customer_bike_access WHERE customer_bike_access.BIKE_ID=customer_bikes.ID AND customer_bike_access.TYPE='personnel' AND customer_bike_access.STAANN != 'D') THEN (SELECT customer_referential.PHONE FROM customer_referential, customer_bike_access WHERE customer_bike_access.BIKE_ID=customer_bikes.ID AND customer_referential.EMAIL=customer_bike_access.EMAIL AND customer_bike_access.TYPE='personnel' AND customer_bike_access.STAANN != 'D' LIMIT 1) ELSE (SELECT 'Velo partage' FROM DUAL) END) as PHONE,
-							(CASE WHEN EXISTS (SELECT 1 FROM customer_bike_access WHERE customer_bike_access.BIKE_ID=customer_bikes.ID AND customer_bike_access.TYPE='personnel' AND customer_bike_access.STAANN != 'D') THEN (SELECT CONCAT(customer_referential.PRENOM, ' ', customer_referential.NOM) FROM customer_referential, customer_bike_access WHERE customer_bike_access.BIKE_ID=customer_bikes.ID AND customer_referential.EMAIL=customer_bike_access.EMAIL AND customer_bike_access.TYPE='personnel' AND customer_bike_access.STAANN != 'D' LIMIT 1) ELSE (SELECT 'Velo partage' FROM DUAL) END) as NAME,
-							(CASE WHEN EXISTS (SELECT 1 FROM customer_bike_access WHERE customer_bike_access.BIKE_ID=customer_bikes.ID AND customer_bike_access.TYPE='personnel' AND customer_bike_access.STAANN != 'D') THEN (SELECT customer_bike_access.EMAIL FROM customer_bike_access WHERE customer_bike_access.BIKE_ID=customer_bikes.ID AND customer_bike_access.TYPE='personnel' AND customer_bike_access.STAANN != 'D' LIMIT 1) ELSE (SELECT 'Velo partage' FROM DUAL) END) as EMAIL
-							 FROM customer_bikes, companies, client_orders WHERE customer_bikes.COMPANY=companies.INTERNAL_REFERENCE AND customer_bikes.ID=client_orders.BIKE_ID AND client_orders.ID=?", array('i', $step['ITEM_ID']), false)[0];
+						$resultat=execSQL("SELECT COMPANY_NAME, companies.INTERNAL_REFERENCE,
+							(CASE WHEN grouped_orders.EMAIL != '' AND grouped_orders.EMAIL IS NOT NULL THEN (SELECT customer_referential.PHONE FROM customer_referential WHERE customer_referential.EMAIL=grouped_orders.EMAIL LIMIT 1) END) as PHONE,
+							(CASE WHEN grouped_orders.EMAIL != '' AND grouped_orders.EMAIL IS NOT NULL THEN (SELECT customer_referential.NOM FROM customer_referential WHERE customer_referential.EMAIL=grouped_orders.EMAIL LIMIT 1) END) as NAME,
+							(CASE WHEN grouped_orders.EMAIL != '' AND grouped_orders.EMAIL IS NOT NULL THEN grouped_orders.EMAIL END) as EMAIL
+							 FROM companies, client_orders, grouped_orders WHERE companies.ID=grouped_orders.COMPANY_ID AND client_orders.ID=? AND grouped_orders.ID=client_orders.GROUP_ID", array('i', $step['ITEM_ID']), false)[0];
 						$response['steps'][$i]["COMPANY_NAME"]=$resultat['COMPANY_NAME'];
 						$response['steps'][$i]["EMAIL"]=$resultat['EMAIL'];
 						$response['steps'][$i]["FRAME_REFERENCE"]=$resultat['FRAME_REFERENCE'];

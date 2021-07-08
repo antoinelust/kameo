@@ -6,7 +6,7 @@
               </div>
               <div class="modal-body">
                 <div class="row">
-                  <form id="widget-updateBillingStatus-form" action="apis/Kameo/update_billing_status.php" role="form" method="post">
+                  <form id="widget-updateBillingStatus-form" action="api/bills" role="form" method="post">
 
                     <div class="form-group col-md-12">
 
@@ -115,33 +115,22 @@
                         </div>
 
                       </div>
-
-
-
                     </div>
                     <div class="separator"></div>
                     <h4 class="text-green">Détails de la facture</h4>
                     <div id="billingDetails" class="col-md-12">
                     </div>
-
-                    <input type="text" name="widget-updateBillingStatus-form-user" value="<?php echo $user_data['EMAIL']; ?>" class="hidden">
-
                     <div class="col-sm-12">
                       <button  class="button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i><?= L::generic_send; ?></button>
                     </div>
                   </form>
-
-                  <form id="widget-deleteBillingStatus-form" action="apis/Kameo/update_billing_status.php" role="form" method="post">
+                  <form id="widget-deleteBillingStatus-form" action="api/bills" role="form" method="post">
                     <div class="col-sm-12">
-                      <input type="text" name="user" value="<?php echo $user_data['EMAIL']; ?>" class="hidden">
                       <input type="text" name="action" value="delete" class="hidden">
                       <input type="text" class="hidden" readonly="readonly" name="reference">
                       <button  class="button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Supprimer</button>
                     </div>
                   </form>
-
-
-
                 </div>
               </div>
 

@@ -81,27 +81,9 @@ $('#maintenanceManagementItem').on('shown.bs.modal', function(event){
         $.ajax({
           url: 'api/accessories',
           type: 'get',
-          data: {action: 'listStock'},
+          data: {action: 'listStockPerCatalogID'},
           success: function(response){
-            var accessories = response.accessories;
-            if(accessories == undefined){
-              accessories =[];
-              console.log('accessories => table vide');
-            }
-            var categories = [];
-
-            //generation du tableau de catégories
-            accessories.forEach((accessory) => {
-              var newCategory = true;
-              categories.forEach((category) => {
-                if (category.name === accessory.CATEGORY) {
-                  newCategory = false;
-                }
-              });
-              if (newCategory === true) {
-                categories.push({'id' : accessory.categoryId, 'name' : accessory.CATEGORY});
-              }
-            });
+            var categories = response.categories;
 
             //gestion accessoriesNumber
             accessoriesNumber = $("#maintenanceManagementItem").find('.accessoriesNumber').html()*1+1;
@@ -110,7 +92,7 @@ $('#maintenanceManagementItem').on('shown.bs.modal', function(event){
             //ajout des options du select pour les catégories
             var categoriesOption = "<option hidden disabled selected value></option>";
             categories.forEach((category) => {
-              categoriesOption += '<option value="'+category.id+'">'+traduction['accessoryCategories_'+category.name]+'</option>';
+              categoriesOption += '<option value="'+category.ID+'">'+traduction['accessoryCategories_'+category.CATEGORY]+'</option>';
             });
 
             //ajout d'une ligne au tableau des accessoires
@@ -121,6 +103,8 @@ $('#maintenanceManagementItem').on('shown.bs.modal', function(event){
               <td class="aBuyingPrice"><input name='buygingPrice' class='form-control' disabled></td>
               <td class="aPriceHTVA"><input type='number' step='0.01' name='accessoryAmount[]' class='form-control'></td>
               <td class="aPriceTVAC"><input type='number' step='0.01' name='accessoryAmountTVAC[]' class='form-control'></td>
+              <td class="linkIDStock"><input type='number' step='0.01' name='linkIDStock[]' class='form-control required' readonly></td>
+              <td class="comment"><span></span></td>
               </tr>`);
 
 
@@ -139,21 +123,11 @@ $('#maintenanceManagementItem').on('shown.bs.modal', function(event){
             $('#maintenanceManagementItem .accessoriesTable tbody tr:last-child .aCategory select').on("change",function(){
               var accessoriesOption = "<option hidden disabled selected value>Veuillez choisir un accesoire</option>";
               var categoryId=$(this).val();
+              var categoryId=getIndex(categories, categoryId);
               //ne garde que les accessoires de cette catégorie
-              var presence=false;
-              accessories.forEach((accessory) => {
-                if (categoryId == accessory.categoryId && (accessory.CONTRACT_TYPE == 'stock' || accessory.CONTRACT_TYPE=='pending_delivery')) {
-                  presence=true;
-                  accessoriesOption += '<option value="'+accessory.ID+'">'+accessory.COMPANY_NAME+' - '+accessory.CONTRACT_TYPE+' - '+accessory.MODEL+'</option>';
-                }
+              categories[categoryId].models.forEach((model) => {
+                accessoriesOption += '<option value="'+model.ID+'">'+model.MODEL+'</option>';
               });
-              if(!presence){
-                $.notify({
-                  message: "Pas d'accessoires de ce type en stock ou en attente de livraison"
-                }, {
-                  type: 'warning'
-                });
-              }
               //place les accessoires dans le select
               $row.find('.aAccessory select').append(accessoriesOption);
 
@@ -162,12 +136,65 @@ $('#maintenanceManagementItem').on('shown.bs.modal', function(event){
               $row.find('.aPriceHTVA').val('');
             });
             $row.find('.aAccessory select').on("change",function(){
-              var accessoryId =$(this).val();
+                var accessoryId =$(this).val();
+                var categoryId = $(this).closest('tr').find('.aCategory select').val();
+                categoryId=getIndex(categories, categoryId);
                 //récupère le bon index même si le tableau est désordonné
-                accessoryId = getIndex(accessories, accessoryId);
-                $row.find('.aBuyingPrice input').val(accessories[accessoryId].buyingPriceCatalog);
-                $row.find('.aPriceHTVA input').val(accessories[accessoryId].sellingPriceCatalog);
-                $row.find('.aPriceTVAC input').val(Math.round(accessories[accessoryId].sellingPriceCatalog*1.21*100)/100);
+                accessoryId = getIndex(categories[categoryId].models, accessoryId);
+                $row.find('.aBuyingPrice input').val(categories[categoryId].models[accessoryId].BUYING_PRICE);
+                $row.find('.aPriceHTVA input').val(categories[categoryId].models[accessoryId].PRICE_HTVA);
+                $row.find('.aPriceTVAC input').val(Math.round(categories[categoryId].models[accessoryId].PRICE_HTVA*1.21*100)/100);
+
+                var accessoryPendingDelivery= [];
+                var accessoryInStock = [];
+                var accessoryInOrder = [];
+
+                var accessoryIDalreadySelected=[];
+                $('#maintenanceManagementItem .accessoriesTable .linkIDStock input').each(function(){
+                  if($(this).val() != ""){
+                    accessoryIDalreadySelected.push(parseInt($(this).val()));
+                  }
+                })
+
+                categories[categoryId].models[accessoryId].stock.forEach(function(accessory){
+                  if(!accessoryIDalreadySelected.includes(accessory.ID)){
+                    if(accessory.CONTRACT_TYPE=='pending_delivery'){
+                      accessoryPendingDelivery.push(accessory);
+                    }else if(accessory.CONTRACT_TYPE=='stock' && accessory.COMPANY_ID==12){
+                      accessoryInStock.push(accessory);
+                    }else if(accessory.CONTRACT_TYPE=='order'){
+                      accessoryInOrder.push(accessory);
+                    }
+                  }
+                })
+                var companyID = $('#maintenanceManagementItem select[name=company]').val();
+                var linkStockAccessoryID;
+                let found = false;
+                if(accessoryPendingDelivery.length > 0){
+                  accessoryPendingDelivery.forEach(function(accessory){
+                    if(accessory.COMPANY_ID==companyID && !found){
+                      linkStockAccessoryID=accessory.ID;
+                      comment = 'Lié à un accessoire en attente de livraison'
+                      found = true;
+                    }
+                  })
+                }
+                if(!found && accessoryInStock.length > 0){
+                  accessoryInStock.forEach(function(accessory){
+                    if(!found){
+                      linkStockAccessoryID=accessory.ID;
+                      comment = 'Lié à un accessoire de stock'
+                      found = true;
+                    }
+                  })
+                }
+                if(!found){
+                  $(this).closest('tr').find('.linkIDStock input').val("");
+                  $(this).closest('tr').find('.comment span').html("ERREUR : pas d'accessoire de stock trouvé");
+                }else{
+                  $(this).closest('tr').find('.linkIDStock input').val(linkStockAccessoryID);
+                  $(this).closest('tr').find('.comment span').html(comment);
+                }
               });
           }
         })
@@ -431,10 +458,13 @@ function get_maintenance(ID){
         $('#widget-maintenanceManagement-form textarea[name=comment]').val(response.maintenance.comment);
         $('#widget-maintenanceManagement-form textarea[name=internalComment]').val(response.maintenance.internalComment);
 
+        $('#widget-maintenanceManagement-form .warnClient').data('maintenanceID', ID);
         if(response.maintenance.clientWarned){
           $('#widget-maintenanceManagement-form input[name=clientWarned]').prop('checked', true);
+          $('#widget-maintenanceManagement-form .warnClient').addClass("hidden");
         }else{
           $('#widget-maintenanceManagement-form input[name=clientWarned]').prop('checked', false);
+          $('#widget-maintenanceManagement-form .warnClient').removeClass("hidden");
         }
 
         if(response.maintenance.address=="8 Rue de la Brasserie, 4000 Liège"){
@@ -454,7 +484,7 @@ function get_maintenance(ID){
         })
         $('#widget-maintenanceManagement-form .accessoriesNumber').html(response.maintenance.accessories.length);
         response.maintenance.accessories.forEach(function(accessory){
-          $('#widget-maintenanceManagement-form .accessoriesTable tbody').append('<tr><td>'+traduction['accessoryCategories_'+accessory.CATEGORY]+'</td><td>'+accessory.BRAND+' - '+ accessory.MODEL+'</td><td>'+accessory.BUYING_PRICE+'</td><td>'+accessory.AMOUNT+' €</td><td>'+Math.round(accessory.AMOUNT*1.21*100)/100+' €</td></tr>');
+          $('#widget-maintenanceManagement-form .accessoriesTable tbody').append('<tr><td>'+traduction['accessoryCategories_'+accessory.CATEGORY]+'</td><td>'+accessory.BRAND+' - '+ accessory.MODEL+'</td><td>'+accessory.BUYING_PRICE+'</td><td>'+accessory.AMOUNT+' €</td><td>'+Math.round(accessory.AMOUNT*1.21*100)/100+' €</td><td>'+accessory.ID+'</td><td></td></tr>');
         })
 
         $('#widget-maintenanceManagement-form .otherAccessoriesNumber').html(response.maintenance.otherAccessories.length);
@@ -536,6 +566,15 @@ $('#widget-maintenanceManagement-form input[name=maintenanceatKAMEO]').change(fu
     $('#widget-maintenanceManagement-form label[for=address]').fadeIn('slow');
   }
 })
+
+$('#widget-maintenanceManagement-form input[name=clientWarned]').change(function(){
+  if($(this).prop('checked')){
+    $('#widget-maintenanceManagement-form .warnClient').addClass("hidden");
+  }else{
+    $('#widget-maintenanceManagement-form .warnClient').removeClass("hidden");
+  }
+})
+
 
 $('.maintenanceManagementDeleteButton').off();
 $('.maintenanceManagementDeleteButton').click(function(){
@@ -1253,113 +1292,115 @@ $('#maintenanceManagementItem').on('shown.bs.modal', function(event){
 
 //Accessoires
 $('#maintenanceManagementItem').on('shown.bs.modal', function(event){
-  //variables
-  var accessories = response.accessories;
-  if(accessories == undefined){
-    accessories =[];
-    console.log('accessories => table vide');
-  }
-  var categories = [];
-
-  //generation du tableau de catégories
-  accessories.forEach((accessory) => {
-    var newCategory = true;
-    categories.forEach((category) => {
-      if (category.name === accessory.category) {
-        newCategory = false;
-      }
-    });
-    if (newCategory === true) {
-      categories.push({'id' : accessory.categoryId, 'name' : accessory.category});
+  get_all_accessories().done(function(response){
+    //variables
+    var accessories = response.accessories;
+    if(accessories == undefined){
+      accessories =[];
+      console.log('accessories => table vide');
     }
-  });
+    var categories = [];
 
-  $('.generateBillAccessoriesDevis .glyphicon-plus').unbind();
-  $('.generateBillAccessoriesDevis .glyphicon-plus').click(function(){
-    //gestion accessoriesNumber
-    accessoriesNumber = $("#addDevis").find('.accessoriesNumber').html()*1+1;
-    $('#addDevis').find('.accessoriesNumber').html(accessoriesNumber);
-    $('#accessoriesNumber').val(accessoriesNumber);
-
-    //ajout d'une ligne au tableau des accessoires
-    $('#addDevis').find('.otherCostsAccesoiresTable tbody')
-    .append(`<tr class="otherCostsAccesoiresTable`+(accessoriesNumber)+` accessoriesRow form-group">
-      <td class="aLabel"></td>
-      <td class="aCategory"><select name="accessoryCategory[]" class="selectCategory form-control required"></select></td>
-      <td class="aAccessory"></td>
-      <td class="aBuyingPrice"></td>
-      <td contenteditable='true' class="aPriceHTVA"></td>
-      <td><input type="number" class="accessoryFinalPrice hidden" name="accessoryFinalPrice[]" /></td>
-      </tr>`);
-
-
-    categories.forEach(function(category){
-      $('#addDevis .otherCostsAccesoiresTable .accessoriesRow:last-child .aCategory select').append(
-        new Option(category.name, category.id)
-      )
-    });
-    $('#addDevis .otherCostsAccesoiresTable .accessoriesRow:last-child .aCategory select').val('');
-
-    //label selon la langue
-    $('#addDevis').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aLabel')
-    .append('<label>Accessoire '+ accessoriesNumber +'</label>');
-
-    //select Accessoire
-    $('#addDevis').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aAccessory')
-    .append('<select name="accessoryID[]" id="selectAccessory'+
-      accessoriesNumber+
-      '"class="selectAccessory form-control required"></select>');
-
-    checkMinus('.generateBillAccessoriesDevis','.accessoriesNumber');
-
-    //on change de la catégorie
-    $('.generateBillAccessoriesDevis').find('.selectCategory').on("change",function(){
-      var $row = $(this).closest('.accessoriesRow');
-      var categoryId = $(this).val();
-      var accessoriesOption = "<option hidden disabled selected value>Veuillez choisir un accesoire</option>";
-
-      //ne garde que les accessoires de cette catégorie
-      accessories.forEach((accessory) => {
-        if (categoryId == accessory.categoryId) {
-          accessoriesOption += '<option value="'+accessory.id+'">'+accessory.model+'</option>';
+    //generation du tableau de catégories
+    accessories.forEach((accessory) => {
+      var newCategory = true;
+      categories.forEach((category) => {
+        if (category.name === accessory.category) {
+          newCategory = false;
         }
       });
-      //place les accessoires dans le select
-      $row.find('.selectAccessory').html(accessoriesOption);
-      //retire l'affichage d'éventuels prix
-      $row.find('.aBuyingPrice').html('');
-      $row.find('.aPriceHTVA').html('');
+      if (newCategory === true) {
+        categories.push({'id' : accessory.categoryId, 'name' : accessory.category});
+      }
     });
 
-    $('.generateBillAccessoriesDevis').find('.selectAccessory').on("change",function(){
-      var that = '#' + $(this).attr('id');
-      var accessoryId =$(that).val();
+    $('.generateBillAccessoriesDevis .glyphicon-plus').unbind();
+    $('.generateBillAccessoriesDevis .glyphicon-plus').click(function(){
+      //gestion accessoriesNumber
+      accessoriesNumber = $("#addDevis").find('.accessoriesNumber').html()*1+1;
+      $('#addDevis').find('.accessoriesNumber').html(accessoriesNumber);
+      $('#accessoriesNumber').val(accessoriesNumber);
 
-        //récupère le bon index même si le tableau est désordonné
-        accessoryId = getIndex(accessories, accessoryId);
+      //ajout d'une ligne au tableau des accessoires
+      $('#addDevis').find('.otherCostsAccesoiresTable tbody')
+      .append(`<tr class="otherCostsAccesoiresTable`+(accessoriesNumber)+` accessoriesRow form-group">
+        <td class="aLabel"></td>
+        <td class="aCategory"><select name="accessoryCategory[]" class="selectCategory form-control required"></select></td>
+        <td class="aAccessory"></td>
+        <td class="aBuyingPrice"></td>
+        <td contenteditable='true' class="aPriceHTVA"></td>
+        <td><input type="number" class="accessoryFinalPrice hidden" name="accessoryFinalPrice[]" /></td>
+        </tr>`);
 
-        var buyingPrice = accessories[accessoryId].buyingPrice + '€';
-        var priceHTVA = accessories[accessoryId].priceHTVA + '€';
 
-        $(that).parents('.accessoriesRow').find('.aBuyingPrice').html(buyingPrice);
-        $(that).parents('.accessoriesRow').find('.aPriceHTVA').html(priceHTVA);
-        $(that).parents('.accessoriesRow').find('.aPriceHTVA').attr('data-orig',priceHTVA);
-        $(that).parents('.accessoriesRow').find('.accessoryFinalPrice').val(accessories[accessoryId].priceHTVA);
+      categories.forEach(function(category){
+        $('#addDevis .otherCostsAccesoiresTable .accessoriesRow:last-child .aCategory select').append(
+          new Option(category.name, category.id)
+        )
+      });
+      $('#addDevis .otherCostsAccesoiresTable .accessoriesRow:last-child .aCategory select').val('');
+
+      //label selon la langue
+      $('#addDevis').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aLabel')
+      .append('<label>Accessoire '+ accessoriesNumber +'</label>');
+
+      //select Accessoire
+      $('#addDevis').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aAccessory')
+      .append('<select name="accessoryID[]" id="selectAccessory'+
+        accessoriesNumber+
+        '"class="selectAccessory form-control required"></select>');
+
+      checkMinus('.generateBillAccessoriesDevis','.accessoriesNumber');
+
+      //on change de la catégorie
+      $('.generateBillAccessoriesDevis').find('.selectCategory').on("change",function(){
+        var $row = $(this).closest('.accessoriesRow');
+        var categoryId = $(this).val();
+        var accessoriesOption = "<option hidden disabled selected value>Veuillez choisir un accesoire</option>";
+
+        //ne garde que les accessoires de cette catégorie
+        accessories.forEach((accessory) => {
+          if (categoryId == accessory.categoryId) {
+            accessoriesOption += '<option value="'+accessory.id+'">'+accessory.model+'</option>';
+          }
+        });
+        //place les accessoires dans le select
+        $row.find('.selectAccessory').html(accessoriesOption);
+        //retire l'affichage d'éventuels prix
+        $row.find('.aBuyingPrice').html('');
+        $row.find('.aPriceHTVA').html('');
       });
 
-    $('#widget-addDevis-form .accessoriesRow .aPriceHTVA ').blur(function(){
-      var initialPrice=this.getAttribute('data-orig',this.innerHTML).split('€')[0];
-      var newPrice=this.innerHTML.split('€')[0];
-      if(initialPrice==newPrice){
-        $(this).parents('.accessoriesRow').find('.aPriceHTVA').html(newPrice + '€ ' + " <span class=\"text-green\">(+)</span>");
-      }else{
-        var reduction=Math.round((newPrice*1-initialPrice*1)/(initialPrice*1)*100);
-        $(this).parents('.accessoriesRow').find('.aPriceHTVA').html(newPrice + '€ ' + " <span class=\"text-green\">(+)</span> <br/><span class=\"text-red\">("+reduction+"%)</span> ");
-      }
-      var buyingPrice=$(this).parents('.accessoriesRow').find('.aBuyingPrice').html().split('€')[0];
-      var marge = (newPrice*1 - buyingPrice).toFixed(0) + '€ (' + ((newPrice*1 - buyingPrice)/(buyingPrice*1)*100).toFixed(0) + '%)';
-      $(this).parents('.accessoriesRow').find('.accessoryMarge').html(marge);
-      $(this).parents('.accessoriesRow').find('.accessoryFinalPrice').val(newPrice);
+      $('.generateBillAccessoriesDevis').find('.selectAccessory').on("change",function(){
+        var that = '#' + $(this).attr('id');
+        var accessoryId =$(that).val();
+
+          //récupère le bon index même si le tableau est désordonné
+          accessoryId = getIndex(accessories, accessoryId);
+
+          var buyingPrice = accessories[accessoryId].buyingPrice + '€';
+          var priceHTVA = accessories[accessoryId].priceHTVA + '€';
+
+          $(that).parents('.accessoriesRow').find('.aBuyingPrice').html(buyingPrice);
+          $(that).parents('.accessoriesRow').find('.aPriceHTVA').html(priceHTVA);
+          $(that).parents('.accessoriesRow').find('.aPriceHTVA').attr('data-orig',priceHTVA);
+          $(that).parents('.accessoriesRow').find('.accessoryFinalPrice').val(accessories[accessoryId].priceHTVA);
+        });
+
+      $('#widget-addDevis-form .accessoriesRow .aPriceHTVA ').blur(function(){
+        var initialPrice=this.getAttribute('data-orig',this.innerHTML).split('€')[0];
+        var newPrice=this.innerHTML.split('€')[0];
+        if(initialPrice==newPrice){
+          $(this).parents('.accessoriesRow').find('.aPriceHTVA').html(newPrice + '€ ' + " <span class=\"text-green\">(+)</span>");
+        }else{
+          var reduction=Math.round((newPrice*1-initialPrice*1)/(initialPrice*1)*100);
+          $(this).parents('.accessoriesRow').find('.aPriceHTVA').html(newPrice + '€ ' + " <span class=\"text-green\">(+)</span> <br/><span class=\"text-red\">("+reduction+"%)</span> ");
+        }
+        var buyingPrice=$(this).parents('.accessoriesRow').find('.aBuyingPrice').html().split('€')[0];
+        var marge = (newPrice*1 - buyingPrice).toFixed(0) + '€ (' + ((newPrice*1 - buyingPrice)/(buyingPrice*1)*100).toFixed(0) + '%)';
+        $(this).parents('.accessoriesRow').find('.accessoryMarge').html(marge);
+        $(this).parents('.accessoriesRow').find('.accessoryFinalPrice').val(newPrice);
+      });
     });
   });
 });
@@ -1385,3 +1426,29 @@ $('.generateBillOtherAccessoriesDevis .glyphicon-plus').click(function(){
     .append('<label>Accessoire '+ otherAccessoriesNumber +'</label>');
     checkMinus('.generateBillOtherAccessoriesDevis','.otherAccessoriesNumber');
   });
+
+
+
+
+$('#warnClient').on('shown.bs.modal', function(event){
+  var maintenanceID = $(event.relatedTarget).data("maintenanceID");
+  $('#widget-warnClient-form input[name=maintenanceID]').val(maintenanceID);
+  $.ajax({
+    url: 'api/maintenances',
+    type: 'get',
+    data: {
+      action: 'getContacts',
+      maintenanceID: maintenanceID
+    },
+    success: function(response){
+      $('#warnClient select[name=emailAddress]').find('option').remove().end();
+      response.forEach(function(contact){
+        $('#warnClient select[name=emailAddress]').append("<option value='"+contact.EMAIL+"'>"+contact.PRENOM+" "+contact.NOM+" "+contact.EMAIL+"</option>");
+      });
+      $('#warnClient select[name=phoneNumber]').find('option').remove().end();
+      response.forEach(function(contact){
+        $('#warnClient select[name=phoneNumber]').append("<option value='"+contact.PHONE+"'>"+contact.PRENOM+" "+contact.NOM+" "+contact.PHONE+"</option>");
+      });
+    }
+  })
+});

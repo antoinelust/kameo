@@ -11,7 +11,7 @@ $arrayCosts=array();
 $arrayFreeCashFlow=array();
 $arrayIN=array();
 $i=0;
-while(($date_start->format('Y-m-d'))<=$date_end){
+/*while(($date_start->format('Y-m-d'))<=$date_end){
 
     $date_start_string=$date_start->format('Y-m-d');
     $contractAmountTemp=execSQL("SELECT SUM(CASE WHEN BILLING_TYPE = 'annual' THEN LEASING_PRICE/12 ELSE LEASING_PRICE END) as 'PRICE' FROM customer_bikes aa WHERE aa.STAANN != 'D' and aa.COMPANY != 'KAMEO' AND aa.CONTRACT_TYPE IN ('leasing', 'location') AND CONTRACT_START <= '$date_start_string' AND CONTRACT_END >= '$date_start_string'", array(), false)[0]['PRICE'];
@@ -40,7 +40,7 @@ $response['arrayOffers']=$arrayOffers;
 $response['arrayCosts']=$arrayCosts;
 $response['arrayFreeCashFlow']=$arrayFreeCashFlow;
 $response['totalIN']=$arrayIN;
-$response['arrayDates']=$arrayDates;
+$response['arrayDates']=$arrayDates;*/
 
 $result=execSQL("SELECT substr(factures_details.DATE_START, 1 ,7) as 'month', round(SUM(CASE WHEN ITEM_TYPE='bike' AND factures_details.DATE_START != factures_details.DATE_END THEN AMOUNT_HTVA ELSE 0 END)) as 'bikeLeasing', round(SUM(CASE WHEN ITEM_TYPE='bike' AND (factures_details.DATE_START = factures_details.DATE_END OR factures_details.DATE_END IS NULL) THEN AMOUNT_HTVA ELSE 0 END)) as 'bikeSelling', round(SUM(CASE WHEN (ITEM_TYPE='accessory' OR ITEM_TYPE='accessoryCatalog') AND factures_details.DATE_START != factures_details.DATE_END THEN AMOUNT_HTVA ELSE 0 END)) as 'accessoryLeasing', round(SUM(CASE WHEN (ITEM_TYPE='accessory' OR ITEM_TYPE='accessoryCatalog') AND factures_details.DATE_START = factures_details.DATE_END THEN AMOUNT_HTVA ELSE 0 END)) as 'accessorySelling', round(SUM(CASE WHEN ITEM_TYPE='box' THEN AMOUNT_HTVA ELSE 0 END)) as 'boxesLeasing', round(SUM(CASE WHEN ITEM_TYPE='maintenance' THEN AMOUNT_HTVA ELSE 0 END)) as 'maintenance' FROM factures_details WHERE DATE_START > '2020-01-01' GROUP BY substr(factures_details.DATE_START, 1 ,7)", array(), false);
 $response['arrayDatesCA']=array_column($result, 'month');

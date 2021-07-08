@@ -1,4 +1,8 @@
 <?php
+session_cache_limiter('nocache');
+header('Expires: ' . gmdate('r', 0));
+header('Content-type: application/json');
+
 include 'connexion.php';
 $sql="SELECT * FROM customer_referential WHERE EMAIL like '%kameobikes.com'";
 

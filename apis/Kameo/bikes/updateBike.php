@@ -94,6 +94,10 @@ if(isset($_POST['insurance'])){
     $insurance="N";
 }
 
+if($billingPrice==""){
+  $billingPrice=0;
+}
+
 if(isset($_POST['insuranceIndividual'])){$insuranceIndividual=true;}
 else{$insuranceIndividual=0;}
 if(isset($_POST['insuranceCivilResponsibility'])){$insuranceCivilResponsibility=true;}

@@ -200,7 +200,7 @@
       }
     }
 
-    $offerID= add_PDF($companyId, $pdfTitle, $totalBikes, $boxesNumber, $buyOrLeasing, ($accessoriesTotalAchat+$accessoriesTotalLeasing), $email, $dateSignature, $dateStart, $dateEnd, $totalPerMonth, $company['INTERNAL_REFERENCE'], $probability);
+    $offerID= add_PDF($companyId, $pdfTitle, $totalBikes, $boxesNumber, $buyOrLeasing, ($accessoriesTotalAchat+$accessoriesTotalLeasing), $email, $offerValidityYmd, $dateStart, $dateEnd, $totalPerMonth, $company['INTERNAL_REFERENCE'], $probability);
     $response['id'] = $offerID;
     $newPdfFile = str_replace('temp',$response['id'], $pdfTitle);
 
@@ -346,11 +346,11 @@
     return $temp;
   }
 
-  function add_PDF($id, $file, $bikesNumber, $boxesNumber, $buyOrLeasing, $accessoriesNumber, $email, $dateSignature, $dateStart, $dateEnd, $totalPerMonth, $company, $probability){
+  function add_PDF($id, $file, $bikesNumber, $boxesNumber, $buyOrLeasing, $accessoriesNumber, $email, $offerValidityYmd, $dateStart, $dateEnd, $totalPerMonth, $company, $probability){
     $description="Facture générée depuis mykameo pour ".$bikesNumber." vélos, ".$boxesNumber." bornes et ".$accessoriesNumber." accessoires.";
     global $token;
     $id=execSQL("INSERT INTO offers (HEU_MAJ, USR_MAJ, TITRE, DESCRIPTION, STATUS, PROBABILITY, TYPE, AMOUNT, MARGIN, VALIDITY_DATE, START, END, COMPANY, COMPANY_ID, FILE_NAME, STAANN)
-    VALUES (CURRENT_TIMESTAMP, ?, 'Facture générée via le template', ?, 'ongoing', ?, ?, ?, '40', ?, ?, ?, ?, ?, ?, '')", array('ssisdsssssis', $token, $description, $probability, $buyOrLeasing, $totalPerMonth, $offerValidityYmd, $dateStart, $dateEnd, $company, $id, $file), true);
+    VALUES (CURRENT_TIMESTAMP, ?, 'Facture générée via le template', ?, 'ongoing', ?, ?, ?, '40', ?, ?, ?, ?, ?, ?, '')", array('ssisdssssis', $token, $description, $probability, $buyOrLeasing, $totalPerMonth, $offerValidityYmd, $dateStart, $dateEnd, $company, $id, $file), true);
     $file = str_replace('temp', $id, $file);
     execSQL("UPDATE `offers` SET `FILE_NAME` = ? WHERE `offers`.`ID` = ?", array('si', $file, $id), true);
     return $id;

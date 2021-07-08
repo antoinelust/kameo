@@ -22,17 +22,17 @@ switch($_SERVER["REQUEST_METHOD"])
 		$action=isset($_GET['action']) ? $_GET['action'] : NULL;
 		if($action === 'getStatistics'){
 			if(get_user_permissions(['bikesStock', "admin"], $token)){
-				$resultat=execSQL("SELECT substr(client_orders.CREATION_TIME, 1 ,7) as commandsMonth,
-				SUM(CASE WHEN TYPE='leasing' THEN 1 ELSE 0 END) as leasingOrders,
-				SUM(CASE WHEN TYPE='achat' THEN 1 ELSE 0 END) as sellingOrders,
-				(SELECT COUNT(order_boxes.ID) FROM order_boxes WHERE substr(order_boxes.CREATION_TIME, 1 ,7)=substr(client_orders.CREATION_TIME, 1 ,7)) as boxesOrders,
-				ROUND(SUM(CASE WHEN TYPE='achat' THEN (client_orders.LEASING_PRICE-bike_catalog.BUYING_PRICE) ELSE 0 END)) as sellingMargin,
-				ROUND(SUM(CASE WHEN TYPE='achat' THEN (bike_catalog.BUYING_PRICE) ELSE 0 END)) as sellingCost,
-        ROUND(SUM(CASE WHEN TYPE='leasing' THEN ((client_orders.LEASING_PRICE*36)+0.16*bike_catalog.PRICE_HTVA-bike_catalog.BUYING_PRICE-3*84-4*100) ELSE 0 END)) as leasingMargin,
-        ROUND(SUM(CASE WHEN TYPE='leasing' THEN (bike_catalog.BUYING_PRICE+3*84+4*100) ELSE 0 END)) as leasingCost,
-        (SELECT COALESCE(ROUND(SUM(order_boxes.MONTHLY_PRICE*36+order_boxes.INSTALLATION_PRICE-700)), 0) FROM order_boxes WHERE substr(order_boxes.CREATION_TIME, 1 ,7)=substr(client_orders.CREATION_TIME, 1 ,7)) as boxesMargin,
-        (SELECT COUNT(order_boxes.ID)*700 FROM order_boxes WHERE substr(order_boxes.CREATION_TIME, 1 ,7)=substr(client_orders.CREATION_TIME, 1 ,7)) as boxesCost
-        FROM client_orders, bike_catalog WHERE client_orders.PORTFOLIO_ID = bike_catalog.ID GROUP BY substr(client_orders.CREATION_TIME, 1 ,7)", array(), false);
+				$resultat=execSQL("SELECT SUBSTR(tt.CREATION_TIME, 1, 7) AS commandsMonth, ROUND(SUM(leasingOrders)) as leasingOrders, ROUND(SUM(sellingOrders)) as sellingOrders, ROUND(SUM(boxesOrders)) as boxesOrders, ROUND(SUM(leasingMargin)) AS leasingMargin, ROUND(SUM(leasingCost)) AS leasingCost, ROUND(SUM(sellingMargin)) AS sellingMargin, ROUND(SUM(sellingCost)) AS sellingCost, ROUND(SUM(boxesMargin)) as boxesMargin, ROUND(SUM(boxesCost)) as boxesCost FROM (SELECT grouped_orders.ID, grouped_orders.CREATION_TIME,
+        (SELECT COUNT(1) FROM client_orders WHERE client_orders.TYPE='leasing' AND client_orders.GROUP_ID=grouped_orders.ID) as leasingOrders,
+        (SELECT COUNT(1) FROM client_orders WHERE client_orders.TYPE='achat' AND client_orders.GROUP_ID=grouped_orders.ID) as sellingOrders,
+        (SELECT COUNT(order_boxes.ID) FROM order_boxes WHERE order_boxes.GROUP_ID=grouped_orders.ID) as boxesOrders,
+        (SELECT SUM(client_orders.LEASING_PRICE*36+0.16*bike_catalog.PRICE_HTVA-bike_catalog.BUYING_PRICE-3*84-4*100) FROM bike_catalog, client_orders WHERE client_orders.TYPE='leasing' AND client_orders.GROUP_ID=grouped_orders.ID AND bike_catalog.ID=client_orders.PORTFOLIO_ID) as leasingMargin,
+        (SELECT SUM(bike_catalog.BUYING_PRICE) FROM bike_catalog, client_orders WHERE client_orders.TYPE='leasing' AND client_orders.GROUP_ID=grouped_orders.ID AND bike_catalog.ID=client_orders.PORTFOLIO_ID) as leasingCost,
+        (SELECT SUM(client_orders.LEASING_PRICE-bike_catalog.BUYING_PRICE) FROM bike_catalog, client_orders WHERE client_orders.TYPE='achat' AND client_orders.GROUP_ID=grouped_orders.ID AND bike_catalog.ID=client_orders.PORTFOLIO_ID) as sellingMargin,
+        (SELECT SUM(bike_catalog.BUYING_PRICE) FROM bike_catalog, client_orders WHERE client_orders.TYPE='achat' AND client_orders.GROUP_ID=grouped_orders.ID AND bike_catalog.ID=client_orders.PORTFOLIO_ID) as sellingCost,
+        (SELECT SUM(order_boxes.MONTHLY_PRICE*36+order_boxes.INSTALLATION_PRICE-700) FROM order_boxes WHERE order_boxes.GROUP_ID=grouped_orders.ID) as boxesMargin,
+        (SELECT SUM(700) FROM order_boxes WHERE order_boxes.GROUP_ID=grouped_orders.ID) as boxesCost
+        FROM grouped_orders GROUP BY grouped_orders.ID) tt GROUP BY SUBSTR(tt.CREATION_TIME, 1, 7) ORDER BY `commandsMonth` ASC", array(), false);
 				$response['leasingOrders']=array_column($resultat, 'leasingOrders');
 				$response['leasingCost']=array_column($resultat, 'leasingCost');
 				$response['boxesOrders']=array_column($resultat, 'boxesOrders');
